@@ -16,5 +16,6 @@ public class tbl_adquisicion_complex
     public string? FacPdf { get; set; } = null!;
     public string? FacXml { get; set; } = null!;
     public DateTime? Fechadecompra { get; set; }
+    public List<RelAdquisicionDetalle>? detalle { get; set; }
 }
 
