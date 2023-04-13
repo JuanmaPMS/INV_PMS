@@ -33,7 +33,7 @@ namespace Negocio
         {
             try
             {
-                CatFabricante fabricante = ctx.CatFabricantes.Where(x => x.Nombre.ToUpper() == entidad.Nombre.ToUpper() && x.Estatus == true).FirstOrDefault();
+                CatFabricante fabricante = ctx.CatFabricantes.Where(x => x.Nombre.ToUpper() == entidad.Nombre.ToUpper() && x.Estatus == true).FirstOrDefault()!;
 
                 if (fabricante != null)
                 { throw new Exception("Ya existe el Fabricante en Cat_Fabricante, favor de validar."); }
@@ -60,14 +60,14 @@ namespace Negocio
         {
             try
             {
-                CatFabricante fabricante = ctx.CatFabricantes.Where(x => x.Id == entidad.Id).FirstOrDefault();
+                CatFabricante fabricante = ctx.CatFabricantes.Where(x => x.Id == entidad.Id).FirstOrDefault()!;
 
                 if (fabricante == null)
                 { throw new Exception("No existe el registro en Cat_Fabricante, favor de validar."); }
                 else
                 {
                     //Valida que no se duplique registro
-                    CatFabricante valida = ctx.CatFabricantes.Where(x => x.Nombre.ToUpper() == entidad.Nombre.ToUpper() && x.Estatus == true && x.Id != entidad.Id).FirstOrDefault();
+                    CatFabricante valida = ctx.CatFabricantes.Where(x => x.Nombre.ToUpper() == entidad.Nombre.ToUpper() && x.Estatus == true && x.Id != entidad.Id).FirstOrDefault()!;
 
                     if (valida != null)
                     { throw new Exception("No se puede duplicar el registro Cat_Fabricante, favor de validar."); }
@@ -92,7 +92,7 @@ namespace Negocio
         {
             try
             {
-                CatFabricante fabricante = ctx.CatFabricantes.Where(x => x.Id == id).FirstOrDefault();
+                CatFabricante fabricante = ctx.CatFabricantes.Where(x => x.Id == id).FirstOrDefault()!;
 
                 if (fabricante == null)
                 { throw new Exception("No existe el registro en Cat_Fabricante, favor de validar."); }

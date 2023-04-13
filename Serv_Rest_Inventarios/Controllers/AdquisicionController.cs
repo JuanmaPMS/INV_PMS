@@ -31,7 +31,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpPost]
         [Route("agregar/detalle")]
-        public TipoAccion agregar(List<RelAdquisicionDetalle> input)
+        public TipoAccion agregar(List<rel_adquisicion_detalle_complex> input)
         {
             Adquisicion_Detalle_negocio neg = new Adquisicion_Detalle_negocio(input, new ActionAdd());
             if (neg.estatus)

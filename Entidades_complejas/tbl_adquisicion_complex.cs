@@ -16,6 +16,16 @@ public class tbl_adquisicion_complex
     public string? FacPdf { get; set; } = null!;
     public string? FacXml { get; set; } = null!;
     public DateTime? Fechadecompra { get; set; }
-    public List<RelAdquisicionDetalle>? detalle { get; set; }
+    //public List<RelAdquisicionDetalle>? detalle { get; set; }
+    public List<rel_adquisicion_detalle_complex>? detalle { get; set; }
+}
+
+public class rel_adquisicion_detalle_complex
+{
+    public int? Id { get; set; }
+    public int Cantidad { get; set; }
+    public int TblAdquisicionId { get; set; }
+    public int CatProductoId { get; set; }
+    public double Costosiunitario { get; set; }
 }
 
