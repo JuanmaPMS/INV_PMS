@@ -1,4 +1,5 @@
 ﻿using Data.Models;
+using Entidades_complejas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace Negocio
     {
         public PmsInventarioContext ctx = new PmsInventarioContext();
         public List<RelProductoCatacteristica> productoCaracter { get; set; }
+        public TipoAccion Respuesta { get; set; }
         public producto_caracteristicas_negocio(List<RelProductoCatacteristica> input)
         { 
             this.productoCaracter = input;
@@ -21,7 +23,7 @@ namespace Negocio
             {
                 try
                 {
-                    ctx.AddRange(productoCaracter);
+                    ctx.RelProductoCatacteristicas.AddRange(this.productoCaracter);
                     ctx.SaveChanges();
                     dbContextTransaction.Commit();
                     return true;
@@ -31,6 +33,11 @@ namespace Negocio
                     return false;
                 }
             }
+        }
+
+        public producto_caracteristicas_negocio(rel_producto_caracteristicas_complex input, ActionAdd add)
+        {
+            
         }
 
     }

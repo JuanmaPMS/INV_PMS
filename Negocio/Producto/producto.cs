@@ -37,10 +37,12 @@ namespace Negocio
                         RelProductoCatacteristica relProductoCatacteristica = new RelProductoCatacteristica();
                         relProductoCatacteristica.CatProductoId = catProducto.Id;
                         relProductoCatacteristica.Nombre = item;
+                        caracteristicas.Add(relProductoCatacteristica);
                     }
-                    producto_caracteristicas_negocio producto_Caracteristicas_Negocio =
-                        new producto_caracteristicas_negocio(caracteristicas);
-                    producto_Caracteristicas_Negocio.addRange();
+
+                    ctx.RelProductoCatacteristicas.AddRange(caracteristicas);
+                    ctx.SaveChanges();
+
                     tran.Commit();
                     this.Respuesta = TipoAccion.Positiva("Alta Exitosa", catProducto.Id, catProducto);
                 }
@@ -50,6 +52,56 @@ namespace Negocio
                     this.Respuesta = TipoAccion.Negativa(ex.Message, ex);
                 }
 
+            }
+        }
+
+        public producto_negocio(cat_producto_complex input, ActionUpdate update)
+        {
+            try
+            {
+                CatProducto catProducto = ctx.CatProductos.Where(x => x.Id == input.Id).FirstOrDefault();
+                if (catProducto == null)
+                { throw new Exception("No existe el registro en Cat_Productos, favor de validar."); }
+                else
+                {
+                    catProducto.CatCategoriaProductoId = (int)this.producto.CatCategoriaProductoId!;
+                    catProducto.CatFabricanteId = (int)this.producto.CatFabricanteId!;
+                    catProducto.Modelo = this.producto.Modelo!;
+                    catProducto.Anio = this.producto.Anio;
+                    catProducto.Nuevo = (Boolean)this.producto.Nuevo!;
+                    catProducto.Vidautil = (int)this.producto.Vidautil!;
+
+                    ctx.CatProductos.Update(catProducto);
+                    ctx.SaveChanges();
+                }
+
+                this.Respuesta = TipoAccion.Positiva("Actualización Exitosa", catProducto.Id, catProducto);
+            }
+            catch (Exception ex)
+            {
+                this.Respuesta = TipoAccion.Negativa(ex.Message, ex);
+            }
+        }
+        public producto_negocio(int id, ActionDisable disable)
+        {
+            try
+            {
+                CatProducto catProducto = ctx.CatProductos.Where(x => x.Id == id).FirstOrDefault();
+                if (catProducto == null)
+                { throw new Exception("No existe el registro en Cat_Productos, favor de validar."); }
+                else
+                {
+                    catProducto.Estatus = false;
+
+                    ctx.CatProductos.Update(catProducto);
+                    ctx.SaveChanges();
+                }
+
+                this.Respuesta = TipoAccion.Positiva("Baja Exitosa", catProducto.Id, catProducto);
+            }
+            catch (Exception ex)
+            {
+                this.Respuesta = TipoAccion.Negativa(ex.Message, ex);
             }
         }
         //Metodos de Seleccion

@@ -38,7 +38,7 @@ namespace Serv_Rest_Inventarios.Controllers
             return negocio.Update(model);
         }
 
-        [HttpPut]
+        [HttpDelete]
         [Route("[action]")]
         public TipoAccion Disable([FromQuery] int id)
         {
