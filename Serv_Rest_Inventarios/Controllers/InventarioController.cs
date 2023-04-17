@@ -42,7 +42,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpPut]
         [Route("editar")]
-        public TipoAccion editar(tbl_inventario_complex input)
+        public TipoAccion editar(List<tbl_inventario_complex> input)
         {
             inventario_negocio neg = new inventario_negocio(input, new ActionUpdate());
             return neg.Respuesta;

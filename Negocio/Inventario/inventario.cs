@@ -65,39 +65,76 @@ namespace Negocio.Inventario
                 ctx.TblInventarios.Add(tblInventario);
                 ctx.SaveChanges();
 
-                this.Respuesta = TipoAccion.Positiva("Alta Exitosa", tblInventario.Id, tblInventario);
+                this.Respuesta = TipoAccion.Positiva("Alta Exitosa", tblInventario.Id);
             }
             catch (Exception ex)
             {
-                this.Respuesta = TipoAccion.Negativa(ex.Message, ex);
+                this.Respuesta = TipoAccion.Negativa(ex.Message);
             }
         }
 
-        public inventario_negocio(tbl_inventario_complex input, ActionUpdate update)
+        public inventario_negocio(List<tbl_inventario_complex> input, ActionUpdate update)
         {
-            try
+            using (var tran = ctx.Database.BeginTransaction())
             {
-                this.inventario = input;
-                TblInventario tblInventario = ctx.TblInventarios.Where(x => x.Id == (int)this.inventario.Id!).FirstOrDefault()!;
-
-                if (tblInventario == null)
-                { throw new Exception("No existe el registro en Tbl_Inventario, favor de validar."); }
-                else
+                try
                 {
-                    tblInventario.CatEstatusinventarioId = (int)this.inventario.CatEstatusinventarioId!;
-                    tblInventario.Numerodeserie = this.inventario.Numerodeserie;
-                    tblInventario.Inventarioclv = this.inventario.Inventarioclv;
-                    tblInventario.Notas = this.inventario.Notas;
+                    foreach (tbl_inventario_complex inventario_complex in input)
+                    {
+                        TblInventario tblInventario = ctx.TblInventarios.Where(x => x.Id == inventario_complex.Id).FirstOrDefault()!;
 
-                    ctx.TblInventarios.Update(tblInventario);
-                    ctx.SaveChanges();
+                        if (tblInventario == null)
+                        { throw new Exception("No existe el registro en Tbl_Inventario, favor de validar."); }
+                        else
+                        {
+                            if (inventario_complex.CatEstatusinventarioId != null)
+                            { tblInventario.CatEstatusinventarioId = (int)inventario_complex.CatEstatusinventarioId; }
+                            tblInventario.Numerodeserie = inventario_complex.Numerodeserie;
+                            tblInventario.Inventarioclv = inventario_complex.Inventarioclv;
+                            tblInventario.Notas = inventario_complex.Notas;
+
+                            ctx.TblInventarios.Update(tblInventario);
+                            ctx.SaveChanges();
+
+                            if(inventario_complex.Accesorios != null && inventario_complex.Accesorios.Count > 0)
+                            {
+                                foreach(tbl_inventario_accesorio_complex accesorio_Complex in inventario_complex.Accesorios)
+                                {
+                                    TblInventarioAccesoriosincluido tblAccesorio = ctx.TblInventarioAccesoriosincluidos.Where(x => x.Id == accesorio_Complex.Id && x.TblInventarioId == tblInventario.Id).FirstOrDefault()!;
+
+                                    if(tblAccesorio == null)
+                                    {
+                                        //Guarda el accesorio
+                                        TblInventarioAccesoriosincluido accesorio = new TblInventarioAccesoriosincluido();
+                                        accesorio.TblInventarioId = tblInventario.Id;
+                                        accesorio.Nombre = accesorio_Complex.Nombre;
+                                        accesorio.Detalle = accesorio_Complex.Detalle;
+
+                                        ctx.TblInventarioAccesoriosincluidos.Add(accesorio);
+                                        ctx.SaveChanges();
+                                    }
+                                    else
+                                    {
+                                        //Actualiza el accesorio
+                                        tblAccesorio.Nombre = accesorio_Complex.Nombre;
+                                        tblAccesorio.Detalle = accesorio_Complex.Detalle;
+
+                                        ctx.TblInventarioAccesoriosincluidos.Update(tblAccesorio);
+                                        ctx.SaveChanges();
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    tran.Commit();
+                    this.Respuesta = TipoAccion.Positiva("Actualizacion Exitosa");
                 }
-
-                this.Respuesta = TipoAccion.Positiva("Actualizacion Exitosa", tblInventario.Id, tblInventario);
-            }
-            catch (Exception ex)
-            {
-                this.Respuesta = TipoAccion.Negativa(ex.Message, ex);
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    this.Respuesta = TipoAccion.Negativa(ex.Message);
+                }
             }
         }
 
@@ -117,11 +154,11 @@ namespace Negocio.Inventario
                     ctx.SaveChanges();
                 }
 
-                this.Respuesta = TipoAccion.Positiva("Baja Exitosa", tblInventario.Id, tblInventario);
+                this.Respuesta = TipoAccion.Positiva("Baja Exitosa", tblInventario.Id);
             }
             catch (Exception ex)
             {
-                this.Respuesta = TipoAccion.Negativa(ex.Message, ex);
+                this.Respuesta = TipoAccion.Negativa(ex.Message);
             }
         }
 

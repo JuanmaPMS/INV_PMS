@@ -19,15 +19,6 @@ namespace Serv_Rest_Inventarios.Controllers
         }
         #endregion
 
-
-        [HttpPost]
-        [Route("agregar")]
-        public TipoAccion agregar(cat_producto_complex input)
-        {
-            producto_negocio neg = new producto_negocio(input, new ActionAdd());
-            return neg.Respuesta;
-        }
-
         [HttpGet]
         [Route("seleccionar/todos")]
         public List<VwCatProducto> seleccionar()
@@ -48,6 +39,54 @@ namespace Serv_Rest_Inventarios.Controllers
         {
             producto_negocio neg = new producto_negocio();
             return neg.autocomplete();
+        }
+
+        [HttpPost]
+        [Route("agregar")]
+        public TipoAccion agregar(cat_producto_complex input)
+        {
+            producto_negocio neg = new producto_negocio(input, new ActionAdd());
+            return neg.Respuesta;
+        }
+
+        [HttpPost]
+        [Route("agregar/caracteristica")]
+        public TipoAccion agregarcaracteristica(rel_producto_caracteristicas_complex input)
+        {
+            producto_caracteristicas_negocio neg = new producto_caracteristicas_negocio(input, new ActionAdd());
+            return neg.Respuesta;
+        }
+
+        [HttpPut]
+        [Route("editar")]
+        public TipoAccion editar(cat_producto_complex input)
+        {
+            producto_negocio neg = new producto_negocio(input, new ActionUpdate());
+            return neg.Respuesta;
+        }
+
+        [HttpPut]
+        [Route("editar/caracteristica")]
+        public TipoAccion editarcaracteristica(rel_producto_caracteristicas_complex input)
+        {
+            producto_caracteristicas_negocio neg = new producto_caracteristicas_negocio(input, new ActionUpdate());
+            return neg.Respuesta;
+        }
+
+        [HttpDelete]
+        [Route("eliminar")]
+        public TipoAccion eliminar(int id)
+        {
+            producto_negocio neg = new producto_negocio(id, new ActionDisable());
+            return neg.Respuesta;
+        }
+
+        [HttpDelete]
+        [Route("eliminar/caracteristica")]
+        public TipoAccion eliminarcaracteristica(int id)
+        {
+            producto_caracteristicas_negocio neg = new producto_caracteristicas_negocio(id, new ActionDisable());
+            return neg.Respuesta;
         }
     }
 }
