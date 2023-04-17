@@ -89,7 +89,7 @@ namespace Negocio
         {
             try
             {
-                RelProductoCatacteristica caracteristica = ctx.RelProductoCatacteristicas.Where(x => x.Id == id).FirstOrDefault();
+                RelProductoCatacteristica caracteristica = ctx.RelProductoCatacteristicas.Where(x => x.Id == id).FirstOrDefault()!;
 
                 if (caracteristica == null)
                 { throw new Exception("No existe el registro en Rel_Producto_Caracteristica, favor de validar."); }

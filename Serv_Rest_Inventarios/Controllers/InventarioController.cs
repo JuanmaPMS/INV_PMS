@@ -40,6 +40,14 @@ namespace Serv_Rest_Inventarios.Controllers
             return neg.Respuesta;
         }
 
+        [HttpPost]
+        [Route("agregar/accesorio")]
+        public TipoAccion agregaraccesorio(List<tbl_inventario_accesorio_complex> input)
+        {
+            inventario_accesorio_negocio neg = new inventario_accesorio_negocio(input, new ActionAdd());
+            return neg.Respuesta;
+        }
+
         [HttpPut]
         [Route("editar")]
         public TipoAccion editar(List<tbl_inventario_complex> input)
@@ -48,11 +56,27 @@ namespace Serv_Rest_Inventarios.Controllers
             return neg.Respuesta;
         }
 
+        [HttpPut]
+        [Route("editar/accesorio")]
+        public TipoAccion editaraccesorio(List<tbl_inventario_accesorio_complex> input)
+        {
+            inventario_accesorio_negocio neg = new inventario_accesorio_negocio(input, new ActionUpdate());
+            return neg.Respuesta;
+        }
+
         [HttpDelete]
         [Route("eliminar")]
         public TipoAccion eliminar(int id)
         {
             inventario_negocio neg = new inventario_negocio(id, new ActionDisable());
+            return neg.Respuesta;
+        }
+
+        [HttpDelete]
+        [Route("eliminar/accesorio")]
+        public TipoAccion eliminaraccesorio(int id)
+        {
+            inventario_accesorio_negocio neg = new inventario_accesorio_negocio(id, new ActionDisable());
             return neg.Respuesta;
         }
 
