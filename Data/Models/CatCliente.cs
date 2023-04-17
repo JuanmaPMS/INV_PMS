@@ -25,5 +25,7 @@ public partial class CatCliente
 
     public DateTime Inclusion { get; set; }
 
+    public virtual ICollection<CatDirLdap> CatDirLdaps { get; } = new List<CatDirLdap>();
+
     public virtual ICollection<TblInventarioUbicacion> TblInventarioUbicacions { get; } = new List<TblInventarioUbicacion>();
 }

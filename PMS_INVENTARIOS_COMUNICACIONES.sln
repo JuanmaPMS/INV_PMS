@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Negocio", "Negocio\Negocio.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entidades_complejas", "Entidades_complejas\Entidades_complejas.csproj", "{5C764621-EF7B-4F27-963E-E88B447824A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Serv_Rest_Inventarios", "Serv_Rest_Inventarios\Serv_Rest_Inventarios.csproj", "{BA9D155E-9332-4634-AFEC-DB08CC9DEF5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serv_Rest_Inventarios", "Serv_Rest_Inventarios\Serv_Rest_Inventarios.csproj", "{BA9D155E-9332-4634-AFEC-DB08CC9DEF5C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LDAP", "LDAP\LDAP.csproj", "{40E06E8F-45B8-46AF-A176-173A67503673}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{BA9D155E-9332-4634-AFEC-DB08CC9DEF5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA9D155E-9332-4634-AFEC-DB08CC9DEF5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA9D155E-9332-4634-AFEC-DB08CC9DEF5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40E06E8F-45B8-46AF-A176-173A67503673}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40E06E8F-45B8-46AF-A176-173A67503673}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40E06E8F-45B8-46AF-A176-173A67503673}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40E06E8F-45B8-46AF-A176-173A67503673}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

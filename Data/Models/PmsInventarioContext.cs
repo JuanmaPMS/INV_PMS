@@ -23,6 +23,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<CatContactosoporte> CatContactosoportes { get; set; }
 
+    public virtual DbSet<CatDirLdap> CatDirLdaps { get; set; }
+
     public virtual DbSet<CatEstatusinventario> CatEstatusinventarios { get; set; }
 
     public virtual DbSet<CatFabricante> CatFabricantes { get; set; }
@@ -77,7 +79,7 @@ public partial class PmsInventarioContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario;Encrypt=false");
+        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -191,6 +193,28 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.Telefono)
                 .HasMaxLength(500)
                 .HasColumnName("TELEFONO");
+        });
+
+        modelBuilder.Entity<CatDirLdap>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__CAT_DIR___3214EC2778AA25F2");
+
+            entity.ToTable("CAT_DIR_LDAP");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CatClienteId).HasColumnName("CAT_CLIENTE_ID");
+            entity.Property(e => e.DirEntry)
+                .HasMaxLength(500)
+                .HasColumnName("DIR_ENTRY");
+            entity.Property(e => e.Inclusion)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+
+            entity.HasOne(d => d.CatCliente).WithMany(p => p.CatDirLdaps)
+                .HasForeignKey(d => d.CatClienteId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__CAT_DIR_L__CAT_C__5D2BD0E6");
         });
 
         modelBuilder.Entity<CatEstatusinventario>(entity =>
@@ -392,6 +416,9 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.Nombre)
                 .HasMaxLength(500)
                 .HasColumnName("NOMBRE");
+            entity.Property(e => e.Password)
+                .HasMaxLength(200)
+                .HasColumnName("password");
             entity.Property(e => e.Ubicacion).HasColumnName("UBICACION");
         });
 
