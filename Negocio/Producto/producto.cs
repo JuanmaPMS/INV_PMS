@@ -44,12 +44,12 @@ namespace Negocio
                     ctx.SaveChanges();
 
                     tran.Commit();
-                    this.Respuesta = TipoAccion.Positiva("Alta Exitosa", catProducto.Id, catProducto);
+                    this.Respuesta = TipoAccion.Positiva("Alta Exitosa", catProducto.Id);
                 }
                 catch (Exception ex)
                 {
                     tran.Rollback();
-                    this.Respuesta = TipoAccion.Negativa(ex.Message, ex);
+                    this.Respuesta = TipoAccion.Negativa(ex.Message);
                 }
 
             }
@@ -64,22 +64,22 @@ namespace Negocio
                 { throw new Exception("No existe el registro en Cat_Productos, favor de validar."); }
                 else
                 {
-                    catProducto.CatCategoriaProductoId = (int)this.producto.CatCategoriaProductoId!;
-                    catProducto.CatFabricanteId = (int)this.producto.CatFabricanteId!;
-                    catProducto.Modelo = this.producto.Modelo!;
-                    catProducto.Anio = this.producto.Anio;
-                    catProducto.Nuevo = (Boolean)this.producto.Nuevo!;
-                    catProducto.Vidautil = (int)this.producto.Vidautil!;
+                    catProducto.CatCategoriaProductoId = (int)input.CatCategoriaProductoId!;
+                    catProducto.CatFabricanteId = (int)input.CatFabricanteId!;
+                    catProducto.Modelo = input.Modelo!;
+                    catProducto.Anio = input.Anio;
+                    catProducto.Nuevo = (Boolean)input.Nuevo!;
+                    catProducto.Vidautil = (int)input.Vidautil!;
 
                     ctx.CatProductos.Update(catProducto);
                     ctx.SaveChanges();
                 }
 
-                this.Respuesta = TipoAccion.Positiva("Actualización Exitosa", catProducto.Id, catProducto);
+                this.Respuesta = TipoAccion.Positiva("Actualización Exitosa", catProducto.Id);
             }
             catch (Exception ex)
             {
-                this.Respuesta = TipoAccion.Negativa(ex.Message, ex);
+                this.Respuesta = TipoAccion.Negativa(ex.Message);
             }
         }
         public producto_negocio(int id, ActionDisable disable)
@@ -97,11 +97,11 @@ namespace Negocio
                     ctx.SaveChanges();
                 }
 
-                this.Respuesta = TipoAccion.Positiva("Baja Exitosa", catProducto.Id, catProducto);
+                this.Respuesta = TipoAccion.Positiva("Baja Exitosa", catProducto.Id);
             }
             catch (Exception ex)
             {
-                this.Respuesta = TipoAccion.Negativa(ex.Message, ex);
+                this.Respuesta = TipoAccion.Negativa(ex.Message);
             }
         }
         //Metodos de Seleccion

@@ -15,5 +15,14 @@ namespace Entidades_complejas
         public string Numerodeserie { get; set; } = null!;
         public string Inventarioclv { get; set; } = null!;
         public string? Notas { get; set; }
+        public List<tbl_inventario_accesorio_complex>? Accesorios { get; set; }
+    }
+
+    public class tbl_inventario_accesorio_complex
+    {
+        public int? Id { get; set; }
+        public int TblInventarioId { get; set; }
+        public string Nombre { get; set; } = null!;
+        public string? Detalle { get; set; }
     }
 }
