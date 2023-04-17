@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Entidades_complejas;
+using Microsoft.EntityFrameworkCore;
 
 namespace LDAP
 {
@@ -7,19 +8,24 @@ namespace LDAP
     {
         private readonly PmsInventarioContext _ctx = new();
 
-        public TipoAccion Get(int? id)
+        public TipoAccion GetById(int id)
         {
             try
             {
-                List<CatDirLdap> conexiones = id == null ? _ctx.CatDirLdaps.ToList() : _ctx.CatDirLdaps.Where(x => x.Id == id).ToList();
+                CatCliente conexiones = _ctx.CatClientes
+                        .Where(x => x.Id == id)
+                        .Include(q => q.CatDirLdaps)
+                        .FirstOrDefault()!;
 
-                if (conexiones.Count == 0)
+                if (conexiones == null)
                 {
-                    throw new Exception("No existen registros en Cat_Dir_Ldap");
+                    throw new Exception("No existen registros en CatCliente");
                 }
                 else
                 {
-                    return TipoAccion.Positiva(conexiones);
+                    ListarUsuarios listar = new();
+
+                    return TipoAccion.Positiva(listar.Listar_Usuarios(conexiones.CatDirLdaps.ElementAt(0).DirEntry!));
                 }
             }
             catch (Exception ex)

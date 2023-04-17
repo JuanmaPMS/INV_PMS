@@ -1,18 +1,17 @@
-﻿using LDAP.Models;
+﻿using Entidades_complejas;
+using LDAP.Models;
 using System.DirectoryServices;
 
 namespace LDAP
 {
     public class ListarUsuarios
     {
-        private Resultado Response;
 
-        public Resultado Listar_Usuarios()
+        public TipoAccion Listar_Usuarios(string direccion)
         {
             try
             {
-                // TODO:
-                var dirEntry = new DirectoryEntry("LDAP://Grupopm.mx:389");
+                var dirEntry = new DirectoryEntry(direccion);
                 var searcher = new DirectorySearcher(dirEntry)
                 {
                     Filter = "(&(&(objectClass=user)(objectClass=person)))"
@@ -56,25 +55,11 @@ namespace LDAP
 
                 listadoUsuarios = listadoUsuarios.Where(q => q.Correo != null).ToList();
 
-                Response = new()
-                {
-                    Mensaje = "Se encontraron usuarios por listar.",
-                    Exito = true,
-                    Objeto = listadoUsuarios
-                };
-
-                return Response;
+                return TipoAccion.Positiva(listadoUsuarios);
             }
             catch (Exception ex)
             {
-                Response = new()
-                {
-                    Mensaje = ex.Message,
-                    Exito = false,
-                    Objeto = null
-                };
-
-                return Response;
+                return TipoAccion.Negativa(ex.Message);
             }
         }
     }
