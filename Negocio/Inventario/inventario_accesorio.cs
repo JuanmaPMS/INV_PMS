@@ -32,11 +32,11 @@ namespace Negocio.Inventario
                         ctx.SaveChanges();
                     }
 
-
+                    tran.Commit();
                 }
                 catch (Exception ex)
                 {
-
+                    tran.Rollback();
                 }
             }              
         }
