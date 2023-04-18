@@ -8,7 +8,7 @@ namespace LDAP
     {
         private readonly PmsInventarioContext _ctx = new();
 
-        public TipoAccion GetById(int id)
+        public TipoAccion GetById(int id, string nombre)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace LDAP
                 {
                     ListarUsuarios listar = new();
 
-                    return TipoAccion.Positiva(listar.Listar_Usuarios(conexiones.CatDirLdaps.ElementAt(0).DirEntry!));
+                    return TipoAccion.Positiva(listar.Listar_Usuarios(conexiones.CatDirLdaps.ElementAt(0).DirEntry!, nombre));
                 }
             }
             catch (Exception ex)

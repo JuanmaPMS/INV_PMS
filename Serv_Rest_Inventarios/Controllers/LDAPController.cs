@@ -12,9 +12,9 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public TipoAccion ListadoUsuarioPorCliente(int id)
+        public TipoAccion ListadoUsuarioPorCliente(int id, string name)
         {
-            return _connection.GetById(id);
+            return _connection.GetById(id, name);
         }
     }
 }

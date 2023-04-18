@@ -7,14 +7,14 @@ namespace LDAP
     public class ListarUsuarios
     {
 
-        public TipoAccion Listar_Usuarios(string direccion)
+        public TipoAccion Listar_Usuarios(string direccion, string nombre)
         {
             try
             {
                 var dirEntry = new DirectoryEntry(direccion);
                 var searcher = new DirectorySearcher(dirEntry)
                 {
-                    Filter = "(&(&(objectClass=user)(objectClass=person)))"
+                    Filter = "(&(&(objectClass=user)(objectClass=person)(cn=*" + nombre + "*)))"
                 };
 
                 SearchResultCollection resultCollection = searcher.FindAll();
