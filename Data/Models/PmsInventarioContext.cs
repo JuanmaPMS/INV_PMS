@@ -65,6 +65,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<VwAdquisicion> VwAdquisicions { get; set; }
 
+    public virtual DbSet<VwAdquisicionDetalle> VwAdquisicionDetalles { get; set; }
+
     public virtual DbSet<VwCatProducto> VwCatProductos { get; set; }
 
     public virtual DbSet<VwFamiliaArticuloCategorium> VwFamiliaArticuloCategoria { get; set; }
@@ -79,7 +81,7 @@ public partial class PmsInventarioContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario;Encrypt=false");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -823,6 +825,35 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.Vidautil).HasColumnName("VIDAUTIL");
         });
 
+        modelBuilder.Entity<VwAdquisicionDetalle>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_ADQUISICION_DETALLE");
+
+            entity.Property(e => e.Anio).HasColumnName("ANIO");
+            entity.Property(e => e.Cantidad).HasColumnName("CANTIDAD");
+            entity.Property(e => e.Caracteristicas).HasColumnName("CARACTERISTICAS");
+            entity.Property(e => e.CatProductoId).HasColumnName("CAT_PRODUCTO_ID");
+            entity.Property(e => e.Categoria)
+                .HasMaxLength(500)
+                .HasColumnName("CATEGORIA");
+            entity.Property(e => e.Costosiunitario).HasColumnName("COSTOSIUNITARIO");
+            entity.Property(e => e.Esestatico).HasColumnName("ESESTATICO");
+            entity.Property(e => e.Fabricante)
+                .HasMaxLength(500)
+                .HasColumnName("FABRICANTE");
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Idcategoria).HasColumnName("IDCATEGORIA");
+            entity.Property(e => e.Idfabricante).HasColumnName("IDFABRICANTE");
+            entity.Property(e => e.Modelo)
+                .HasMaxLength(100)
+                .HasColumnName("MODELO");
+            entity.Property(e => e.Nuevo).HasColumnName("NUEVO");
+            entity.Property(e => e.TblAdquisicionId).HasColumnName("TBL_ADQUISICION_ID");
+            entity.Property(e => e.Vidautil).HasColumnName("VIDAUTIL");
+        });
+
         modelBuilder.Entity<VwCatProducto>(entity =>
         {
             entity
@@ -886,6 +917,7 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.CatEstatusinventario)
                 .HasMaxLength(500)
                 .HasColumnName("CAT_ESTATUSINVENTARIO");
+            entity.Property(e => e.CatEstatusinventarioId).HasColumnName("CAT_ESTATUSINVENTARIO_ID");
             entity.Property(e => e.Categoria)
                 .HasMaxLength(500)
                 .HasColumnName("CATEGORIA");

@@ -33,6 +33,15 @@ namespace Serv_Rest_Inventarios.Controllers
             producto_negocio neg = new producto_negocio();
             return neg.identificador(id);
         }
+
+        [HttpGet]
+        [Route("seleccionarCaracteristicas/{id}")]
+        public List<RelProductoCatacteristica> seleccionarCaracteristicas(int id)
+        {
+            producto_negocio neg = new producto_negocio();
+            return neg.caracteristicas(id);
+        }
+
         [HttpGet]
         [Route("seleccionar/autocomplete")]
         public List<String> autocomplete()
@@ -40,6 +49,9 @@ namespace Serv_Rest_Inventarios.Controllers
             producto_negocio neg = new producto_negocio();
             return neg.autocomplete();
         }
+
+
+
 
         [HttpPost]
         [Route("agregar")]

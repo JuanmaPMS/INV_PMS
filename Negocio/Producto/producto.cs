@@ -115,6 +115,11 @@ namespace Negocio
         {
             return ctx.VwCatProductos.Where(X=> X.Idproducto == id).ToList();
         }
+
+        public List<RelProductoCatacteristica> caracteristicas(int id)
+        {
+            return ctx.RelProductoCatacteristicas.Where(X => X.CatProductoId == id).ToList();
+        }
         public List<String> autocomplete()
         {
             List<String> output = new List<String>();

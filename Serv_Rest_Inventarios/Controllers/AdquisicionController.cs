@@ -34,6 +34,14 @@ namespace Serv_Rest_Inventarios.Controllers
             return neg.todos();
         }
 
+        [HttpGet]
+        [Route("seleccionar/productos")]
+        public List<VwAdquisicionDetalle> productosAdquisicion(int id)
+        {
+            Adquisicion_negocio neg = new Adquisicion_negocio();
+            return neg.productosAdquisicion(id);
+        }
+
         [HttpPost]
         [Route("agregar")]
         public TipoAccion agregar(tbl_adquisicion_complex input)

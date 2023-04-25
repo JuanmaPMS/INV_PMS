@@ -175,5 +175,10 @@ namespace Negocio.Inventario
             return ctx.VwInventarios.Where(X => X.Idinventario == id).ToList();
         }
 
+        public List<TblInventarioAccesoriosincluido> accesorios(int id)
+        {
+            return ctx.TblInventarioAccesoriosincluidos.Where(X => X.TblInventarioId == id).ToList();
+        }
+
     }
 }

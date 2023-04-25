@@ -301,6 +301,13 @@ namespace Negocio
                 return TipoAccion.Negativa(ex.Message);
             }
         }
+
+        public List<VwAdquisicionDetalle> productosAdquisicion(int id)
+        {
+            return ctx.VwAdquisicionDetalles
+                           .Where(x => x.TblAdquisicionId == id).ToList();
+        }
+
         public List<VwAdquisicion> todos()
         {
             return ctx.VwAdquisicions.ToList();

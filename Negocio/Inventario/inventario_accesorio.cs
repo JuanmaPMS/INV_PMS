@@ -20,10 +20,10 @@ namespace Negocio.Inventario
             {
                 try
                 {
+                    TblInventarioAccesoriosincluido tblAccesorio = new TblInventarioAccesoriosincluido();
                     foreach (tbl_inventario_accesorio_complex inventario_complex in input)
                     {
-                        TblInventarioAccesoriosincluido tblAccesorio = new TblInventarioAccesoriosincluido();
-
+                       
                         tblAccesorio.TblInventarioId = inventario_complex.TblInventarioId;
                         tblAccesorio.Nombre = inventario_complex.Nombre.ToUpper().Trim();
                         tblAccesorio.Detalle = inventario_complex.Detalle == null ? null : inventario_complex.Detalle.ToUpper().Trim();
@@ -33,7 +33,7 @@ namespace Negocio.Inventario
                     }
 
                     tran.Commit();
-                    this.Respuesta = TipoAccion.Positiva("Alta Exitosa");
+                    this.Respuesta = TipoAccion.Positiva("Alta Exitosa", tblAccesorio.Id);
                 }
                 catch (Exception ex)
                 {

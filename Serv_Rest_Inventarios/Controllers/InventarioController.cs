@@ -32,6 +32,17 @@ namespace Serv_Rest_Inventarios.Controllers
             return neg.identificador(id);
         }
 
+
+        [HttpGet]
+        [Route("seleccionarAccesorios/{id}")]
+        public List<TblInventarioAccesoriosincluido> seleccionarAccesorios(int id)
+        {
+            inventario_negocio neg = new inventario_negocio();
+            return neg.accesorios(id);
+        }
+
+
+
         [HttpPost]
         [Route("agregar")]
         public TipoAccion agregar(tbl_inventario_complex input)

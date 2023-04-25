@@ -37,6 +37,8 @@ public partial class VwInventario
 
     public string? Notainventario { get; set; }
 
+    public int CatEstatusinventarioId { get; set; }
+
     public string CatEstatusinventario { get; set; } = null!;
 
     public string Cliente { get; set; } = null!;
