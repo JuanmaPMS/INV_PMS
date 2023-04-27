@@ -19,7 +19,5 @@ public partial class CatUsuario
 
     public DateTime Inclusion { get; set; }
 
-    public string? Password { get; set; }
-
     public virtual ICollection<RelUsuarioInventario> RelUsuarioInventarios { get; } = new List<RelUsuarioInventario>();
 }

@@ -5,17 +5,17 @@ namespace Data.Models;
 
 public partial class VwProveedorSoporte
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
-    public int Idproveedor { get; set; }
+    public int? Idproveedor { get; set; }
 
-    public string Razonsocial { get; set; } = null!;
+    public string? Razonsocial { get; set; }
 
-    public string Rfc { get; set; } = null!;
+    public string? Rfc { get; set; }
 
-    public string Correo { get; set; } = null!;
+    public string? Correo { get; set; }
 
-    public bool Estatus { get; set; }
+    public bool? Estatus { get; set; }
 
     public int Idsoporte { get; set; }
 

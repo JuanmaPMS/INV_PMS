@@ -63,6 +63,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<TblNotasUsuarioInventario> TblNotasUsuarioInventarios { get; set; }
 
+    public virtual DbSet<UsuariosApp> UsuariosApps { get; set; }
+
     public virtual DbSet<VwAdquisicion> VwAdquisicions { get; set; }
 
     public virtual DbSet<VwAdquisicionDetalle> VwAdquisicionDetalles { get; set; }
@@ -81,7 +83,7 @@ public partial class PmsInventarioContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario;Encrypt=false");
+        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -418,9 +420,6 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.Nombre)
                 .HasMaxLength(500)
                 .HasColumnName("NOMBRE");
-            entity.Property(e => e.Password)
-                .HasMaxLength(200)
-                .HasColumnName("password");
             entity.Property(e => e.Ubicacion).HasColumnName("UBICACION");
         });
 
@@ -776,6 +775,29 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.Nota)
                 .HasMaxLength(500)
                 .HasColumnName("NOTA");
+        });
+
+        modelBuilder.Entity<UsuariosApp>(entity =>
+        {
+            entity.ToTable("USUARIOS_APP");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Activo).HasColumnName("ACTIVO");
+            entity.Property(e => e.Apellidos)
+                .HasMaxLength(500)
+                .HasColumnName("APELLIDOS");
+            entity.Property(e => e.Inclusion)
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+            entity.Property(e => e.Nombres)
+                .HasMaxLength(500)
+                .HasColumnName("NOMBRES");
+            entity.Property(e => e.Password)
+                .HasMaxLength(500)
+                .HasColumnName("PASSWORD");
+            entity.Property(e => e.Usuario)
+                .HasMaxLength(500)
+                .HasColumnName("USUARIO");
         });
 
         modelBuilder.Entity<VwAdquisicion>(entity =>
