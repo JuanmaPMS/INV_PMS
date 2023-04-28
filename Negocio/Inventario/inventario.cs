@@ -166,10 +166,22 @@ namespace Negocio.Inventario
         public inventario_negocio()
         { }
 
-        public List<VwInventario> todos()
+        public List<VwInventario> todos(bool? registrados)
         {
-            return ctx.VwInventarios.ToList();
+            if(registrados == null)
+            {
+                return ctx.VwInventarios.ToList();
+            }
+            else
+            {
+                if(registrados.Value)
+                { return ctx.VwInventarios.Where(x => x.Numerodeserie != string.Empty).ToList(); }
+                else
+                { return ctx.VwInventarios.Where(x => x.Numerodeserie == string.Empty).ToList(); }
+            }
+            
         }
+
         public List<VwInventario> identificador(int id)
         {
             return ctx.VwInventarios.Where(X => X.Idinventario == id).ToList();

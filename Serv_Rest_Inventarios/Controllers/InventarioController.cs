@@ -18,10 +18,10 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpGet]
         [Route("seleccionar/todos")]
-        public List<VwInventario> seleccionar()
+        public List<VwInventario> seleccionar(bool? registrados)
         {
             inventario_negocio neg = new inventario_negocio();
-            return neg.todos();
+            return neg.todos(registrados);
         }
 
         [HttpGet]
