@@ -14,36 +14,41 @@ namespace Negocio.Catalogo
             {
                 var proveedores = id == null ?
                                    from proveedor in _ctx.CatProveedors
-                                   join RelProveedorContactosoporte in _ctx.RelProveedorContactosoportes on proveedor.Id equals RelProveedorContactosoporte.CatProveedorId
-                                   join soporte in _ctx.CatContactosoportes on RelProveedorContactosoporte.CatContactosoporteId equals soporte.Id
-                                   where proveedor.Estatus == true && soporte.Estatus == true 
+                                   join RelProveedorContactosoporte in _ctx.RelProveedorContactosoportes on proveedor.Id equals RelProveedorContactosoporte.CatProveedorId into ProveedorContacto
+                                   from PC in ProveedorContacto.DefaultIfEmpty()
+                                   join soporte in _ctx.CatContactosoportes.Where(x => x.Estatus == true) on PC.CatContactosoporteId equals soporte.Id into PCSoporte
+                                   from soporteL in PCSoporte.DefaultIfEmpty()
+                                   where proveedor.Estatus == true //&& soporteL.Estatus == true 
                                    select new
                                    {
                                        Id_Proveedor = proveedor.Id,
                                        Razon_Social_Proveedor = proveedor.Razonsocial,
                                        Correo_Proveedor = proveedor.Correo,
                                        Rfc_Proveedor = proveedor.Rfc,
-                                       Id_Rel_Proveedor_Soporte = RelProveedorContactosoporte.Id,
-                                       Id_Soporte = soporte.Id,
-                                       Nombre_Soporte = soporte.Nombre,
-                                       Correo_Soporte = soporte.Correo,
-                                       Telefono_Soporte = soporte.Telefono
+                                       Id_Rel_Proveedor_Soporte = PC.Id,
+                                       Id_Soporte = soporteL.Id,
+                                       Nombre_Soporte = soporteL.Nombre,
+                                       Correo_Soporte = soporteL.Correo,
+                                       Telefono_Soporte = soporteL.Telefono
                                    } :
                                    from proveedor in _ctx.CatProveedors
-                                   join RelProveedorContactosoporte in _ctx.RelProveedorContactosoportes on proveedor.Id equals RelProveedorContactosoporte.CatProveedorId
-                                   join soporte in _ctx.CatContactosoportes on RelProveedorContactosoporte.CatContactosoporteId equals soporte.Id
-                                   where proveedor.Estatus == true && soporte.Estatus == true && proveedor.Id == id
+                                   join RelProveedorContactosoporte in _ctx.RelProveedorContactosoportes on proveedor.Id equals RelProveedorContactosoporte.CatProveedorId into ProveedorContacto
+                                   from PC in ProveedorContacto.DefaultIfEmpty()
+                                   join soporte in _ctx.CatContactosoportes.Where(x => x.Estatus == true) on PC.CatContactosoporteId equals soporte.Id into PCSoporte
+                                   from soporteL in PCSoporte.DefaultIfEmpty()
+                                   where proveedor.Estatus == true //&& soporteL.Estatus == true 
+                                   && proveedor.Id == id
                                    select new
                                    {
                                        Id_Proveedor = proveedor.Id,
                                        Razon_Social_Proveedor = proveedor.Razonsocial,
                                        Correo_Proveedor = proveedor.Correo,
                                        Rfc_Proveedor = proveedor.Rfc,
-                                       Id_Rel_Proveedor_Soporte = RelProveedorContactosoporte.Id,
-                                       Id_Soporte = soporte.Id,
-                                       Nombre_Soporte = soporte.Nombre,
-                                       Correo_Soporte = soporte.Correo,
-                                       Telefono_Soporte = soporte.Telefono
+                                       Id_Rel_Proveedor_Soporte = PC.Id,
+                                       Id_Soporte = soporteL.Id,
+                                       Nombre_Soporte = soporteL.Nombre,
+                                       Correo_Soporte = soporteL.Correo,
+                                       Telefono_Soporte = soporteL.Telefono
                                    };
 
                 if (proveedores == null)
@@ -61,6 +66,8 @@ namespace Negocio.Catalogo
                         q.Rfc_Proveedor
                     }).Distinct();
 
+                    //var list = proveedores_filtrado.ToList();
+
                     foreach (var proveedor in proveedores_filtrado.ToList())
                     {
                         cat_proveedor_complex nuevo_proveedor = new()
@@ -72,7 +79,7 @@ namespace Negocio.Catalogo
                             Contacto = new()
                         };
 
-                        var contactos_soporte = proveedores.Where(q => q.Id_Proveedor == proveedor.Id_Proveedor)
+                        var contactos_soporte = proveedores.Where(q => q.Id_Proveedor == proveedor.Id_Proveedor && q.Id_Soporte > 0)
                             .Select(q => new
                             {
                                 q.Id_Soporte,
@@ -80,18 +87,21 @@ namespace Negocio.Catalogo
                                 q.Correo_Soporte,
                                 q.Telefono_Soporte
                             }).ToList();
-
-                        foreach (var soporte_contacto in contactos_soporte.ToList())
+                        if(contactos_soporte != null)
                         {
-                            cat_contacto_soporte_complex contacto = new()
+                            foreach (var soporte_contacto in contactos_soporte.ToList())
                             {
-                                Id = soporte_contacto.Id_Soporte,
-                                Nombre = soporte_contacto.Nombre_Soporte,
-                                Correo = soporte_contacto.Correo_Soporte,
-                                Telefono = soporte_contacto.Telefono_Soporte
-                            };
-                            nuevo_proveedor.Contacto.Add(contacto);
+                                cat_contacto_soporte_complex contacto = new()
+                                {
+                                    Id = soporte_contacto.Id_Soporte,
+                                    Nombre = soporte_contacto.Nombre_Soporte,
+                                    Correo = soporte_contacto.Correo_Soporte,
+                                    Telefono = soporte_contacto.Telefono_Soporte
+                                };
+                                nuevo_proveedor.Contacto.Add(contacto);
+                            }
                         }
+            
 
                         listado_proveedores.Add(nuevo_proveedor);
                     }
