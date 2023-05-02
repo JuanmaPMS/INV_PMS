@@ -1,5 +1,7 @@
 ﻿using Data.Models;
 using Entidades_complejas;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,6 +94,33 @@ namespace Negocio.Ubicacion
             catch (Exception ex)
             {
                 this.Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+        }
+
+        public ubicacion_negocio()
+        { }
+
+        public TipoAccion Get(int? id)
+        {
+            try
+            {
+                List<TblClienteUbicacion> ubicaciones = id == null ? ctx.TblClienteUbicacions.Where(x => x.Estatus == true).ToList()
+                                                : ctx.TblClienteUbicacions
+                                                .Include(o => o.RelClienteUbicacionOficinas).Where(x => x.Id == id).ToList();
+                if (ubicaciones.Count == 0)
+                { throw new Exception("No existen registros en Cat_Propietario"); }
+                else
+                {
+                    List<tbl_ubicacion_complex> full = JsonConvert.DeserializeObject<List<tbl_ubicacion_complex>>(JsonConvert.SerializeObject(ubicaciones, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }))!;
+
+                    full.ForEach(x => x.Cliente = ctx.CatClientes.Where(c => c.Id == x.CatClienteId).FirstOrDefault().Nombre);
+
+                    return TipoAccion.Positiva(full); 
+                }
+            }
+            catch (Exception ex)
+            {
+                return TipoAccion.Negativa(ex.Message);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using Data.Models;
 using Entidades_complejas;
 using Microsoft.AspNetCore.Mvc;
+using Negocio.Catalogo;
 using Negocio.Inventario;
 using Negocio.Ubicacion;
 
@@ -11,9 +12,17 @@ namespace Serv_Rest_Inventarios.Controllers
     public class UbicacionController : ControllerBase
     {
         private readonly ILogger<UbicacionController> _logger;
+        private readonly ubicacion_negocio _negocio = new();
         public UbicacionController(ILogger<UbicacionController> logger)
         {
             _logger = logger;
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public TipoAccion Get([FromQuery] int? id)
+        {      
+            return _negocio.Get(id);
         }
 
         [HttpPost]

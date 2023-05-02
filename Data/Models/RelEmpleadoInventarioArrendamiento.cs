@@ -13,6 +13,8 @@ public partial class RelEmpleadoInventarioArrendamiento
 
     public string? NombreEmpleadoCliente { get; set; }
 
+    public string Responsiva { get; set; } = null!;
+
     public bool? Estatus { get; set; }
 
     public DateTime Inclusion { get; set; }

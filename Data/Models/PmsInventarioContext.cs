@@ -85,6 +85,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<VwInventarioArrendamiento> VwInventarioArrendamientos { get; set; }
 
+    public virtual DbSet<VwInventarioArrendamientoAgrupado> VwInventarioArrendamientoAgrupados { get; set; }
+
     public virtual DbSet<VwInventarioAsignacion> VwInventarioAsignacions { get; set; }
 
     public virtual DbSet<VwProveedorSoporte> VwProveedorSoportes { get; set; }
@@ -560,7 +562,7 @@ public partial class PmsInventarioContext : DbContext
 
         modelBuilder.Entity<RelEmpleadoInventarioArrendamiento>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__REL_EMPL__3214EC27D7207CA2");
+            entity.HasKey(e => e.Id).HasName("PK__REL_EMPL__3214EC278CBCB475");
 
             entity.ToTable("REL_EMPLEADO_INVENTARIO_ARRENDAMIENTO");
 
@@ -579,12 +581,15 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.NombreEmpleadoCliente)
                 .HasMaxLength(250)
                 .HasColumnName("NOMBRE_EMPLEADO_CLIENTE");
+            entity.Property(e => e.Responsiva)
+                .HasMaxLength(500)
+                .HasColumnName("RESPONSIVA");
             entity.Property(e => e.TblInventarioArrendamientoId).HasColumnName("TBL_INVENTARIO_ARRENDAMIENTO_ID");
 
             entity.HasOne(d => d.TblInventarioArrendamiento).WithMany(p => p.RelEmpleadoInventarioArrendamientos)
                 .HasForeignKey(d => d.TblInventarioArrendamientoId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__REL_EMPLE__TBL_I__1B29035F");
+                .HasConstraintName("FK__REL_EMPLE__TBL_I__2F2FFC0C");
         });
 
         modelBuilder.Entity<RelProductoCatacteristica>(entity =>
@@ -1162,6 +1167,43 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.Numerodeserie)
                 .HasMaxLength(500)
                 .HasColumnName("NUMERODESERIE");
+            entity.Property(e => e.Vidautil).HasColumnName("VIDAUTIL");
+        });
+
+        modelBuilder.Entity<VwInventarioArrendamientoAgrupado>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_INVENTARIO_ARRENDAMIENTO_AGRUPADO");
+
+            entity.Property(e => e.Anio).HasColumnName("ANIO");
+            entity.Property(e => e.Cantidad).HasColumnName("CANTIDAD");
+            entity.Property(e => e.Caracteristicas).HasColumnName("CARACTERISTICAS");
+            entity.Property(e => e.CatEstatusinventario)
+                .HasMaxLength(500)
+                .HasColumnName("CAT_ESTATUSINVENTARIO");
+            entity.Property(e => e.CatEstatusinventarioId).HasColumnName("CAT_ESTATUSINVENTARIO_ID");
+            entity.Property(e => e.Categoria)
+                .HasMaxLength(500)
+                .HasColumnName("CATEGORIA");
+            entity.Property(e => e.Cliente)
+                .HasMaxLength(500)
+                .HasColumnName("CLIENTE");
+            entity.Property(e => e.Direccioncliente)
+                .HasMaxLength(500)
+                .HasColumnName("DIRECCIONCLIENTE");
+            entity.Property(e => e.Esestatico).HasColumnName("ESESTATICO");
+            entity.Property(e => e.Fabricante)
+                .HasMaxLength(500)
+                .HasColumnName("FABRICANTE");
+            entity.Property(e => e.Idcategoria).HasColumnName("IDCATEGORIA");
+            entity.Property(e => e.Idcliente).HasColumnName("IDCLIENTE");
+            entity.Property(e => e.Idfabricante).HasColumnName("IDFABRICANTE");
+            entity.Property(e => e.Idproducto).HasColumnName("IDPRODUCTO");
+            entity.Property(e => e.Modelo)
+                .HasMaxLength(100)
+                .HasColumnName("MODELO");
+            entity.Property(e => e.Nuevo).HasColumnName("NUEVO");
             entity.Property(e => e.Vidautil).HasColumnName("VIDAUTIL");
         });
 

@@ -10,10 +10,12 @@ namespace Entidades_complejas
     {
         public int? Id { get; set; }
         public int CatClienteId { get; set; }
+        public string? Cliente { get; set; }
         public string Direccion { get; set; } = null!;
         public string Edificio { get; set; } = null!;
         public string Piso { get; set; } = null!;
         public string? Plano { get; set; }
+        public List<rel_ubicacion_oficina_complex>? RelClienteUbicacionOficinas { get; set; }
     }
 
     public class rel_ubicacion_oficina_complex
