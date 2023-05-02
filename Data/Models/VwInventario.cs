@@ -9,25 +9,25 @@ public partial class VwInventario
 
     public int Idadquisicion { get; set; }
 
-    public int Idproducto { get; set; }
+    public int? Idproducto { get; set; }
 
-    public int Idfabricante { get; set; }
+    public int? Idfabricante { get; set; }
 
-    public string Fabricante { get; set; } = null!;
+    public string? Fabricante { get; set; }
 
-    public string Modelo { get; set; } = null!;
+    public string? Modelo { get; set; }
 
-    public int Idcategoria { get; set; }
+    public int? Idcategoria { get; set; }
 
-    public string Categoria { get; set; } = null!;
+    public string? Categoria { get; set; }
 
-    public bool Esestatico { get; set; }
+    public bool? Esestatico { get; set; }
 
     public int? Anio { get; set; }
 
-    public bool Nuevo { get; set; }
+    public bool? Nuevo { get; set; }
 
-    public int Vidautil { get; set; }
+    public int? Vidautil { get; set; }
 
     public string? Caracteristicas { get; set; }
 
@@ -55,11 +55,11 @@ public partial class VwInventario
 
     public string Oficina { get; set; } = null!;
 
-    public string? Autorizasalida { get; set; }
+    public string Autorizasalida { get; set; } = null!;
 
-    public string? Autorizaentrada { get; set; }
+    public string Autorizaentrada { get; set; } = null!;
 
-    public string? Ubicacionnotas { get; set; }
+    public string Ubicacionnotas { get; set; } = null!;
 
     public string? Accesorios { get; set; }
 }
