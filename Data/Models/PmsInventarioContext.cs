@@ -1233,7 +1233,7 @@ public partial class PmsInventarioContext : DbContext
                 .HasMaxLength(500)
                 .HasColumnName("DIRECCIONCLIENTE");
             entity.Property(e => e.Esestatico).HasColumnName("ESESTATICO");
-            entity.Property(e => e.Estatus).HasColumnName("ESTATUS");
+            entity.Property(e => e.Estatusinventarioarrendamiento).HasColumnName("ESTATUSINVENTARIOARRENDAMIENTO");
             entity.Property(e => e.Fabricante)
                 .HasMaxLength(500)
                 .HasColumnName("FABRICANTE");
