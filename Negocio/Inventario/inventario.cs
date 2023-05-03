@@ -182,6 +182,22 @@ namespace Negocio.Inventario
             
         }
 
+        public List<VwInventario> inventarioDisponibleArrendamiento(int idProducto)
+        {
+            {
+                if (idProducto != null)
+
+                { 
+                    return ctx.VwInventarios.Where(x => x.Numerodeserie != string.Empty && x.Idproducto == idProducto && x.CatEstatusinventarioId == 1).ToList(); //CatEstatusinventarioId = 1 ====> Libre
+                } 
+                else 
+                {
+                    return new List<VwInventario>();
+                }
+            }
+
+        }
+
         public List<VwInventario> identificador(int id)
         {
             return ctx.VwInventarios.Where(X => X.Idinventario == id).ToList();

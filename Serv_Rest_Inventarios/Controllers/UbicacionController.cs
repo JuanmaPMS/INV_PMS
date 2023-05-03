@@ -20,7 +20,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        public TipoAccion Get([FromQuery] int? id)
+        public TipoAccion seleccionar([FromQuery] int? id)
         {      
             return _negocio.Get(id);
         }
