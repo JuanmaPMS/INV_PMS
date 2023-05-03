@@ -222,7 +222,7 @@ namespace Negocio.InventarioArrendamiento
                     ctx.SaveChanges();
 
                     tran.Commit();
-                    this.Respuesta = TipoAccion.Positiva("Asignacion exitosa.", empleadoinventario.Id);
+                    this.Respuesta = TipoAccion.Positiva("actualizacion exitosa.", empleadoinventario.Id);
                 }
                 catch (Exception ex)
                 {

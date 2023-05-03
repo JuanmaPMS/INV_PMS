@@ -92,7 +92,8 @@ namespace Serv_Rest_Inventarios.Controllers
         [Route("eliminarAsignacion")]
         public TipoAccion eliminar(int id)
         {
-            inventario_negocio neg = new inventario_negocio(id, new ActionDisable());
+            inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
+            neg.eliminarAsignacion(id);
             return neg.Respuesta;
         }
 
