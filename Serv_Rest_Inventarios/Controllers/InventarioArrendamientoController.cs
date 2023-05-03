@@ -43,7 +43,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
 
         [HttpPost]
-        [Route("agregar")]
+        [Route("agregarInventarioCliente")]
         public TipoAccion agregar(tbl_inventario_arrendamiento_complex input)
         {
             inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
@@ -88,14 +88,13 @@ namespace Serv_Rest_Inventarios.Controllers
         }
 
 
-
-        //[HttpDelete]
-        //[Route("eliminar")]
-        //public TipoAccion eliminar(int id)
-        //{
-        //    inventario_negocio neg = new inventario_negocio(id, new ActionDisable());
-        //    return neg.Respuesta;
-        //}
+        [HttpDelete]
+        [Route("eliminarAsignacion")]
+        public TipoAccion eliminar(int id)
+        {
+            inventario_negocio neg = new inventario_negocio(id, new ActionDisable());
+            return neg.Respuesta;
+        }
 
         //[HttpDelete]
         //[Route("eliminar/accesorio")]

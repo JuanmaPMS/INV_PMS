@@ -232,6 +232,34 @@ namespace Negocio.InventarioArrendamiento
             }
         }
 
+        public void eliminarAsignacion(int id)
+        {
+            using (var tran = ctx.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    if (id== 0)
+                    {
+                        throw new Exception("No se ha proporcionado el inventario a eliminar.");
+                    }
+
+                    RelEmpleadoInventarioArrendamiento empleadoinventario = ctx.RelEmpleadoInventarioArrendamientos.Where(x => x.Id == id).FirstOrDefault();
+                    empleadoinventario.Estatus = false;
+                    ctx.RelEmpleadoInventarioArrendamientos.Update(empleadoinventario);
+
+                    ctx.SaveChanges();
+                    tran.Commit();
+                    this.Respuesta = TipoAccion.Positiva("Eliminación exitosa.", empleadoinventario.Id);
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    this.Respuesta = TipoAccion.Negativa(ex.Message);
+                }
+            }
+        }
+
 
         //Obtencion de datos
         public inventario_arrendamiento_negocio()
