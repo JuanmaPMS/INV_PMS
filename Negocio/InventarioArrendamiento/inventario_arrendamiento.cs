@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -94,17 +95,56 @@ namespace Negocio.InventarioArrendamiento
         public empleado_inventario_arrendamiento_complex seleccionarAsignacion(int id)
         {
             {
-                var asignacion = (empleado_inventario_arrendamiento_complex)ctx.VwEmpleadoInventarioArrendamientos.Where(x => x.Idrelempleadoinventarioarrendamiento == id).FirstOrDefault(); 
-                if(asignacion != null)
+
+                var asignacion = ctx.VwEmpleadoInventarioArrendamientos.Where(x => x.Idrelempleadoinventarioarrendamiento == id).FirstOrDefault();
+                empleado_inventario_arrendamiento_complex objeto = new empleado_inventario_arrendamiento_complex();
+
+                objeto.Idrelempleadoinventarioarrendamiento =  asignacion.Idrelempleadoinventarioarrendamiento; 
+                objeto.Responsiva = asignacion.Responsiva; 
+                objeto.CuentaEmpleadoCliente = asignacion.CuentaEmpleadoCliente; 
+                objeto.NombreEmpleadoCliente = asignacion.NombreEmpleadoCliente; 
+                objeto.Estatus = asignacion.Estatus; 
+                objeto.Idinventarioarrendamiento = asignacion.Idinventarioarrendamiento; 
+                objeto.Idinventario = asignacion.Idinventario; 
+                objeto.Idadquisicion = asignacion.Idadquisicion; 
+                objeto.Idproducto = asignacion.Idproducto; 
+                objeto.Idfabricante = asignacion.Idfabricante; 
+                objeto.Fabricante = asignacion.Fabricante; 
+                objeto.Modelo = asignacion.Modelo; 
+                objeto.Idcategoria = asignacion.Idcategoria; 
+                objeto.Categoria = asignacion.Categoria; 
+                objeto.Esestatico = asignacion.Esestatico; 
+                objeto.Anio = asignacion.Anio; 
+                objeto.Nuevo = asignacion.Nuevo; 
+                objeto.Vidautil = asignacion.Vidautil; 
+                objeto.Caracteristicas = asignacion.Caracteristicas; 
+                objeto.Numerodeserie = asignacion.Numerodeserie; 
+                objeto.Inventarioclv = asignacion.Inventarioclv; 
+                objeto.Notainventario = asignacion.Notainventario; 
+                objeto.CatEstatusinventarioId = asignacion.CatEstatusinventarioId; 
+                objeto.CatEstatusinventario = asignacion.CatEstatusinventario; 
+                objeto.Idcliente = asignacion.Idcliente; 
+                objeto.Cliente = asignacion.Cliente; 
+                objeto.Direccioncliente = asignacion.Direccioncliente; 
+                objeto.Latitudcliente = asignacion.Latitudcliente; 
+                objeto.Longitudcliente = asignacion.Longitudcliente; 
+                objeto.Accesorios = asignacion.Accesorios;
+
+
+
+
+
+
+                if (asignacion != null)
                 {
-                    asignacion.Archivos = ctx.RelArchivosEmpleadoInventarioArrendamientos.Where(x => x.RelEmpleadoInventarioArrendamientoId == id).ToList();
+                    objeto.Archivos = ctx.RelArchivosEmpleadoInventarioArrendamientos.Where(x => x.RelEmpleadoInventarioArrendamientoId == id && x.Estatus == true).ToList();
                     
                 } else
                 {
-                    asignacion = new empleado_inventario_arrendamiento_complex();
+                    objeto = new empleado_inventario_arrendamiento_complex();
                 }
                 
-                return asignacion;
+                return objeto;
 
             }
 
@@ -158,14 +198,27 @@ namespace Negocio.InventarioArrendamiento
             }
         }
 
-        public void agregarArchivosAsignacion(List<RelArchivosEmpleadoInventarioArrendamiento> input)
+        public void agregarArchivosAsignacion(List<archivos_empleado_inventario_arrendamiento_complex> input)
         {
             using (var tran = ctx.Database.BeginTransaction())
             {
                 try
                 {
 
-                    ctx.RelArchivosEmpleadoInventarioArrendamientos.UpdateRange(input);
+                    List<RelArchivosEmpleadoInventarioArrendamiento> listaArchivos = new List<RelArchivosEmpleadoInventarioArrendamiento>();
+
+                    foreach(archivos_empleado_inventario_arrendamiento_complex item in input)
+                    {
+                        RelArchivosEmpleadoInventarioArrendamiento archivo = new RelArchivosEmpleadoInventarioArrendamiento();
+                        archivo.Id = 0;
+                        archivo.RelEmpleadoInventarioArrendamientoId = item.RelEmpleadoInventarioArrendamientoId;
+                        archivo.Archivo = item.Archivo;
+                        archivo.Estatus = true;
+                        archivo.Inclusion = DateTime.Now;
+                        listaArchivos.Add(archivo); 
+                    }
+
+                    ctx.RelArchivosEmpleadoInventarioArrendamientos.AddRange(listaArchivos);
                     ctx.SaveChanges();
 
                     tran.Commit();
@@ -178,6 +231,34 @@ namespace Negocio.InventarioArrendamiento
                 }
             }
         }
+
+        public void eliminarArchivoAsignacion(int id)
+        {
+            using (var tran = ctx.Database.BeginTransaction())
+            {
+                try
+                {
+
+                    if (id == 0)
+                    {
+                        throw new Exception("No se ha proporcionado el inventario a eliminar.");
+                    }
+
+                    RelArchivosEmpleadoInventarioArrendamiento archivoempleadoinventario = ctx.RelArchivosEmpleadoInventarioArrendamientos.Where(x => x.Id == id).FirstOrDefault();
+                    archivoempleadoinventario.Estatus = false;
+                    ctx.RelArchivosEmpleadoInventarioArrendamientos.Update(archivoempleadoinventario);
+                    ctx.SaveChanges();
+                    tran.Commit();
+                    this.Respuesta = TipoAccion.Positiva("Eliminación exitosa.", archivoempleadoinventario.Id);
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    this.Respuesta = TipoAccion.Negativa(ex.Message);
+                }
+            }
+        }
+
 
 
         public void editarAsignacion(rel_empleado_inventario_arrendamiento_complex input)
@@ -196,7 +277,7 @@ namespace Negocio.InventarioArrendamiento
                     if (input.TblInventarioArrendamientoId == 0)
                     {
 
-                        throw new Exception("No se ha proporcionado el producto a asignar.");
+                        throw new Exception("No se ha proporcionado el producto.");
                     }
 
                     if (input.CuentaEmpleadoCliente == String.Empty)

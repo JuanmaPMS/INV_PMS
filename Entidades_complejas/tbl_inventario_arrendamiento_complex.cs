@@ -44,4 +44,15 @@ namespace Entidades_complejas
     }
 
 
+    public class archivos_empleado_inventario_arrendamiento_complex
+    {
+        public int Id { get; set; }
+
+        public int RelEmpleadoInventarioArrendamientoId { get; set; }
+
+        public string Archivo { get; set; } = null!;
+
+    }
+
+
 }

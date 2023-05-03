@@ -71,7 +71,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpPost]
         [Route("agregarArchivosAsignacion")]
-        public TipoAccion agregarArchivosAsignacion(List<RelArchivosEmpleadoInventarioArrendamiento> input)
+        public TipoAccion agregarArchivosAsignacion(List<archivos_empleado_inventario_arrendamiento_complex> input)
         {
             inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
             neg.agregarArchivosAsignacion(input);
@@ -79,7 +79,7 @@ namespace Serv_Rest_Inventarios.Controllers
         }
 
         [HttpPut]
-        [Route("editarAsignacion")]
+        [Route("editarResponsivaAsignacion")]
         public TipoAccion editarAsignacion(rel_empleado_inventario_arrendamiento_complex input)
         {
             inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
@@ -94,6 +94,15 @@ namespace Serv_Rest_Inventarios.Controllers
         {
             inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
             neg.eliminarAsignacion(id);
+            return neg.Respuesta;
+        }
+
+        [HttpDelete]
+        [Route("eliminarArchivoAsignacion")]
+        public TipoAccion eliminarArchivoAsignacion(int id)
+        {
+            inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
+            neg.eliminarArchivoAsignacion(id);
             return neg.Respuesta;
         }
 
