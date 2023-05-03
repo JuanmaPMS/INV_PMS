@@ -13,11 +13,13 @@ public partial class RelEmpleadoInventarioArrendamiento
 
     public string? NombreEmpleadoCliente { get; set; }
 
-    public string Responsiva { get; set; } = null!;
+    public string? Responsiva { get; set; }
 
     public bool? Estatus { get; set; }
 
     public DateTime Inclusion { get; set; }
+
+    public virtual ICollection<RelArchivosEmpleadoInventarioArrendamiento> RelArchivosEmpleadoInventarioArrendamientos { get; } = new List<RelArchivosEmpleadoInventarioArrendamiento>();
 
     public virtual TblInventarioArrendamiento TblInventarioArrendamiento { get; set; } = null!;
 }

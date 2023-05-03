@@ -3,11 +3,19 @@ using System.Collections.Generic;
 
 namespace Data.Models;
 
-public partial class VwInventarioArrendamiento
+public partial class VwEmpleadoInventarioArrendamiento
 {
-    public int Idinventarioarrendamiento { get; set; }
+    public int Idrelempleadoinventarioarrendamiento { get; set; }
+
+    public string Responsiva { get; set; } = null!;
+
+    public string CuentaEmpleadoCliente { get; set; } = null!;
+
+    public string? NombreEmpleadoCliente { get; set; }
 
     public bool Estatus { get; set; }
+
+    public int Idinventarioarrendamiento { get; set; }
 
     public int Idinventario { get; set; }
 

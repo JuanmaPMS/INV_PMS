@@ -19,5 +19,9 @@ public partial class RelUsuarioInventario
 
     public virtual CatUsuario CatUsuario { get; set; } = null!;
 
+    public virtual ICollection<RelUsuarioInventarioConfiguracion> RelUsuarioInventarioConfiguracions { get; } = new List<RelUsuarioInventarioConfiguracion>();
+
     public virtual TblInventario TblInventario { get; set; } = null!;
+
+    public virtual ICollection<TblMantenimientoInventario> TblMantenimientoInventarios { get; } = new List<TblMantenimientoInventario>();
 }
