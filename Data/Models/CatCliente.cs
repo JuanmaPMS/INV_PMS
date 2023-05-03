@@ -27,5 +27,9 @@ public partial class CatCliente
 
     public virtual ICollection<CatDirLdap> CatDirLdaps { get; } = new List<CatDirLdap>();
 
+    public virtual ICollection<TblClienteUbicacion> TblClienteUbicacions { get; } = new List<TblClienteUbicacion>();
+
+    public virtual ICollection<TblInventarioArrendamiento> TblInventarioArrendamientos { get; } = new List<TblInventarioArrendamiento>();
+
     public virtual ICollection<TblInventarioUbicacion> TblInventarioUbicacions { get; } = new List<TblInventarioUbicacion>();
 }

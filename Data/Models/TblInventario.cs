@@ -33,5 +33,7 @@ public partial class TblInventario
 
     public virtual ICollection<TblInventarioAccesoriosincluido> TblInventarioAccesoriosincluidos { get; } = new List<TblInventarioAccesoriosincluido>();
 
+    public virtual ICollection<TblInventarioArrendamiento> TblInventarioArrendamientos { get; } = new List<TblInventarioArrendamiento>();
+
     public virtual ICollection<TblInventarioUbicacion> TblInventarioUbicacions { get; } = new List<TblInventarioUbicacion>();
 }
