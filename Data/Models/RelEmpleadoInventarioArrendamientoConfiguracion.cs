@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Data.Models;
 
-public partial class RelUsuarioInventarioConfiguracion
+public partial class RelEmpleadoInventarioArrendamientoConfiguracion
 {
     public int Id { get; set; }
 
-    public int RelUsuarioInventarioId { get; set; }
+    public int RelEmpleadoInventarioArrendamientoId { get; set; }
 
     public int CatConfiguracionProductoId { get; set; }
 
@@ -19,5 +19,5 @@ public partial class RelUsuarioInventarioConfiguracion
 
     public virtual CatConfiguracionProducto CatConfiguracionProducto { get; set; } = null!;
 
-    public virtual RelUsuarioInventario RelUsuarioInventario { get; set; } = null!;
+    public virtual RelEmpleadoInventarioArrendamiento RelEmpleadoInventarioArrendamiento { get; set; } = null!;
 }

@@ -17,5 +17,7 @@ public partial class CatConfiguracionProducto
 
     public virtual CatCategoriaProducto? CatCategoriaProducto { get; set; }
 
+    public virtual ICollection<RelEmpleadoInventarioArrendamientoConfiguracion> RelEmpleadoInventarioArrendamientoConfiguracions { get; } = new List<RelEmpleadoInventarioArrendamientoConfiguracion>();
+
     public virtual ICollection<RelUsuarioInventarioConfiguracion> RelUsuarioInventarioConfiguracions { get; } = new List<RelUsuarioInventarioConfiguracion>();
 }

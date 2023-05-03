@@ -47,7 +47,7 @@ namespace Negocio.Mantenimiento
         {
             try
             {
-                TblMantenimientoInventario mantenimientoInventario = ctx.TblMantenimientoInventarios.Where(x => x.Id == input.Id).FirstOrDefault();
+                TblMantenimientoInventario mantenimientoInventario = null;//ctx.TblMantenimientoInventarios.Where(x => x.Id == input.Id).FirstOrDefault();
                 if (mantenimientoInventario == null)
                 { throw new Exception("No existe el registro, favor de validar."); }
                 else
