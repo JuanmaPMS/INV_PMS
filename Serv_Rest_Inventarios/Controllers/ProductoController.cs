@@ -36,7 +36,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpGet]
         [Route("seleccionarCaracteristicas/{id}")]
-        public List<RelProductoCatacteristica> seleccionarCaracteristicas(int id)
+        public List<rel_producto_caracteristicas_complex> seleccionarCaracteristicas(int id)
         {
             producto_negocio neg = new producto_negocio();
             return neg.caracteristicas(id);
