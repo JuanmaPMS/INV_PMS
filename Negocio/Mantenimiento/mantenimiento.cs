@@ -115,6 +115,9 @@ namespace Negocio.Mantenimiento
 
             foreach (var item in enviarporcorreo)
             {
+
+                //byte[] bnombre = Encoding.Default.GetBytes(item.Nombreusuario);
+
                 sb.Append(item.Nombreusuario.Trim().ToUpper());
                 sb.Append(",");
                 sb.Append(item.Correousuario.Trim().ToUpper());
@@ -128,17 +131,17 @@ namespace Negocio.Mantenimiento
                 sb.Append(item.Numerodeserie.Trim().ToUpper());
                 sb.Append("\r\n");
 
-                shtml += "<tr><td>";
-                shtml += item.Nombreusuario.Trim().ToUpper() + "</td><td>";
-                shtml += item.Correousuario.Trim().ToUpper() + "</td><td>";
-                shtml += item.Fabricante.Trim().ToUpper() + "</td><td>";
-                shtml += item.Modelo.Trim().ToUpper() + "</td><td>";
-                shtml += item.Caracteristicas.Trim().ToUpper() + "</td><td>";
+                shtml += "<tr><td style=\"border:1px solid #000000;\">";
+                shtml += item.Nombreusuario.Trim().ToUpper() + "</td><td style=\"border:1px solid black;\">";
+                shtml += item.Correousuario.Trim().ToUpper() + "</td><td style=\"border:1px solid black;\">";
+                shtml += item.Fabricante.Trim().ToUpper() + "</td><td style=\"border:1px solid black;\">";
+                shtml += item.Modelo.Trim().ToUpper() + "</td><td style=\"border:1px solid black;\">";
+                shtml += item.Caracteristicas.Trim().ToUpper() + "</td><td style=\"border:1px solid black;\">";
                 shtml += item.Numerodeserie.Trim().ToUpper() + "</td></tr>";
             }
 
-            mailBody.Replace(" @@FilasManto@@", shtml);
-            File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "ListaMantenimiento.csv", sb.ToString());
+            mailBody = mailBody.Replace("@@FilasManto@@", shtml);
+            File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "ListaMantenimiento.csv", sb.ToString(), Encoding.UTF8);
 
             Email.Email email = new Email.Email("Mantenimiento de inventario",
                 listaNotificaciones, _adjuntos: new string[] { AppDomain.CurrentDomain.BaseDirectory + "ListaMantenimiento.csv" });
