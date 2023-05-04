@@ -101,39 +101,40 @@ namespace Negocio.Mantenimiento
             string shtml = string.Empty;
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("Listado de Mantenimiento");
+            sb.Append("LISTADO DE MANTENIMIENTO");
             sb.Append("\r\n");
             sb.Append("\r\n");
-            sb.Append("Nombre,");
-            sb.Append("Correo,");
-            sb.Append("Fabricante,");
-            sb.Append("Modelo,");
-            sb.Append("Caracteristicas,");
-            sb.Append("No Serie,");
+            sb.Append("NOMBRE,");
+            sb.Append("CORREO,");
+            sb.Append("FABRICANTE,");
+            sb.Append("MODELO,");
+            sb.Append("CARACTERÍSTICAS,");
+            sb.Append("NO SERIE,");
             sb.Append("\r\n");
 
 
             foreach (var item in enviarporcorreo)
             {
-                shtml.Concat("<tr><td>");
-                sb.Append(item.Nombreusuario);
-                shtml.Concat(item.Nombreusuario + "</td><td>");
+                sb.Append(item.Nombreusuario.Trim().ToUpper());
                 sb.Append(",");
-                sb.Append(item.Correousuario);
-                shtml.Concat(item.Correousuario + "</td><td>");
+                sb.Append(item.Correousuario.Trim().ToUpper());
                 sb.Append(",");
-                sb.Append(item.Fabricante.Replace(",", " "));
-                shtml.Concat(item.Fabricante + "</td><td>");
+                sb.Append(item.Fabricante.Trim().ToUpper().Replace(",", " "));
                 sb.Append(",");
-                sb.Append(item.Modelo);
-                shtml.Concat(item.Modelo + "</td><td>");
+                sb.Append(item.Modelo.Trim().ToUpper());
                 sb.Append(",");
-                sb.Append(item.Caracteristicas.Replace(",", " "));
-                shtml.Concat(item.Caracteristicas + "</td><td>");
+                sb.Append(item.Caracteristicas.Trim().ToUpper().Replace(",", " "));
                 sb.Append(",");
-                sb.Append(item.Numerodeserie);
-                shtml.Concat(item.Numerodeserie + "</td></tr>");
+                sb.Append(item.Numerodeserie.Trim().ToUpper());
                 sb.Append("\r\n");
+
+                shtml += "<tr><td>";
+                shtml += item.Nombreusuario.Trim().ToUpper() + "</td><td>";
+                shtml += item.Correousuario.Trim().ToUpper() + "</td><td>";
+                shtml += item.Fabricante.Trim().ToUpper() + "</td><td>";
+                shtml += item.Modelo.Trim().ToUpper() + "</td><td>";
+                shtml += item.Caracteristicas.Trim().ToUpper() + "</td><td>";
+                shtml += item.Numerodeserie.Trim().ToUpper() + "</td></tr>";
             }
 
             mailBody.Replace(" @@FilasManto@@", shtml);

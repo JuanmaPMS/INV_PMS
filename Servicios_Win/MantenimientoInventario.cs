@@ -45,7 +45,9 @@ namespace Servicios_Win
                 }
 
                 _logger.LogInformation("{mensaje}: {time}", ta.mensaje, DateTimeOffset.Now);
-                await Task.Delay(300000, stoppingToken); //100000000 1 dia 3 hrs
+                await Task.Delay(300000, stoppingToken);
+                //300000 5 min
+                //100000000 1 dia 3 hrs
 
             }
         }
