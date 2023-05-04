@@ -11,5 +11,9 @@ public partial class RelProductoCatacteristica
 
     public string Nombre { get; set; } = null!;
 
+    public bool? Hardware { get; set; }
+
+    public bool? Software { get; set; }
+
     public virtual CatProducto CatProducto { get; set; } = null!;
 }

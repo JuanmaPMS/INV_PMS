@@ -150,6 +150,13 @@ namespace Negocio.InventarioArrendamiento
 
         }
 
+        public List<VwEmpleadoInventarioArrendamiento> seleccionarAsignacionTodos(int idCliente)
+        {
+            {
+               return ctx.VwEmpleadoInventarioArrendamientos.Where(x => x.Estatus == true && x.Idcliente == idCliente).ToList();   
+            }
+        }
+
         public void agregarAsignacion(rel_empleado_inventario_arrendamiento_complex input)
         {
             using (var tran = ctx.Database.BeginTransaction())
@@ -362,7 +369,14 @@ namespace Negocio.InventarioArrendamiento
 
         }
 
-        public List<VwInventarioArrendamiento> seleccionarInventarioDisponible(int idCliente)
+        public List<VwInventarioProductosDisponible> seleccionarInventarioProductosDisponible()
+        {
+            {
+                return ctx.VwInventarioProductosDisponibles.Where(x => x.CatEstatusinventarioId == 1).ToList();
+            }
+        }
+
+        public List<VwInventarioArrendamiento> seleccionarInventarioArrendamientoDisponible(int idCliente)
         {
             {
                 return ctx.VwInventarioArrendamientos.Where(x => x.Idcliente == idCliente).ToList();

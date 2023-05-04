@@ -21,5 +21,7 @@ public partial class RelEmpleadoInventarioArrendamiento
 
     public virtual ICollection<RelArchivosEmpleadoInventarioArrendamiento> RelArchivosEmpleadoInventarioArrendamientos { get; } = new List<RelArchivosEmpleadoInventarioArrendamiento>();
 
+    public virtual ICollection<RelEmpleadoInventarioArrendamientoConfiguracion> RelEmpleadoInventarioArrendamientoConfiguracions { get; } = new List<RelEmpleadoInventarioArrendamientoConfiguracion>();
+
     public virtual TblInventarioArrendamiento TblInventarioArrendamiento { get; set; } = null!;
 }

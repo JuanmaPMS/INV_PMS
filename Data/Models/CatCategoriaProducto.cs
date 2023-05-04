@@ -15,5 +15,7 @@ public partial class CatCategoriaProducto
 
     public DateTime Inclusion { get; set; }
 
+    public virtual ICollection<CatConfiguracionProducto> CatConfiguracionProductos { get; } = new List<CatConfiguracionProducto>();
+
     public virtual ICollection<CatProducto> CatProductos { get; } = new List<CatProducto>();
 }
