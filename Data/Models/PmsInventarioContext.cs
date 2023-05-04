@@ -79,6 +79,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<TblMantenimientoInventario> TblMantenimientoInventarios { get; set; }
 
+    public virtual DbSet<TblMantenimientoNotificacion> TblMantenimientoNotificacions { get; set; }
+
     public virtual DbSet<TblNotasUsuarioInventario> TblNotasUsuarioInventarios { get; set; }
 
     public virtual DbSet<UsuariosApp> UsuariosApps { get; set; }
@@ -1013,6 +1015,31 @@ public partial class PmsInventarioContext : DbContext
                 .HasConstraintName("FK_TBL_MATENIMIENTO_INVENTARIO_REL_USUARIO_INVENTARIO");
         });
 
+        modelBuilder.Entity<TblMantenimientoNotificacion>(entity =>
+        {
+            entity.ToTable("TBL_MANTENIMIENTO_NOTIFICACION");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Activo).HasColumnName("ACTIVO");
+            entity.Property(e => e.Apellidos)
+                .HasMaxLength(150)
+                .HasColumnName("APELLIDOS");
+            entity.Property(e => e.CatClienteId).HasColumnName("CAT_CLIENTE_ID");
+            entity.Property(e => e.Correo)
+                .HasMaxLength(250)
+                .HasColumnName("CORREO");
+            entity.Property(e => e.Inclusion)
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+            entity.Property(e => e.Nombres)
+                .HasMaxLength(150)
+                .HasColumnName("NOMBRES");
+
+            entity.HasOne(d => d.CatCliente).WithMany(p => p.TblMantenimientoNotificacions)
+                .HasForeignKey(d => d.CatClienteId)
+                .HasConstraintName("FK_TBL_MANTENIMIENTO_NOTIFICACION_CAT_CLIENTE");
+        });
+
         modelBuilder.Entity<TblNotasUsuarioInventario>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__TBL_NOTA__3214EC2700476AC0");
@@ -1499,6 +1526,7 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.Categoria)
                 .HasMaxLength(500)
                 .HasColumnName("CATEGORIA");
+            entity.Property(e => e.Disponibles).HasColumnName("DISPONIBLES");
             entity.Property(e => e.Esestatico).HasColumnName("ESESTATICO");
             entity.Property(e => e.Fabricante)
                 .HasMaxLength(500)

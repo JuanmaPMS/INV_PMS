@@ -77,6 +77,80 @@ namespace Negocio.Mantenimiento
         }
 
 
+        public mantenimiento_negocio(bool esPorCorreo)
+        {
+            var enviarporcorreo = ctx.VwMantenimientoInventarios
+               .Where(x => x.Ultimomantenimiento < DateTime.Now && x.Ultimomantenimiento > DateTime.Now.AddMonths(-11))
+               .ToList();
+            if (enviarporcorreo.Count == 0)
+            {
+                this.Respuesta = TipoAccion.Positiva("No existe información por enviar", 0);
+                return;
+            }
 
+            var listaNotificaciones = ctx.TblMantenimientoNotificacions.Where(x => x.Activo == true).Select(x => x.Correo).ToArray();
+            if (listaNotificaciones.Count() == 0)
+            {
+                this.Respuesta = TipoAccion.Positiva("No existen destinatarios configurados", 0);
+                return;
+            }
+
+            string plantilla = "/Plantillas/ListaMantenimiento.html";
+            StreamReader format = new StreamReader(Environment.CurrentDirectory + plantilla);
+            string mailBody = format.ReadToEnd();
+            string shtml = string.Empty;
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Listado de Mantenimiento");
+            sb.Append("\r\n");
+            sb.Append("\r\n");
+            sb.Append("Nombre,");
+            sb.Append("Correo,");
+            sb.Append("Fabricante,");
+            sb.Append("Modelo,");
+            sb.Append("Caracteristicas,");
+            sb.Append("No Serie,");
+            sb.Append("\r\n");
+
+
+            foreach (var item in enviarporcorreo)
+            {
+                shtml.Concat("<tr><td>");
+                sb.Append(item.Nombreusuario);
+                shtml.Concat(item.Nombreusuario + "</td><td>");
+                sb.Append(",");
+                sb.Append(item.Correousuario);
+                shtml.Concat(item.Correousuario + "</td><td>");
+                sb.Append(",");
+                sb.Append(item.Fabricante.Replace(",", " "));
+                shtml.Concat(item.Fabricante + "</td><td>");
+                sb.Append(",");
+                sb.Append(item.Modelo);
+                shtml.Concat(item.Modelo + "</td><td>");
+                sb.Append(",");
+                sb.Append(item.Caracteristicas.Replace(",", " "));
+                shtml.Concat(item.Caracteristicas + "</td><td>");
+                sb.Append(",");
+                sb.Append(item.Numerodeserie);
+                shtml.Concat(item.Numerodeserie + "</td></tr>");
+                sb.Append("\r\n");
+            }
+
+            mailBody.Replace(" @@FilasManto@@", shtml);
+            File.WriteAllText(AppDomain.CurrentDomain.BaseDirectory + "ListaMantenimiento.csv", sb.ToString());
+
+            Email.Email email = new Email.Email("Mantenimiento de inventario",
+                listaNotificaciones, _adjuntos: new string[] { AppDomain.CurrentDomain.BaseDirectory + "ListaMantenimiento.csv" });
+
+            bool status;
+            string mensaje;
+            email.EnviarEmail(System.Net.Mail.AlternateView.CreateAlternateViewFromString(mailBody, Encoding.UTF8, "text/html"), out status, out mensaje);
+
+            if (status)
+                this.Respuesta = TipoAccion.Positiva(mensaje, enviarporcorreo.Count());
+            else
+                this.Respuesta = TipoAccion.Negativa("No se envio la lista de mantenimiento: " + mensaje, 0);
+
+        }
     }
 }

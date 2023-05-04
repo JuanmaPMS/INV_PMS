@@ -32,4 +32,6 @@ public partial class CatCliente
     public virtual ICollection<TblInventarioArrendamiento> TblInventarioArrendamientos { get; } = new List<TblInventarioArrendamiento>();
 
     public virtual ICollection<TblInventarioUbicacion> TblInventarioUbicacions { get; } = new List<TblInventarioUbicacion>();
+
+    public virtual ICollection<TblMantenimientoNotificacion> TblMantenimientoNotificacions { get; } = new List<TblMantenimientoNotificacion>();
 }

@@ -30,4 +30,6 @@ public partial class VwInventarioProductosDisponible
     public int CatEstatusinventarioId { get; set; }
 
     public string CatEstatusinventario { get; set; } = null!;
+
+    public int? Disponibles { get; set; }
 }

@@ -33,5 +33,16 @@ namespace Serv_Rest_Inventarios.Controllers
             return neg.Respuesta;
         }
 
+
+
+        [HttpPost]
+        [Route("enviarlista")]
+        public TipoAccion EnviarEmail()
+        {
+            mantenimiento_negocio neg = new mantenimiento_negocio(true);
+            return neg.Respuesta;
+        }
+
+
     }
 }
