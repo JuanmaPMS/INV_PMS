@@ -48,6 +48,32 @@ namespace Negocio
                     RelProductoCatacteristica relCaracteristica = new RelProductoCatacteristica();
                     relCaracteristica.CatProductoId = input.CatProductoId;
                     relCaracteristica.Nombre = input.Nombre.ToUpper().Trim();
+                    if (input.Hardware != null)
+                    {
+                        if (input.Hardware.Value)
+                        {
+                            relCaracteristica.Hardware = true;
+                            relCaracteristica.Software = false;
+                        }
+                        else
+                        {
+                            relCaracteristica.Hardware = false;
+                            relCaracteristica.Software = true;
+                        }
+                    }
+                    else if (input.Software != null)
+                    {
+                        if (input.Software.Value)
+                        {
+                            relCaracteristica.Hardware = false;
+                            relCaracteristica.Software = true;
+                        }
+                        else
+                        {
+                            relCaracteristica.Hardware = true;
+                            relCaracteristica.Software = false;
+                        }
+                    }
 
                     ctx.RelProductoCatacteristicas.Add(relCaracteristica);
                     ctx.SaveChanges();
@@ -72,6 +98,33 @@ namespace Negocio
                 else
                 {
                     caracteristica.Nombre = input.Nombre.ToUpper().Trim();
+
+                    if (input.Hardware != null)
+                    {
+                        if (input.Hardware.Value)
+                        {
+                            caracteristica.Hardware = true;
+                            caracteristica.Software = false;
+                        }
+                        else
+                        {
+                            caracteristica.Hardware = false;
+                            caracteristica.Software = true;
+                        }
+                    }
+                    else if (input.Software != null)
+                    {
+                        if (input.Software.Value)
+                        {
+                            caracteristica.Hardware = false;
+                            caracteristica.Software = true;
+                        }
+                        else
+                        {
+                            caracteristica.Hardware = true;
+                            caracteristica.Software = false;
+                        }
+                    }
 
                     ctx.RelProductoCatacteristicas.Update(caracteristica);
                     ctx.SaveChanges();

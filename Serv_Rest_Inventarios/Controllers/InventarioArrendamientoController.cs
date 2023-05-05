@@ -17,13 +17,13 @@ namespace Serv_Rest_Inventarios.Controllers
             _logger = logger;
         }
 
-        //[HttpGet]
-        //[Route("seleccionar/todosAgrupado")]
-        //public List<VwInventarioArrendamientoAgrupado> seleccionarAgrupado()
-        //{
-        //    inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
-        //    return neg.todosAgrupado();
-        //}
+        [HttpGet]
+        [Route("seleccionar/todosAgrupado")]
+        public List<VwInventarioArrendamientoAgrupado> seleccionarAgrupado()
+        {
+            inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
+            return neg.todosAgrupado();
+        }
 
         //[HttpGet]
         //[Route("seleccionar/detalle")]
@@ -33,12 +33,21 @@ namespace Serv_Rest_Inventarios.Controllers
         //    return neg.detalle(idProducto, idCliente);
         //}
 
+
         [HttpGet]
-        [Route("seleccionarInventarioDisponible")]
+        [Route("seleccionarInventarioProductosDisponibles")]
+        public List<VwInventarioProductosDisponible> seleccionarInventarioProductosDisponibles()
+        {
+            inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
+            return neg.seleccionarInventarioProductosDisponible();
+        }
+
+        [HttpGet]
+        [Route("seleccionarInventarioArrendamientoDisponible")]
         public List<VwInventarioArrendamiento> seleccionarInventarioDisponible(int idCliente)
         {
             inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
-            return neg.seleccionarInventarioDisponible(idCliente);
+            return neg.seleccionarInventarioArrendamientoDisponible(idCliente);
         }
 
 
@@ -58,6 +67,14 @@ namespace Serv_Rest_Inventarios.Controllers
         {
             inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
             return neg.seleccionarAsignacion(idrelempleadoinventarioarrendamiento);
+        }
+
+        [HttpGet]
+        [Route("seleccionarAsignacionTodos")]
+        public List<VwEmpleadoInventarioArrendamiento> seleccionarAsignacionTodos(int idCliente)
+        {
+            inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
+            return neg.seleccionarAsignacionTodos(idCliente);
         }
 
         [HttpPost]

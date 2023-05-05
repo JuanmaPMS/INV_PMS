@@ -32,11 +32,37 @@ namespace Negocio
                     ctx.CatProductos.Add(catProducto);
                     ctx.SaveChanges();
                     List<RelProductoCatacteristica> caracteristicas = new List<RelProductoCatacteristica>();
-                    foreach (String item in input.Caracteristicas_!)
+                    foreach (rel_producto_caracteristicas_complex item in input.Caracteristicas_!)
                     {
                         RelProductoCatacteristica relProductoCatacteristica = new RelProductoCatacteristica();
                         relProductoCatacteristica.CatProductoId = catProducto.Id;
-                        relProductoCatacteristica.Nombre = item;
+                        relProductoCatacteristica.Nombre = item.Nombre;
+                        if (item.Hardware != null)
+                        {
+                            if (item.Hardware.Value)
+                            {
+                                relProductoCatacteristica.Hardware = true;
+                                relProductoCatacteristica.Software = false;
+                            }
+                            else
+                            {
+                                relProductoCatacteristica.Hardware = false;
+                                relProductoCatacteristica.Software = true;
+                            }
+                        }
+                        else if (item.Software != null)
+                        {
+                            if (item.Software.Value)
+                            {
+                                relProductoCatacteristica.Hardware = false;
+                                relProductoCatacteristica.Software = true;
+                            }
+                            else
+                            {
+                                relProductoCatacteristica.Hardware = true;
+                                relProductoCatacteristica.Software = false;
+                            }
+                        }
                         caracteristicas.Add(relProductoCatacteristica);
                     }
 
@@ -116,9 +142,43 @@ namespace Negocio
             return ctx.VwCatProductos.Where(X=> X.Idproducto == id).ToList();
         }
 
-        public List<RelProductoCatacteristica> caracteristicas(int id)
+        public List<rel_producto_caracteristicas_complex> caracteristicas(int id)
         {
-            return ctx.RelProductoCatacteristicas.Where(X => X.CatProductoId == id).ToList();
+            List<rel_producto_caracteristicas_complex> lstCaracteristicas = new List<rel_producto_caracteristicas_complex>();
+            try
+            {
+                List<RelProductoCatacteristica> caracteristicas = ctx.RelProductoCatacteristicas.Where(x => x.CatProductoId == id).ToList();
+                if (caracteristicas.Count == 0)
+                { throw new Exception("No existen Caracteristicas"); }
+                else
+                {
+                    foreach (RelProductoCatacteristica caracteristica in caracteristicas)
+                    {
+                        rel_producto_caracteristicas_complex element = new rel_producto_caracteristicas_complex();
+                        element.Id = caracteristica.Id;
+                        element.CatProductoId = caracteristica.CatProductoId;
+                        element.Nombre = caracteristica.Nombre;
+                        element.Hardware = caracteristica.Hardware;
+                        element.Software = caracteristica.Software;
+
+                        if (caracteristica.Hardware != null && caracteristica.Software != null)
+                        {
+                            if (caracteristica.Hardware.Value)
+                            { element.Tipo = "HARDWARE"; }
+                            else
+                            { element.Tipo = "SOFTWARE"; }
+                        }
+                        else
+                        { element.Tipo = "NO DEFINIDO"; }
+                        lstCaracteristicas.Add(element);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lstCaracteristicas = new List<rel_producto_caracteristicas_complex>();
+            }
+            return lstCaracteristicas;
         }
         public List<String> autocomplete()
         {

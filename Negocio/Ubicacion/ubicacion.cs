@@ -9,7 +9,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Negocio.Ubicacion
+namespace Negocio
 {
     public class ubicacion_negocio
     {
@@ -106,7 +106,7 @@ namespace Negocio.Ubicacion
             {
                 List<TblClienteUbicacion> ubicaciones = id == null ? ctx.TblClienteUbicacions.Where(x => x.Estatus == true).ToList()
                                                 : ctx.TblClienteUbicacions
-                                                .Include(o => o.RelClienteUbicacionOficinas).Where(x => x.Id == id).ToList();
+                                                .Include(o => o.RelClienteUbicacionOficinas.Where(x => x.Estatus == true)).Where(x => x.Id == id).ToList();
                 if (ubicaciones.Count == 0)
                 { throw new Exception("No existen registros en Cat_Propietario"); }
                 else
