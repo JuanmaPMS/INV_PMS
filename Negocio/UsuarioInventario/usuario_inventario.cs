@@ -21,6 +21,17 @@ namespace Negocio
                 try
                 {
                     this.asignacion = input;
+
+                    //Actualiza el estatus del inventario
+                    TblInventario tblInventario = ctx.TblInventarios.Where(x => x.Id == this.asignacion.TblInventarioId).FirstOrDefault()!;
+                    if (tblInventario == null)
+                    { throw new Exception("No existe el registro en Tbl_Inventario, favor de validar."); }
+
+                    tblInventario.CatEstatusinventarioId = 3; //ASIGNADO A USUARIO
+
+                    ctx.TblInventarios.Update(tblInventario);
+                    ctx.SaveChanges();
+
                     RelUsuarioInventario addAsignacion = new RelUsuarioInventario();
                     addAsignacion.CatUsuarioId = this.asignacion.CatUsuarioId;
                     addAsignacion.TblInventarioId = this.asignacion.TblInventarioId;
@@ -31,7 +42,7 @@ namespace Negocio
                     ctx.RelUsuarioInventarios.Add(addAsignacion);
                     ctx.SaveChanges();
 
-                    if(this.asignacion.Configuracion != null && this.asignacion.Configuracion.Count > 0)
+                    if (this.asignacion.Configuracion != null && this.asignacion.Configuracion.Count > 0)
                     {
                         foreach(rel_usuario_inventario_configuracion_complex config in this.asignacion.Configuracion)
                         {
@@ -72,6 +83,30 @@ namespace Negocio
                     { throw new Exception("No existe el registro en RelUsuarioInventarios, favor de validar."); }
                     else
                     {
+                        //Valida si se modifica el Inventario, para liberar el inventario
+                        if(this.asignacion.TblInventarioId != relAsignacion.TblInventarioId)
+                        {
+                            //Inventario nuevo
+                            TblInventario tblInventario = ctx.TblInventarios.Where(x => x.Id == this.asignacion.TblInventarioId).FirstOrDefault()!;
+                            if (tblInventario == null)
+                            { throw new Exception("No existe el registro en Tbl_Inventario, favor de validar."); }
+
+                            tblInventario.CatEstatusinventarioId = 3; //ASIGNADO A USUARIO
+
+                            ctx.TblInventarios.Update(tblInventario);
+                            ctx.SaveChanges();
+
+                            //Inventario Anterior
+                            TblInventario tblInventarioA = ctx.TblInventarios.Where(x => x.Id == relAsignacion.TblInventarioId).FirstOrDefault()!;
+                            if (tblInventarioA == null)
+                            { throw new Exception("No existe el registro en Tbl_Inventario, favor de validar."); }
+
+                            tblInventarioA.CatEstatusinventarioId = 1; //LIBRE
+
+                            ctx.TblInventarios.Update(tblInventarioA);
+                            ctx.SaveChanges();
+                        }
+
                         relAsignacion.CatUsuarioId = this.asignacion.CatUsuarioId;
                         relAsignacion.TblInventarioId = this.asignacion.TblInventarioId;
                         relAsignacion.Responsiva = this.asignacion.Responsiva;
@@ -136,6 +171,16 @@ namespace Negocio
                     relAsignacion.Estatus = false;
 
                     ctx.RelUsuarioInventarios.Update(relAsignacion);
+                    ctx.SaveChanges();
+
+                    //Actualiza el estatus del inventario
+                    TblInventario tblInventario = ctx.TblInventarios.Where(x => x.Id == relAsignacion.TblInventarioId).FirstOrDefault()!;
+                    if (tblInventario == null)
+                    { throw new Exception("No existe el registro en Tbl_Inventario, favor de validar."); }
+
+                    tblInventario.CatEstatusinventarioId = 1; //LIBRE
+
+                    ctx.TblInventarios.Update(tblInventario);
                     ctx.SaveChanges();
 
                     this.Respuesta = TipoAccion.Positiva("Se inhabilito registro exitosamente.", relAsignacion.Id);

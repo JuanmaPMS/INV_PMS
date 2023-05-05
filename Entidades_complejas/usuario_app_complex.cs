@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entidades_complejas
 {
-    public class usuario_complex
+    public class usuario_app_complex
     {
         public int Id { get; set; }
 
