@@ -32,14 +32,23 @@ namespace Entidades_complejas
         public string CuentaEmpleadoCliente { get; set; } = null!;
         public string? Responsiva { get; set; } = null!;
         public string? NombreEmpleadoCliente { get; set; }
-
+        public List<empleado_inventario_arrendamiento_configuracion_complex> Configuracion { get; set; }
         //public List<RelArchivosEmpleadoInventarioArrendamiento> Archivos { get; set; }
 
     }
 
-    public class empleado_inventario_arrendamiento_complex: VwEmpleadoInventarioArrendamiento
+
+    public class empleado_inventario_arrendamiento_configuracion_complex
+    {
+        public int CatConfiguracionProductoId { get; set; }
+        public string Valor { get; set; } = null!;
+    }
+
+
+        public class empleado_inventario_arrendamiento_complex: VwEmpleadoInventarioArrendamiento
     {
         public List<RelArchivosEmpleadoInventarioArrendamiento> Archivos { get; set; }
+        public List<RelEmpleadoInventarioArrendamientoConfiguracion> Configuracion { get; set; }
 
     }
 

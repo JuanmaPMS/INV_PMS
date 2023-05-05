@@ -7,23 +7,23 @@ namespace Generador_Word
 {
     public class GenerarCartaResponsiva
     {
-        // Cambiar path dependiendo del servidor:
-        private string path = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.FullName + "\\INV_PMS\\Generador_Word\\assets\\pm.jpg";
-        //private const string PATH_LOGO_PM = @"C:\Users\jatapia\Documents\INV_PMS\Generador_Word\assets\pm.jpg";
+        private readonly string _path = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.FullName + "\\INV_PMS\\Generador_Word\\assets\\pm.jpg";
         private readonly Document _doc = new();
+        private readonly Image _image;
         private int _currentPage = 0;
-        private Image _image;
         private string _respuesta = "";
 
         public GenerarCartaResponsiva()
         {
-            this._image = Image.FromFile(path);
+#pragma warning disable CA1416 // Validate platform compatibility
+            this._image = Image.FromFile(this._path);
+#pragma warning restore CA1416 // Validate platform compatibility
         }
 
         public Byte[]? CartaResponsivaEquipoComputo(CartaResponsiva cartaResponsiva)
         {
             Section section = _doc.AddSection();
-            SetDocumentHeader(section);
+            SetDocumentHeader();
             Pag1(section, cartaResponsiva);
             var returnStream = new MemoryStream();
 
@@ -37,14 +37,14 @@ namespace Generador_Word
             return _respuesta! == "Word generado exitosamente" ? arr : null;
         }
 
-        private void SetDocumentHeader(Section section)
+        private void SetDocumentHeader()
         {
-            Paragraph paragraph = section.AddParagraph();
-
-            _doc.Sections[0].PageSetup.DifferentFirstPageHeaderFooter = true;
+            Section section = _doc.Sections[0];
+            HeaderFooter header = section.HeadersFooters.Header;
+            Paragraph paragraph = header.AddParagraph();
 
             // Agregar tabla:
-            Table table = section.AddTable(true);
+            Table table = header.AddTable(true);
             table.ResetCells(1, 3);
             TableCell cell1 = table.Rows[0].Cells[2];
             cell1.SplitCell(0, 2);
@@ -89,7 +89,6 @@ namespace Generador_Word
             text_desc_pagina.CharacterFormat.Bold = true;
 
             paragraph.Format.HorizontalAlignment = HorizontalAlignment.Center;
-            section.HeadersFooters.FirstPageHeader.Tables.Add(table);
         }
 
         private string Pag1(Section section, CartaResponsiva cartaResponsiva)
@@ -111,6 +110,14 @@ namespace Generador_Word
                 $"{cartaResponsiva.Propietario} el equipo de cómputo que a continuación se describe:\n\n");
             paragraph.Format.HorizontalAlignment = HorizontalAlignment.Justify;
 
+
+            //Add tab and set its position (in points)
+            Tab tab = paragraph.Format.Tabs.AddTab(28);
+            tab.Justification = TabJustification.Left;
+            tab = paragraph.Format.Tabs.AddTab(280);
+            tab.Justification = TabJustification.Left;
+            tab.TabLeader = TabLeader.Dotted;
+
             // Informacion general equipo:
             foreach (InfoEquipo info in cartaResponsiva.InfoGeneralEquipo!)
             {
@@ -121,19 +128,14 @@ namespace Generador_Word
 
             paragraph.AppendText("\tAsignación: ____");
 
-            if((cartaResponsiva.Asignacion == true && cartaResponsiva.Cambio == true) || (cartaResponsiva.Asignacion == false && cartaResponsiva.Cambio == false))
-            {
-                _respuesta = "Selecciona solo una opción, entre asignacion y cambio.";
-                return _respuesta;
-            }
-            else if(cartaResponsiva.Asignacion == true && cartaResponsiva.Cambio == false)
+            if(cartaResponsiva.Asignacion == true)
             {
                 TextRange text_asignacion = paragraph.AppendText("SI");
                 text_asignacion.CharacterFormat.Bold = true;
                 paragraph.AppendText("___\tCambio: ___");
                 paragraph.AppendText("___\r\n\n");
             }
-            else if (cartaResponsiva.Asignacion == false && cartaResponsiva.Cambio == true)
+            else if (cartaResponsiva.Asignacion == false)
             {
                 paragraph.AppendText("___\tCambio: ___");
                 TextRange text_cambio = paragraph.AppendText("SI");
@@ -159,7 +161,18 @@ namespace Generador_Word
                 text_procesador.CharacterFormat.Bold = true;
             }
 
-            paragraph.AppendText("\r\n\n");
+            TextRange text_accesorios = paragraph.AppendText("\nAccesorios:\n\n");
+            text_accesorios.CharacterFormat.Bold = true;
+
+            // Informacion accesorios equipo:
+            foreach (InfoEquipo infoAccesorios in cartaResponsiva.infoAccesoriosEquipo!)
+            {
+                paragraph.AppendText($"\t{infoAccesorios.Caracteristica}:");
+                TextRange text_procesador = paragraph.AppendText($"\t\t{infoAccesorios.Descripcion}\r\n");
+                text_procesador.CharacterFormat.Bold = true;
+            }
+
+            paragraph.AppendText("\r\n");
 
             // Propietario:
             paragraph.AppendText($"Respecto a esta configuración, el usuario se compromete a no realizar " +
@@ -194,58 +207,6 @@ namespace Generador_Word
             paragraph = new Paragraph(_doc);
             paragraph.AppendBreak(BreakType.PageBreak);
             _doc.LastSection.Paragraphs.Add(paragraph);
-
-            // Get the first section of Word Document
-            Section section2 = _doc.Sections[0];
-            HeaderFooter header = section2.HeadersFooters.Header;
-            Paragraph paragraph2 = header.AddParagraph();
-
-            // Agregar tabla:
-            Table table = header.AddTable(true);
-            table.ResetCells(1, 3);
-            TableCell cell1 = table.Rows[0].Cells[2];
-            cell1.SplitCell(0, 2);
-
-            TableCell cell_logo_pm = table[0, 0];
-            cell_logo_pm.Width = 20;
-            cell_logo_pm.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
-            paragraph2 = cell_logo_pm.AddParagraph();
-            paragraph2.Format.HorizontalAlignment = HorizontalAlignment.Center;
-            paragraph2.AppendPicture(_image);
-
-            TableCell cell_desc_doc = table[0, 1];
-            cell_desc_doc.Width = 370;
-            cell_desc_doc.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
-            paragraph2 = cell_desc_doc.AddParagraph();
-            paragraph2.Format.HorizontalAlignment = HorizontalAlignment.Center;
-            TextRange text_desc_doc = paragraph2.AppendText("CARTA RESPONSIVA DE EQUIPO DE CÓMPUTO");
-            text_desc_doc.CharacterFormat.Bold = true;
-
-            TableCell cell_desc_codigo = table[0, 2];
-            TableRow row_desc_codigo = table.Rows[0];
-            row_desc_codigo.Height = 30;
-            cell_desc_codigo.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
-            paragraph2 = cell_desc_codigo.AddParagraph();
-            paragraph2.Format.HorizontalAlignment = HorizontalAlignment.Center;
-            TextRange text_desc_codigo = paragraph2.AppendText("Código");
-            text_desc_codigo.CharacterFormat.Bold = true;
-            paragraph2.AppendText(": RE-ASS-STI-1");
-
-            TableCell cell_desc_pagina = table[1, 2];
-            TableRow row_desc_pagina = table.Rows[1];
-            row_desc_pagina.Height = 30;
-            cell_desc_pagina.CellFormat.VerticalAlignment = VerticalAlignment.Middle;
-            paragraph2 = cell_desc_pagina.AddParagraph();
-            paragraph2.Format.HorizontalAlignment = HorizontalAlignment.Center;
-            paragraph2.AppendText("Página ");
-            _currentPage++;
-            TextRange text_desc_pagina = paragraph2.AppendText(_currentPage.ToString());
-            text_desc_pagina.CharacterFormat.Bold = true;
-            paragraph2.AppendText(" de ");
-            text_desc_pagina = paragraph2.AppendText("2");
-            text_desc_pagina.CharacterFormat.Bold = true;
-
-            paragraph2.Format.HorizontalAlignment = HorizontalAlignment.Center;
 
             // Propietario:
             paragraph.AppendText($"\n\nRespecto de este Software, el usuario se compromete a respetar en " +

@@ -5,6 +5,8 @@ namespace Data.Models;
 
 public partial class VwInventarioProductosDisponible
 {
+    public int Idinventario { get; set; }
+
     public int? Idproducto { get; set; }
 
     public int? Idfabricante { get; set; }

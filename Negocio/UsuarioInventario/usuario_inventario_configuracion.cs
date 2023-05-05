@@ -92,5 +92,13 @@ namespace Negocio
         public usuario_inventario_configuracion_negocio()
         { }
 
+
+
+        public List<VwInventarioProductosDisponible> seleccionarInventarioProductosDisponibles()
+        {
+            {
+                return ctx.VwInventarioProductosDisponibles.Where(x => x.CatEstatusinventarioId == 1).ToList();
+            }
+        }
     }
 }
