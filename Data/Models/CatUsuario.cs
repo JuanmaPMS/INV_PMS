@@ -19,5 +19,7 @@ public partial class CatUsuario
 
     public DateTime Inclusion { get; set; }
 
+    public virtual ICollection<RelUsuarioCorreoAdicional> RelUsuarioCorreoAdicionals { get; } = new List<RelUsuarioCorreoAdicional>();
+
     public virtual ICollection<RelUsuarioInventario> RelUsuarioInventarios { get; } = new List<RelUsuarioInventario>();
 }

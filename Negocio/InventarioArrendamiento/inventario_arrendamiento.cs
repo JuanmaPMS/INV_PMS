@@ -138,7 +138,9 @@ namespace Negocio.InventarioArrendamiento
                 if (asignacion != null)
                 {
                     objeto.Archivos = ctx.RelArchivosEmpleadoInventarioArrendamientos.Where(x => x.RelEmpleadoInventarioArrendamientoId == id && x.Estatus == true).ToList();
+                    objeto.Configuracion = ctx.RelEmpleadoInventarioArrendamientoConfiguracions.Where(x => x.RelEmpleadoInventarioArrendamientoId == id && x.Estatus == true).ToList();
                     
+
                 } else
                 {
                     objeto = new empleado_inventario_arrendamiento_complex();
@@ -191,8 +193,22 @@ namespace Negocio.InventarioArrendamiento
                     empleadoinventario.Inclusion = DateTime.Now;
 
                     ctx.RelEmpleadoInventarioArrendamientos.Add(empleadoinventario);
-
                     ctx.SaveChanges();
+
+                    foreach (empleado_inventario_arrendamiento_configuracion_complex item in input.Configuracion)
+                    {
+                        RelEmpleadoInventarioArrendamientoConfiguracion configuracion = new RelEmpleadoInventarioArrendamientoConfiguracion();
+                        configuracion.Id = 0;
+                        configuracion.RelEmpleadoInventarioArrendamientoId = empleadoinventario.Id;
+                        configuracion.CatConfiguracionProductoId = item.CatConfiguracionProductoId;
+                        configuracion.Estatus = true;
+                        configuracion.Inclusion = DateTime.Now;
+                        configuracion.Valor = item.Valor;
+                        ctx.RelEmpleadoInventarioArrendamientoConfiguracions.Add(configuracion);
+                        ctx.SaveChanges();
+                    }
+
+                    
 
                     tran.Commit();
                     this.Respuesta = TipoAccion.Positiva("Asignacion exitosa.",empleadoinventario.Id);
@@ -369,10 +385,10 @@ namespace Negocio.InventarioArrendamiento
 
         }
 
-        public List<VwInventarioProductosDisponible> seleccionarInventarioProductosDisponible()
+        public List<VwInventarioProductosDisponiblesAgrupado> seleccionarInventarioProductosDisponible()
         {
             {
-                return ctx.VwInventarioProductosDisponibles.Where(x => x.CatEstatusinventarioId == 1).ToList();
+                return ctx.VwInventarioProductosDisponiblesAgrupados.Where(x => x.CatEstatusinventarioId == 1).ToList();
             }
         }
 

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace Data.Models;
 
-public partial class VwInventarioProductosDisponible
+public partial class VwInventarioProductosDisponiblesAgrupado
 {
-    public int Idinventario { get; set; }
-
     public int? Idproducto { get; set; }
 
     public int? Idfabricante { get; set; }
@@ -29,11 +27,9 @@ public partial class VwInventarioProductosDisponible
 
     public string? Caracteristicas { get; set; }
 
-    public string Numerodeserie { get; set; } = null!;
-
-    public string Inventarioclv { get; set; } = null!;
-
     public int CatEstatusinventarioId { get; set; }
 
     public string CatEstatusinventario { get; set; } = null!;
+
+    public int? Disponibles { get; set; }
 }
