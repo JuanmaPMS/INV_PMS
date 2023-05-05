@@ -80,7 +80,8 @@ namespace Negocio.Mantenimiento
         public mantenimiento_negocio(bool esPorCorreo)
         {
             var enviarporcorreo = ctx.VwMantenimientoInventarios
-               .Where(x => x.Ultimomantenimiento < DateTime.Now && x.Ultimomantenimiento > DateTime.Now.AddMonths(-11))
+               //.Where(x => x.Ultimomantenimiento < DateTime.Now && x.Ultimomantenimiento > DateTime.Now.AddMonths(-11))
+               .Where(x => x.Ultimomantenimiento < DateTime.Now.AddMonths(-11))
                .ToList();
             if (enviarporcorreo.Count == 0)
             {
