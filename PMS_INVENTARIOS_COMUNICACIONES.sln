@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Serv_Rest_Inventarios", "Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LDAP", "LDAP\LDAP.csproj", "{40E06E8F-45B8-46AF-A176-173A67503673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email", "Email\Email.csproj", "{67E04651-1099-4DE6-96FD-B601B75A2381}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Email", "Email\Email.csproj", "{67E04651-1099-4DE6-96FD-B601B75A2381}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Servicios_Win", "Servicios_Win\Servicios_Win.csproj", "{999622B8-44EE-418E-B6AC-28F95058E46B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{67E04651-1099-4DE6-96FD-B601B75A2381}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67E04651-1099-4DE6-96FD-B601B75A2381}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67E04651-1099-4DE6-96FD-B601B75A2381}.Release|Any CPU.Build.0 = Release|Any CPU
+		{999622B8-44EE-418E-B6AC-28F95058E46B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{999622B8-44EE-418E-B6AC-28F95058E46B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{999622B8-44EE-418E-B6AC-28F95058E46B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{999622B8-44EE-418E-B6AC-28F95058E46B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
