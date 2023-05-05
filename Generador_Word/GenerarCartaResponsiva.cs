@@ -8,11 +8,17 @@ namespace Generador_Word
     public class GenerarCartaResponsiva
     {
         // Cambiar path dependiendo del servidor:
-        private const string PATH_LOGO_PM = @"C:\Users\jatapia\Documents\INV_PMS\Generador_Word\assets\pm.jpg";
+        private string path = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.FullName + "\\INV_PMS\\Generador_Word\\assets\\pm.jpg";
+        //private const string PATH_LOGO_PM = @"C:\Users\jatapia\Documents\INV_PMS\Generador_Word\assets\pm.jpg";
         private readonly Document _doc = new();
         private int _currentPage = 0;
-        private Image _image = Image.FromFile(PATH_LOGO_PM);
+        private Image _image;
         private string _respuesta = "";
+
+        public GenerarCartaResponsiva()
+        {
+            this._image = Image.FromFile(path);
+        }
 
         public Byte[]? CartaResponsivaEquipoComputo(CartaResponsiva cartaResponsiva)
         {
