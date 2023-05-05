@@ -10,7 +10,7 @@ namespace Email
 {
     public class Notificacion
     {
-        public bool Reset(usuario_complex body)
+        public bool Reset(usuario_app_complex body)
         {
             bool status = false;
             try
@@ -32,7 +32,7 @@ namespace Email
             return status;
         }
 
-        private AlternateView GetViewReset(usuario_complex model)
+        private AlternateView GetViewReset(usuario_app_complex model)
         {
             AlternateView vistaEmail;
             string plantilla = string.Empty;

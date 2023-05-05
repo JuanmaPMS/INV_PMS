@@ -40,7 +40,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpPut]
         [Route("UpdatePassword")]
-        public TipoAccion Update([FromBody] usuario_complex usuario)
+        public TipoAccion Update([FromBody] usuario_app_complex usuario)
         {
             return negocio.UpdatePassword(usuario);
         }
