@@ -36,7 +36,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpGet]
         [Route("seleccionarInventarioProductosDisponibles")]
-        public List<VwInventarioProductosDisponible> seleccionarInventarioProductosDisponibles()
+        public List<VwInventarioProductosDisponiblesAgrupado> seleccionarInventarioProductosDisponibles()
         {
             inventario_arrendamiento_negocio neg = new inventario_arrendamiento_negocio();
             return neg.seleccionarInventarioProductosDisponible();

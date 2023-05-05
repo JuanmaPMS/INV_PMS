@@ -71,5 +71,14 @@ namespace Serv_Rest_Inventarios.Controllers
             usuario_inventario_configuracion_negocio neg = new usuario_inventario_configuracion_negocio(id, new ActionDisable());
             return neg.Respuesta;
         }
+
+
+    [HttpGet]
+    [Route("seleccionarInventarioProductosDisponibles")]
+    public List<VwInventarioProductosDisponible> seleccionarInventarioProductosDisponibles()
+        {
+            usuario_inventario_configuracion_negocio neg = new usuario_inventario_configuracion_negocio();
+            return neg.seleccionarInventarioProductosDisponibles();
+        }
     }
 }
