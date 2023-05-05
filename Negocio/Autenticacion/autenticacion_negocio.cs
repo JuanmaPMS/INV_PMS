@@ -31,7 +31,7 @@ namespace Negocio
                 { throw new Exception("No se encontraron los acccesos, favor de validar."); }
                 else
                 { 
-                    usuario_complex usuario_ = new usuario_complex();
+                    usuario_app_complex usuario_ = new usuario_app_complex();
                     usuario_.Nombres = usuario.Nombres;
                     usuario_.Apellidos = usuario.Apellidos;
                     usuario_.Usuario = usuario.Usuario;
@@ -57,7 +57,7 @@ namespace Negocio
                 { throw new Exception("Entidad no encontrada, favor de validar."); }
                 else
                 {
-                    usuario_complex usuario_ = new usuario_complex();
+                    usuario_app_complex usuario_ = new usuario_app_complex();
                     usuario_.Id = usuario.Id;
                     usuario_.Nombres = usuario.Nombres;
                     usuario_.Apellidos = usuario.Apellidos;
@@ -89,7 +89,7 @@ namespace Negocio
                 string url = Configuration.GetSection("Redireccion").GetValue<string>("ResetPassword");
                 string id = SS.EncriptarId(_usuario.Id.ToString());
 
-                usuario_complex usuario_ = new usuario_complex();
+                usuario_app_complex usuario_ = new usuario_app_complex();
                 usuario_.Nombres = _usuario.Nombres;
                 usuario_.Apellidos = _usuario.Apellidos;
                 usuario_.Usuario = _usuario.Usuario;
@@ -109,7 +109,7 @@ namespace Negocio
         }
 
 
-        public TipoAccion UpdatePassword(usuario_complex entidad)
+        public TipoAccion UpdatePassword(usuario_app_complex entidad)
         {
             try
             {
