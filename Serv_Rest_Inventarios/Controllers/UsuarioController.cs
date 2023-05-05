@@ -1,6 +1,9 @@
-﻿using Entidades_complejas;
+﻿using Data.Models;
+using Entidades_complejas;
 using Microsoft.AspNetCore.Mvc;
 using Negocio;
+using Negocio.Mantenimiento;
+using Negocio.Usuario;
 
 namespace Serv_Rest_Inventarios.Controllers
 {
@@ -21,5 +24,46 @@ namespace Serv_Rest_Inventarios.Controllers
         {
             return _negocio.Get(id);
         }
+
+
+        [HttpGet]
+        [Route("[action]")]
+        public List<RelUsuarioCorreoAdicional> obtenercorreo()
+        {
+            usuario_correo_adicional_negocio neg = new usuario_correo_adicional_negocio();
+            return neg.obtener();
+        }
+
+
+        [HttpPost]
+        [Route("agregarcorreo")]
+        public TipoAccion Post([FromBody] RelUsuarioCorreoAdicional relUsuarioCorreoAdicional)
+        {
+            usuario_correo_adicional_negocio neg = new usuario_correo_adicional_negocio(relUsuarioCorreoAdicional, new ActionAdd());
+            return neg.Respuesta;
+        }
+
+
+        [HttpPut]
+        [Route("actualizarcorreo")]
+        public TipoAccion update([FromBody] RelUsuarioCorreoAdicional relUsuarioCorreoAdicional)
+        {
+            usuario_correo_adicional_negocio neg = new usuario_correo_adicional_negocio(relUsuarioCorreoAdicional, new ActionUpdate());
+            return neg.Respuesta;
+        }
+
+
+        [HttpDelete]
+        [Route("eliminarcorreo")]
+        public TipoAccion delete([FromBody] int id)
+        {
+            usuario_correo_adicional_negocio neg = new usuario_correo_adicional_negocio(id, new ActionDisable());
+            return neg.Respuesta;
+        }
+
+
+
+
+
     }
 }
