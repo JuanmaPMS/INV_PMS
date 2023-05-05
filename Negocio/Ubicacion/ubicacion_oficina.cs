@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Negocio.Ubicacion
+namespace Negocio
 {
     public class ubicacion_oficina_negocio
     {
