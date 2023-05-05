@@ -89,6 +89,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<VwAdquisicionDetalle> VwAdquisicionDetalles { get; set; }
 
+    public virtual DbSet<VwCatConfiguracionProducto> VwCatConfiguracionProductos { get; set; }
+
     public virtual DbSet<VwCatProducto> VwCatProductos { get; set; }
 
     public virtual DbSet<VwEmpleadoInventarioArrendamiento> VwEmpleadoInventarioArrendamientos { get; set; }
@@ -1160,6 +1162,26 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.Nuevo).HasColumnName("NUEVO");
             entity.Property(e => e.TblAdquisicionId).HasColumnName("TBL_ADQUISICION_ID");
             entity.Property(e => e.Vidautil).HasColumnName("VIDAUTIL");
+        });
+
+        modelBuilder.Entity<VwCatConfiguracionProducto>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_CAT_CONFIGURACION_PRODUCTO");
+
+            entity.Property(e => e.CatCategoriaProductoId).HasColumnName("CAT_CATEGORIA_PRODUCTO_ID");
+            entity.Property(e => e.Categoria)
+                .HasMaxLength(500)
+                .HasColumnName("CATEGORIA");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(200)
+                .HasColumnName("DESCRIPCION");
+            entity.Property(e => e.Estatus).HasColumnName("ESTATUS");
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Inclusion)
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
         });
 
         modelBuilder.Entity<VwCatProducto>(entity =>
