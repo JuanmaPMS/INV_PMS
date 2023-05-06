@@ -49,6 +49,14 @@ namespace Serv_Rest_Inventarios.Controllers
         }
 
         [HttpPut]
+        [Route("editarResponsivaAsignacion")]
+        public TipoAccion editarResponsivaAsignacion(rel_usuario_inventario_complex input)
+        {
+            usuario_inventario_negocio neg = new usuario_inventario_negocio(input, new ActionUpdateResponsiva());
+            return neg.Respuesta;
+        }
+
+        [HttpPut]
         [Route("editar/configuracion")]
         public TipoAccion editaroconfiguracion(rel_usuario_inventario_configuracion_complex input)
         {
@@ -73,12 +81,30 @@ namespace Serv_Rest_Inventarios.Controllers
         }
 
 
-    [HttpGet]
-    [Route("seleccionarInventarioProductosDisponibles")]
-    public List<VwInventarioProductosDisponible> seleccionarInventarioProductosDisponibles()
+        [HttpGet]
+        [Route("seleccionarInventarioProductosDisponibles")]
+        public List<VwInventarioProductosDisponible> seleccionarInventarioProductosDisponibles()
         {
             usuario_inventario_configuracion_negocio neg = new usuario_inventario_configuracion_negocio();
             return neg.seleccionarInventarioProductosDisponibles();
+        }
+
+
+
+        [HttpGet]
+        [Route("seleccionarAsignacionTodos")]
+        public List<VwUsuarioInventario> seleccionarAsignacionTodos()
+        {
+            usuario_inventario_configuracion_negocio neg = new usuario_inventario_configuracion_negocio();
+            return neg.seleccionarAsignacionTodos();
+        }
+
+        [HttpGet]
+        [Route("seleccionarAsignacion")]
+        public usuario_inventario_complex seleccionarAsignacion(int idrelusuarioinventario)
+        {
+            usuario_inventario_configuracion_negocio neg = new usuario_inventario_configuracion_negocio();
+            return neg.seleccionarAsignacion(idrelusuarioinventario);
         }
     }
 }
