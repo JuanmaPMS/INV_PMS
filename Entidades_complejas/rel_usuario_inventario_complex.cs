@@ -22,4 +22,11 @@ namespace Entidades_complejas
         public int CatConfiguracionProductoId { get; set; }
         public string Valor { get; set; } = null!;
     }
+
+    public class rel_usuario_inventario_archivo_complex
+    {
+        public int Id { get; set; }
+        public int? RelUsuarioInventarioId { get; set; }
+        public string? Archivo { get; set; }
+    }
 }
