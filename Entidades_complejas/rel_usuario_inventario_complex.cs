@@ -31,4 +31,11 @@ namespace Entidades_complejas
         public List<RelUsuarioInventarioConfiguracion> Configuracion { get; set; }
 
     }
+
+    public class rel_usuario_inventario_archivo_complex
+    {
+        public int Id { get; set; }
+        public int? RelUsuarioInventarioId { get; set; }
+        public string? Archivo { get; set; }
+    }
 }
