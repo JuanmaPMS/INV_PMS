@@ -14,7 +14,7 @@ namespace Negocio.Usuario
     {
         public PmsInventarioContext ctx = new PmsInventarioContext();
         public TipoAccion? Respuesta { get; set; }
-        public RelUsuarioCorreoAdicional relUsuarioCorreoAdicional { get; set; }
+        public rel_usuario_correo_adicional_complex relUsuarioCorreoAdicional { get; set; }
 
         public usuario_correo_adicional_negocio()
         { }
@@ -26,7 +26,7 @@ namespace Negocio.Usuario
         }
 
 
-        public usuario_correo_adicional_negocio(RelUsuarioCorreoAdicional input, ActionAdd add)
+        public usuario_correo_adicional_negocio(rel_usuario_correo_adicional_complex input, ActionAdd add)
         {
             using (var tran = ctx.Database.BeginTransaction())
             {
@@ -36,7 +36,7 @@ namespace Negocio.Usuario
                     RelUsuarioCorreoAdicional relUsuarioCorreoAd = new RelUsuarioCorreoAdicional();
                     relUsuarioCorreoAd.CatUsuarioId = (int)this.relUsuarioCorreoAdicional.CatUsuarioId!;
                     relUsuarioCorreoAd.Correo = this.relUsuarioCorreoAdicional.Correo!;
-                    relUsuarioCorreoAd.Estatus = this.relUsuarioCorreoAdicional.Estatus!;
+                    relUsuarioCorreoAd.Estatus = true;
                     relUsuarioCorreoAd.Inclusion = DateTime.Now;
 
                     ctx.RelUsuarioCorreoAdicionals.Add(relUsuarioCorreoAd);
@@ -55,18 +55,20 @@ namespace Negocio.Usuario
         }
 
 
-        public usuario_correo_adicional_negocio(RelUsuarioCorreoAdicional input, ActionUpdate update)
+        public usuario_correo_adicional_negocio(rel_usuario_correo_adicional_complex input, ActionUpdate update)
         {
             try
             {
+
+                this.relUsuarioCorreoAdicional = input;
                 RelUsuarioCorreoAdicional relUsuarioCorreoAd = ctx.RelUsuarioCorreoAdicionals.Where(x => x.Id == input.Id).FirstOrDefault();
                 if (relUsuarioCorreoAd == null)
                 { throw new Exception("No existe el registro, favor de validar."); }
                 else
                 {
-                    relUsuarioCorreoAd.CatUsuarioId = (int)input.CatUsuarioId!;
-                    relUsuarioCorreoAd.Correo = input.Correo!;
-                    relUsuarioCorreoAd.Estatus = input.Estatus!;
+                    relUsuarioCorreoAd.CatUsuarioId = (int)this.relUsuarioCorreoAdicional.CatUsuarioId!;
+                    relUsuarioCorreoAd.Correo = this.relUsuarioCorreoAdicional.Correo!;
+                    relUsuarioCorreoAd.Estatus = (bool)this.relUsuarioCorreoAdicional.Estatus!;
                     relUsuarioCorreoAd.Inclusion = DateTime.Now;
 
 
@@ -84,7 +86,7 @@ namespace Negocio.Usuario
 
 
 
-        public usuario_correo_adicional_negocio(int id, ActionDisable update)
+        public usuario_correo_adicional_negocio(int id, ActionDisable disable)
         {
             try
             {
