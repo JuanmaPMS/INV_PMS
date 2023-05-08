@@ -12,8 +12,8 @@ namespace Entidades_complejas
         public string? Propietario { get; set; }
         public bool Asignacion { get; set; }
         public List<info_equipo_complex>? InfoGeneralEquipo { get; set; } = new();
-        public List<info_equipo_complex>? InfoHardwareEquipo { get; set; } = new();
         public List<info_equipo_complex>? infoAccesoriosEquipo { get; set; } = new();
+        public List<string>? InfoHardwareEquipo { get; set; } = new();
         public List<string>? InfoSoftwareEquipo { get; set; }
     }
 

@@ -1,4 +1,5 @@
-﻿using Spire.Doc;
+﻿using Entidades_complejas;
+using Spire.Doc;
 using Spire.Doc.Documents;
 using Spire.Doc.Fields;
 using System.Drawing;
@@ -20,7 +21,7 @@ namespace Generador_Word
 #pragma warning restore CA1416 // Validate platform compatibility
         }
 
-        public Byte[]? CartaResponsivaEquipoComputo(CartaResponsiva cartaResponsiva)
+        public Byte[]? CartaResponsivaEquipoComputo(responsiva_complex cartaResponsiva)
         {
             Section section = _doc.AddSection();
             SetDocumentHeader();
@@ -91,7 +92,7 @@ namespace Generador_Word
             paragraph.Format.HorizontalAlignment = HorizontalAlignment.Center;
         }
 
-        private string Pag1(Section section, CartaResponsiva cartaResponsiva)
+        private string Pag1(Section section, responsiva_complex cartaResponsiva)
         {
             Paragraph paragraph = section.AddParagraph();
             ParagraphStyle style = new(_doc);
@@ -119,7 +120,7 @@ namespace Generador_Word
             tab.TabLeader = TabLeader.Dotted;
 
             // Informacion general equipo:
-            foreach (InfoEquipo info in cartaResponsiva.InfoGeneralEquipo!)
+            foreach (info_equipo_complex info in cartaResponsiva.InfoGeneralEquipo!)
             {
                 paragraph.AppendText($"\t{info.Caracteristica}:\t\t\t");
                 TextRange text_laptop = paragraph.AppendText($"{info.Descripcion}\r\n");
@@ -154,18 +155,16 @@ namespace Generador_Word
                 "configuración de hardware.\n\n");
 
             // Informacion hardware equipo:
-            foreach (InfoEquipo infoHardware in cartaResponsiva.InfoHardwareEquipo!)
+            foreach (string infoHardware in cartaResponsiva.InfoHardwareEquipo!)
             {
-                paragraph.AppendText($"\t{infoHardware.Caracteristica}:");
-                TextRange text_procesador = paragraph.AppendText($"\t\t{infoHardware.Descripcion}\r\n");
-                text_procesador.CharacterFormat.Bold = true;
+                paragraph.AppendText($"\t• {infoHardware}\r\n");
             }
 
             TextRange text_accesorios = paragraph.AppendText("\nAccesorios:\n\n");
             text_accesorios.CharacterFormat.Bold = true;
 
             // Informacion accesorios equipo:
-            foreach (InfoEquipo infoAccesorios in cartaResponsiva.infoAccesoriosEquipo!)
+            foreach (info_equipo_complex infoAccesorios in cartaResponsiva.infoAccesoriosEquipo!)
             {
                 paragraph.AppendText($"\t{infoAccesorios.Caracteristica}:");
                 TextRange text_procesador = paragraph.AppendText($"\t\t{infoAccesorios.Descripcion}\r\n");
