@@ -100,5 +100,64 @@ namespace Negocio
                 return ctx.VwInventarioProductosDisponibles.Where(x => x.CatEstatusinventarioId == 1).ToList();
             }
         }
+
+
+
+        public List<VwUsuarioInventario> seleccionarAsignacionTodos()
+        {
+            {
+                return ctx.VwUsuarioInventarios.Where(x => x.Estatus == true).ToList();
+            }
+        }
+
+        public usuario_inventario_complex seleccionarAsignacion(int idrelusuarioinventario)
+        {
+            {
+
+                var asignacion = ctx.VwUsuarioInventarios.Where(x => x.Idrelusuarioinventario == idrelusuarioinventario).FirstOrDefault();
+                usuario_inventario_complex objeto = new usuario_inventario_complex();
+
+                objeto.Idrelusuarioinventario = asignacion.Idrelusuarioinventario;
+                objeto.Responsiva = asignacion.Responsiva;
+                
+                objeto.Nombreusuario = asignacion.Nombreusuario;
+                objeto.Estatus = asignacion.Estatus;
+                objeto.Idinventario = asignacion.Idinventario;
+                objeto.Idadquisicion = asignacion.Idadquisicion;
+                objeto.Idproducto = asignacion.Idproducto;
+                objeto.Idfabricante = asignacion.Idfabricante;
+                objeto.Fabricante = asignacion.Fabricante;
+                objeto.Modelo = asignacion.Modelo;
+                objeto.Idcategoria = asignacion.Idcategoria;
+                objeto.Categoria = asignacion.Categoria;
+                objeto.Esestatico = asignacion.Esestatico;
+                objeto.Anio = asignacion.Anio;
+                objeto.Nuevo = asignacion.Nuevo;
+                objeto.Vidautil = asignacion.Vidautil;
+                objeto.Caracteristicas = asignacion.Caracteristicas;
+                objeto.Numerodeserie = asignacion.Numerodeserie;
+                objeto.Inventarioclv = asignacion.Inventarioclv;
+                objeto.Notainventario = asignacion.Notainventario;
+                objeto.CatEstatusinventarioId = asignacion.CatEstatusinventarioId;
+                objeto.CatEstatusinventario = asignacion.CatEstatusinventario;             
+                objeto.Accesorios = asignacion.Accesorios;
+
+
+
+                if (asignacion != null)
+                {
+                    objeto.Archivos = ctx.RelArchivosUsuarioInventarios.Where(x => x.RelUsuarioInventarioId == idrelusuarioinventario && x.Estatus == true).ToList();
+                    objeto.Configuracion = ctx.RelUsuarioInventarioConfiguracions.Where(x => x.RelUsuarioInventarioId == idrelusuarioinventario && x.Estatus == true).ToList();
+
+                }
+                else
+                {
+                    objeto = new usuario_inventario_complex();
+                }
+
+                return objeto;
+                
+            }
+        }
     }
 }

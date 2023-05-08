@@ -2,6 +2,7 @@
 using Entidades_complejas;
 using Microsoft.AspNetCore.Mvc;
 using Negocio;
+using Negocio.UsuarioInventario;
 
 namespace Serv_Rest_Inventarios.Controllers
 {
@@ -12,6 +13,7 @@ namespace Serv_Rest_Inventarios.Controllers
     {
         private readonly ILogger<UsuarioInventarioController> _logger;
         private readonly usuario_inventario_negocio _negocio = new();
+        private readonly usuario_inventario_archivos_negocio _negocioArchivos = new();
         public UsuarioInventarioController(ILogger<UsuarioInventarioController> logger)
         {
             _logger = logger;
@@ -23,6 +25,13 @@ namespace Serv_Rest_Inventarios.Controllers
         //{
         //    return _negocio.Get(id);
         //}
+
+        [HttpGet]
+        [Route("[action]")]
+        public TipoAccion seleccionararchivos([FromQuery] int id)
+        {
+            return _negocioArchivos.Get(id);
+        }
 
         [HttpPost]
         [Route("agregar")]
@@ -40,11 +49,27 @@ namespace Serv_Rest_Inventarios.Controllers
             return neg.Respuesta;
         }
 
+        [HttpPost]
+        [Route("agregar/archivos")]
+        public TipoAccion agregararchivos(List<rel_usuario_inventario_archivo_complex> input)
+        {
+            usuario_inventario_archivos_negocio neg = new usuario_inventario_archivos_negocio(input, new ActionAdd());
+            return neg.Respuesta;
+        }
+
         [HttpPut]
         [Route("editar")]
         public TipoAccion editar(rel_usuario_inventario_complex input)
         {
             usuario_inventario_negocio neg = new usuario_inventario_negocio(input, new ActionUpdate());
+            return neg.Respuesta;
+        }
+
+        [HttpPut]
+        [Route("editarResponsivaAsignacion")]
+        public TipoAccion editarResponsivaAsignacion(rel_usuario_inventario_complex input)
+        {
+            usuario_inventario_negocio neg = new usuario_inventario_negocio(input, new ActionUpdateResponsiva());
             return neg.Respuesta;
         }
 
@@ -72,13 +97,39 @@ namespace Serv_Rest_Inventarios.Controllers
             return neg.Respuesta;
         }
 
+        [HttpDelete]
+        [Route("eliminar/archivo")]
+        public TipoAccion eliminararchivo(int id)
+        {
+            usuario_inventario_archivos_negocio neg = new usuario_inventario_archivos_negocio(id, new ActionDisable());
+            return neg.Respuesta;
+        }
 
-    [HttpGet]
-    [Route("seleccionarInventarioProductosDisponibles")]
-    public List<VwInventarioProductosDisponible> seleccionarInventarioProductosDisponibles()
+
+        [HttpGet]
+        [Route("seleccionarInventarioProductosDisponibles")]
+        public List<VwInventarioProductosDisponible> seleccionarInventarioProductosDisponibles()
         {
             usuario_inventario_configuracion_negocio neg = new usuario_inventario_configuracion_negocio();
             return neg.seleccionarInventarioProductosDisponibles();
+        }
+
+
+
+        [HttpGet]
+        [Route("seleccionarAsignacionTodos")]
+        public List<VwUsuarioInventario> seleccionarAsignacionTodos()
+        {
+            usuario_inventario_configuracion_negocio neg = new usuario_inventario_configuracion_negocio();
+            return neg.seleccionarAsignacionTodos();
+        }
+
+        [HttpGet]
+        [Route("seleccionarAsignacion")]
+        public usuario_inventario_complex seleccionarAsignacion(int idrelusuarioinventario)
+        {
+            usuario_inventario_configuracion_negocio neg = new usuario_inventario_configuracion_negocio();
+            return neg.seleccionarAsignacion(idrelusuarioinventario);
         }
     }
 }

@@ -156,6 +156,39 @@ namespace Negocio
             }
         }
 
+        public usuario_inventario_negocio(rel_usuario_inventario_complex input, ActionUpdateResponsiva update)
+        {
+            using (var tran = ctx.Database.BeginTransaction())
+            {
+                try
+                {
+                    this.asignacion = input;
+                    //Valida que exista el registro
+                    RelUsuarioInventario relAsignacion = ctx.RelUsuarioInventarios.Where(x => x.Id == this.asignacion.Id).FirstOrDefault();
+
+                    if (relAsignacion == null)
+                    { throw new Exception("No existe el registro en RelUsuarioInventarios, favor de validar."); }
+                   
+                        //relAsignacion.CatUsuarioId = this.asignacion.CatUsuarioId;
+                        //relAsignacion.TblInventarioId = this.asignacion.TblInventarioId;
+                        relAsignacion.Responsiva = this.asignacion.Responsiva;
+
+                        ctx.RelUsuarioInventarios.Update(relAsignacion);
+                        ctx.SaveChanges();
+
+
+                        tran.Commit();
+                        this.Respuesta = TipoAccion.Positiva("Se actualizo registro exitosamente.", relAsignacion.Id);
+                    
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    this.Respuesta = TipoAccion.Negativa(ex.Message);
+                }
+            }
+        }
+
         public usuario_inventario_negocio(int id, ActionDisable disable)
         {
             try
