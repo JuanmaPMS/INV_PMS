@@ -14,4 +14,6 @@ public partial class RelArchivosUsuarioInventario
     public bool? Estatus { get; set; }
 
     public DateTime? Inclusion { get; set; }
+
+    public virtual RelUsuarioInventario? RelUsuarioInventario { get; set; }
 }

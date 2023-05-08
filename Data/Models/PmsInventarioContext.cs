@@ -33,6 +33,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<CatFamiliaArticulo> CatFamiliaArticulos { get; set; }
 
+    public virtual DbSet<CatFamiliaArticuloFalla> CatFamiliaArticuloFallas { get; set; }
+
     public virtual DbSet<CatProducto> CatProductos { get; set; }
 
     public virtual DbSet<CatPropietario> CatPropietarios { get; set; }
@@ -119,9 +121,11 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<VwSoftwareProveedorsoporteAdquisicion> VwSoftwareProveedorsoporteAdquisicions { get; set; }
 
+    public virtual DbSet<VwUsuarioInventario> VwUsuarioInventarios { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario;Encrypt=false");
+        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -337,6 +341,35 @@ public partial class PmsInventarioContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("INCLUSION");
+        });
+
+        modelBuilder.Entity<CatFamiliaArticuloFalla>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__CAT_FAMI__3214EC275EB7DF1D");
+
+            entity.ToTable("CAT_FAMILIA_ARTICULO_FALLA");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CatFamiliaArticuloId).HasColumnName("CAT_FAMILIA_ARTICULO_ID");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(2000)
+                .HasColumnName("DESCRIPCION");
+            entity.Property(e => e.Estatus)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasColumnName("ESTATUS");
+            entity.Property(e => e.Falla)
+                .HasMaxLength(500)
+                .HasColumnName("FALLA");
+            entity.Property(e => e.Inclusion)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+
+            entity.HasOne(d => d.CatFamiliaArticulo).WithMany(p => p.CatFamiliaArticuloFallas)
+                .HasForeignKey(d => d.CatFamiliaArticuloId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CAT_FAMILIA_ARTICULO_FALLA_CAT_FAMILIA_ARTICULO");
         });
 
         modelBuilder.Entity<CatProducto>(entity =>
@@ -591,6 +624,10 @@ public partial class PmsInventarioContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("INCLUSION");
             entity.Property(e => e.RelUsuarioInventarioId).HasColumnName("REL_USUARIO_INVENTARIO_ID");
+
+            entity.HasOne(d => d.RelUsuarioInventario).WithMany(p => p.RelArchivosUsuarioInventarios)
+                .HasForeignKey(d => d.RelUsuarioInventarioId)
+                .HasConstraintName("FK_REL_ARCHIVOS_USUARIO_INVENTARIO_REL_USUARIO_INVENTARIO");
         });
 
         modelBuilder.Entity<RelCategoriaFamiliaArticulo>(entity =>
@@ -1792,6 +1829,54 @@ public partial class PmsInventarioContext : DbContext
                 .HasColumnName("RFC");
             entity.Property(e => e.Total).HasColumnName("TOTAL");
             entity.Property(e => e.Unidades).HasColumnName("UNIDADES");
+        });
+
+        modelBuilder.Entity<VwUsuarioInventario>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_USUARIO_INVENTARIO");
+
+            entity.Property(e => e.Accesorios).HasColumnName("ACCESORIOS");
+            entity.Property(e => e.Anio).HasColumnName("ANIO");
+            entity.Property(e => e.Caracteristicas).HasColumnName("CARACTERISTICAS");
+            entity.Property(e => e.CatEstatusinventario)
+                .HasMaxLength(500)
+                .HasColumnName("CAT_ESTATUSINVENTARIO");
+            entity.Property(e => e.CatEstatusinventarioId).HasColumnName("CAT_ESTATUSINVENTARIO_ID");
+            entity.Property(e => e.Categoria)
+                .HasMaxLength(500)
+                .HasColumnName("CATEGORIA");
+            entity.Property(e => e.Esestatico).HasColumnName("ESESTATICO");
+            entity.Property(e => e.Estatus).HasColumnName("ESTATUS");
+            entity.Property(e => e.Fabricante)
+                .HasMaxLength(500)
+                .HasColumnName("FABRICANTE");
+            entity.Property(e => e.Idadquisicion).HasColumnName("IDADQUISICION");
+            entity.Property(e => e.Idcategoria).HasColumnName("IDCATEGORIA");
+            entity.Property(e => e.Idfabricante).HasColumnName("IDFABRICANTE");
+            entity.Property(e => e.Idinventario).HasColumnName("IDINVENTARIO");
+            entity.Property(e => e.Idproducto).HasColumnName("IDPRODUCTO");
+            entity.Property(e => e.Idrelusuarioinventario).HasColumnName("IDRELUSUARIOINVENTARIO");
+            entity.Property(e => e.Idusuario).HasColumnName("IDUSUARIO");
+            entity.Property(e => e.Inventarioclv)
+                .HasMaxLength(500)
+                .HasColumnName("INVENTARIOCLV");
+            entity.Property(e => e.Modelo)
+                .HasMaxLength(100)
+                .HasColumnName("MODELO");
+            entity.Property(e => e.Nombreusuario)
+                .HasMaxLength(500)
+                .HasColumnName("NOMBREUSUARIO");
+            entity.Property(e => e.Notainventario).HasColumnName("NOTAINVENTARIO");
+            entity.Property(e => e.Nuevo).HasColumnName("NUEVO");
+            entity.Property(e => e.Numerodeserie)
+                .HasMaxLength(500)
+                .HasColumnName("NUMERODESERIE");
+            entity.Property(e => e.Responsiva)
+                .HasMaxLength(500)
+                .HasColumnName("RESPONSIVA");
+            entity.Property(e => e.Vidautil).HasColumnName("VIDAUTIL");
         });
 
         OnModelCreatingPartial(modelBuilder);
