@@ -11,6 +11,8 @@ namespace Serv_Rest_Inventarios.Controllers
         [Route("[action]")]
         public FileStreamResult GenerarCartaResponsiva(CartaResponsiva cartaResponsiva)
         {
+
+
             GenerarCartaResponsiva neg = new();
             byte[] mybytearray = neg.CartaResponsivaEquipoComputo(cartaResponsiva)!;
 

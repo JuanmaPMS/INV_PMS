@@ -7,7 +7,7 @@ namespace Generador_Word
 {
     public class GenerarCartaResponsiva
     {
-        private readonly string _path = Directory.GetParent(Directory.GetCurrentDirectory())!.Parent!.FullName + "\\INV_PMS\\Generador_Word\\assets\\pm.jpg";
+        private readonly string _path = AppDomain.CurrentDomain.BaseDirectory + "\\MyStaticFiles\\Images\\pm.jpg";
         private readonly Document _doc = new();
         private readonly Image _image;
         private int _currentPage = 0;
