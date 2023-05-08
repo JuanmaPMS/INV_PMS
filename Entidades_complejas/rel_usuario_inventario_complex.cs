@@ -11,6 +11,9 @@ namespace Entidades_complejas
     {
         public int Id { get; set; }
         public int CatUsuarioId { get; set; }
+        public string? Nombre { get; set; }
+        public string? Cuenta { get; set; }
+        public string? Correo { get; set; }
         public int TblInventarioId { get; set; }
         public string Responsiva { get; set; } = null!;
         public List<rel_usuario_inventario_configuracion_complex>? Configuracion { get; set; }
