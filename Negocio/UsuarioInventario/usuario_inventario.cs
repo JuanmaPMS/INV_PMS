@@ -22,6 +22,32 @@ namespace Negocio
                 {
                     this.asignacion = input;
 
+                    if(input.CatUsuarioId <= 0)
+                    {
+                        //Valida si existe el usuario en el catalogo
+                        input.Cuenta = input.Cuenta == null ? "" : input.Cuenta.ToLower();
+                        CatUsuario catUsuario = ctx.CatUsuarios.Where(x => x.Cuenta == input.Cuenta).FirstOrDefault();
+                        if (catUsuario == null)
+                        {
+                            CatUsuario usuario = new CatUsuario();
+                            usuario.Nombre = input.Nombre;
+                            usuario.Cuenta = input.Cuenta;
+                            usuario.Correo = input.Correo;
+                            usuario.Ubicacion = "";
+                            usuario.Estatus = true;
+                            usuario.Inclusion = DateTime.Now;
+
+                            ctx.CatUsuarios.Add(usuario);
+                            ctx.SaveChanges();
+
+                            input.CatUsuarioId = usuario.Id;
+                        }
+                        else
+                        {
+                            input.CatUsuarioId = catUsuario.Id;
+                        }
+                    }         
+
                     //Actualiza el estatus del inventario
                     TblInventario tblInventario = ctx.TblInventarios.Where(x => x.Id == this.asignacion.TblInventarioId).FirstOrDefault()!;
                     if (tblInventario == null)

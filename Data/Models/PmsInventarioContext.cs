@@ -33,6 +33,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<CatFamiliaArticulo> CatFamiliaArticulos { get; set; }
 
+    public virtual DbSet<CatFamiliaArticuloFalla> CatFamiliaArticuloFallas { get; set; }
+
     public virtual DbSet<CatProducto> CatProductos { get; set; }
 
     public virtual DbSet<CatPropietario> CatPropietarios { get; set; }
@@ -339,6 +341,35 @@ public partial class PmsInventarioContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("INCLUSION");
+        });
+
+        modelBuilder.Entity<CatFamiliaArticuloFalla>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__CAT_FAMI__3214EC275EB7DF1D");
+
+            entity.ToTable("CAT_FAMILIA_ARTICULO_FALLA");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CatFamiliaArticuloId).HasColumnName("CAT_FAMILIA_ARTICULO_ID");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(2000)
+                .HasColumnName("DESCRIPCION");
+            entity.Property(e => e.Estatus)
+                .IsRequired()
+                .HasDefaultValueSql("((1))")
+                .HasColumnName("ESTATUS");
+            entity.Property(e => e.Falla)
+                .HasMaxLength(500)
+                .HasColumnName("FALLA");
+            entity.Property(e => e.Inclusion)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+
+            entity.HasOne(d => d.CatFamiliaArticulo).WithMany(p => p.CatFamiliaArticuloFallas)
+                .HasForeignKey(d => d.CatFamiliaArticuloId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_CAT_FAMILIA_ARTICULO_FALLA_CAT_FAMILIA_ARTICULO");
         });
 
         modelBuilder.Entity<CatProducto>(entity =>

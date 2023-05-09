@@ -15,5 +15,7 @@ public partial class CatFamiliaArticulo
 
     public DateTime Inclusion { get; set; }
 
+    public virtual ICollection<CatFamiliaArticuloFalla> CatFamiliaArticuloFallas { get; } = new List<CatFamiliaArticuloFalla>();
+
     public virtual ICollection<RelCategoriaFamiliaArticulo> RelCategoriaFamiliaArticulos { get; } = new List<RelCategoriaFamiliaArticulo>();
 }

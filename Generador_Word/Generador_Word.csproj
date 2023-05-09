@@ -14,4 +14,8 @@
     <Folder Include="assets\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Entidades_complejas\Entidades_complejas.csproj" />
+  </ItemGroup>
+
 </Project>
