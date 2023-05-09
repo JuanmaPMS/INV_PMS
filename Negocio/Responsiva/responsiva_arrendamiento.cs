@@ -19,7 +19,6 @@ namespace Negocio.Responsiva
             try
             {
                 RelEmpleadoInventarioArrendamiento relArrendamiento = ctx.RelEmpleadoInventarioArrendamientos
-                                                  //.Include(x => x.CatUsuario)
                                                   .Include(x => x.TblInventarioArrendamiento).ThenInclude(x => x.TblInventario).ThenInclude(x => x.TblAdquisicion).ThenInclude(x => x.CatPropietario)
                                                   .Include(x => x.TblInventarioArrendamiento).ThenInclude(x => x.TblInventario).ThenInclude(x => x.CatProducto).ThenInclude(x => x.CatCategoriaProducto)
                                                   .Where(x => x.Id == id).FirstOrDefault();
@@ -29,7 +28,16 @@ namespace Negocio.Responsiva
 
                 _responsiva.Usuario = relArrendamiento.NombreEmpleadoCliente;
                 _responsiva.Propietario = relArrendamiento.TblInventarioArrendamiento.TblInventario.TblAdquisicion.CatPropietario.Razonsocial;
-                _responsiva.Asignacion = true;
+
+                //Valida si previamente tiene equipos asignados
+                List<RelEmpleadoInventarioArrendamiento> relUsuarioCambio = ctx.RelEmpleadoInventarioArrendamientos.Where(x => x.CuentaEmpleadoCliente == relArrendamiento.CuentaEmpleadoCliente)
+                                                             .Include(x => x.TblInventarioArrendamiento).ThenInclude(x => x.TblInventario).ThenInclude(x => x.CatProducto)
+                                                             .Where(x => x.TblInventarioArrendamiento.TblInventario.CatProducto.CatCategoriaProductoId == relArrendamiento.TblInventarioArrendamiento.TblInventario.CatProducto.CatCategoriaProductoId)
+                                                             .ToList();
+                if (relUsuarioCambio.Count <= 0)
+                { _responsiva.Asignacion = true; }
+                else
+                { _responsiva.Asignacion = false; }
 
                 //Info general equipo
                 List<info_equipo_complex> lstGeneral = new List<info_equipo_complex>();
@@ -72,7 +80,7 @@ namespace Negocio.Responsiva
                 //Software equipo
                 List<string> lstSoftware = new List<string>();
                 List<RelProductoCatacteristica> software = ctx.RelProductoCatacteristicas.Where(x => x.CatProductoId == relArrendamiento.TblInventarioArrendamiento.TblInventario.CatProductoId && x.Software == true).ToList();
-                foreach (RelProductoCatacteristica caracteristica in hardware)
+                foreach (RelProductoCatacteristica caracteristica in software)
                 {
                     string nombre = caracteristica.Nombre;
                     lstSoftware.Add(nombre);

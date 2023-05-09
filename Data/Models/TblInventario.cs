@@ -27,6 +27,8 @@ public partial class TblInventario
 
     public virtual CatProducto CatProducto { get; set; } = null!;
 
+    public virtual ICollection<RelInventarioUbicacion> RelInventarioUbicacions { get; } = new List<RelInventarioUbicacion>();
+
     public virtual ICollection<RelUsuarioInventario> RelUsuarioInventarios { get; } = new List<RelUsuarioInventario>();
 
     public virtual TblAdquisicion TblAdquisicion { get; set; } = null!;

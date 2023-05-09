@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entidades_complejas;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Immutable;
 
 namespace Negocio.Responsiva
 {
@@ -29,7 +30,16 @@ namespace Negocio.Responsiva
               
                 _responsiva.Usuario = relUsuario.CatUsuario.Nombre;
                 _responsiva.Propietario = relUsuario.TblInventario.TblAdquisicion.CatPropietario.Razonsocial;
-                _responsiva.Asignacion = true;
+
+                //Valida si previamente tiene equipos asignados
+                List<RelUsuarioInventario> relUsuarioCambio = ctx.RelUsuarioInventarios.Where(x => x.CatUsuarioId == relUsuario.CatUsuarioId)
+                                                             .Include(x => x.TblInventario).ThenInclude(x => x.CatProducto)
+                                                             .Where(x => x.TblInventario.CatProducto.CatCategoriaProductoId == relUsuario.TblInventario.CatProducto.CatCategoriaProductoId)
+                                                             .ToList(); 
+                if(relUsuarioCambio.Count <= 0)
+                { _responsiva.Asignacion = true; }
+                else
+                { _responsiva.Asignacion = false; }
 
                 //Info general equipo
                 List<info_equipo_complex> lstGeneral = new List<info_equipo_complex>();
@@ -72,7 +82,7 @@ namespace Negocio.Responsiva
                 //Software equipo
                 List<string> lstSoftware = new List<string>();
                 List<RelProductoCatacteristica> software = ctx.RelProductoCatacteristicas.Where(x => x.CatProductoId == relUsuario.TblInventario.CatProductoId && x.Software == true).ToList();
-                foreach (RelProductoCatacteristica caracteristica in hardware)
+                foreach (RelProductoCatacteristica caracteristica in software)
                 {
                     string nombre = caracteristica.Nombre;
                     lstSoftware.Add(nombre);
