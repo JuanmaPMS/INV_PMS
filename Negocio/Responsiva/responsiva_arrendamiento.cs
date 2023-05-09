@@ -56,7 +56,7 @@ namespace Negocio.Responsiva
                     lstAccesorios.Add(addAccesorio);
                 }
 
-                _responsiva.InfoGeneralEquipo = lstAccesorios;
+                _responsiva.InfoAccesoriosEquipo = lstAccesorios;
 
                 //Hardware equipo
                 List<string> lstHardware = new List<string>();

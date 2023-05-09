@@ -164,7 +164,7 @@ namespace Generador_Word
             text_accesorios.CharacterFormat.Bold = true;
 
             // Informacion accesorios equipo:
-            foreach (info_equipo_complex infoAccesorios in cartaResponsiva.infoAccesoriosEquipo!)
+            foreach (info_equipo_complex infoAccesorios in cartaResponsiva.InfoAccesoriosEquipo!)
             {
                 paragraph.AppendText($"\t{infoAccesorios.Caracteristica}:");
                 TextRange text_procesador = paragraph.AppendText($"\t\t{infoAccesorios.Descripcion}\r\n");
