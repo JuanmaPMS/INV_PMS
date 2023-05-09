@@ -24,8 +24,8 @@ namespace LDAP
                 else
                 {
                     ListarUsuarios listar = new();
-
-                    return TipoAccion.Positiva(listar.Listar_Usuarios(conexiones.CatDirLdaps.ElementAt(0).DirEntry!, nombre));
+                    return listar.Listar_Usuarios(conexiones.CatDirLdaps.ElementAt(0).DirEntry!, nombre);
+                    //return TipoAccion.Positiva(listar.Listar_Usuarios(conexiones.CatDirLdaps.ElementAt(0).DirEntry!, nombre));
                 }
             }
             catch (Exception ex)
