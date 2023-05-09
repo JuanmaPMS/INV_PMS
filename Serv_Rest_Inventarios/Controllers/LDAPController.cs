@@ -16,5 +16,12 @@ namespace Serv_Rest_Inventarios.Controllers
         {
             return _connection.GetById(id, name);
         }
+
+        [HttpGet]
+        [Route("[action]")]
+        public TipoAccion ListadoUsuariosPM(string name)
+        {
+            return _connection.GetUsuariosPM(name);
+        }
     }
 }

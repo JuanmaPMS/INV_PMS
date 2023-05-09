@@ -34,5 +34,32 @@ namespace LDAP
                 return TipoAccion.Negativa(ex.Message);
             }
         }
+
+        public TipoAccion GetUsuariosPM(string nombre)
+        {
+            try
+            {
+                CatCliente conexiones = _ctx.CatClientes
+                        .Where(x => x.Nombre == "GRUPO PM")
+                        .Include(q => q.CatDirLdaps)
+                        .FirstOrDefault()!;
+
+                if (conexiones == null)
+                {
+                    throw new Exception("No existen registros en CatCliente");
+                }
+                else
+                {
+                    ListarUsuarios listar = new();
+                    return listar.Listar_Usuarios(conexiones.CatDirLdaps.ElementAt(0).DirEntry!, nombre);
+                    //return TipoAccion.Positiva(listar.Listar_Usuarios(conexiones.CatDirLdaps.ElementAt(0).DirEntry!, nombre));
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return TipoAccion.Negativa(ex.Message);
+            }
+        }
     }
 }
