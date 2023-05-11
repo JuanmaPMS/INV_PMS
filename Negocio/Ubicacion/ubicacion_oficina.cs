@@ -81,6 +81,15 @@ namespace Negocio
                 { throw new Exception("No existe el registro en RelClienteUbicacionOficinas, favor de validar."); }
                 else
                 {
+                    //Elimina inventario asignado
+                    List<RelInventarioUbicacion> relInventarioUbicacion = ctx.RelInventarioUbicacions.Where(x => x.RelClienteUbicacionOficinaId == id).ToList();
+
+                    if (relInventarioUbicacion.Count > 0)
+                    {
+                        relInventarioUbicacion.ForEach(x => x.Estatus = false);
+                        ctx.SaveChanges();
+                    }
+
                     //Actualiza registro
                     relUbicacionOficina.Estatus = false;
 
@@ -94,6 +103,18 @@ namespace Negocio
             {
                 this.Respuesta = TipoAccion.Negativa(ex.Message);
             }
+        }
+
+        public bool ValidaAsignados(int id)
+        {
+            bool asignados = false;
+
+            List<RelInventarioUbicacion> relInventarioUbicacion = ctx.RelInventarioUbicacions.Where(x => x.RelClienteUbicacionOficinaId == id).ToList();
+
+            if (relInventarioUbicacion.Count > 0)
+            { asignados = true; }
+
+            return asignados;
         }
 
     }
