@@ -11,6 +11,7 @@ namespace Serv_Rest_Inventarios.Controllers
     {
         private readonly ILogger<UbicacionController> _logger;
         private readonly ubicacion_negocio _negocio = new();
+        private readonly ubicacion_oficina_negocio _negocio_oficina = new();
         public UbicacionController(ILogger<UbicacionController> logger)
         {
             _logger = logger;
@@ -21,6 +22,20 @@ namespace Serv_Rest_Inventarios.Controllers
         public TipoAccion seleccionar([FromQuery] int? id)
         {      
             return _negocio.Get(id);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public bool validaasignados([FromQuery] int id)
+        {
+            return _negocio.ValidaAsignados(id);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        public bool validaasignadosoficina([FromQuery] int id)
+        {
+            return _negocio_oficina.ValidaAsignados(id);
         }
 
         [HttpPost]

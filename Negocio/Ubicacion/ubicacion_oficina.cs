@@ -105,6 +105,9 @@ namespace Negocio
             }
         }
 
+        public ubicacion_oficina_negocio()
+        { }
+
         public bool ValidaAsignados(int id)
         {
             bool asignados = false;
