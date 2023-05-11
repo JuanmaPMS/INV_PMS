@@ -23,5 +23,7 @@ public partial class RelClienteUbicacionOficina
 
     public DateTime? Inclusion { get; set; }
 
+    public virtual ICollection<RelInventarioUbicacion> RelInventarioUbicacions { get; } = new List<RelInventarioUbicacion>();
+
     public virtual TblClienteUbicacion TblClienteUbicacion { get; set; } = null!;
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,11 @@ namespace Entidades_complejas
         public string Numerodeserie { get; set; } = null!;
         public string Inventarioclv { get; set; } = null!;
         public string? Notas { get; set; }
+        public bool? Estatus { get; set; }
+        public DateTime? Inclusion { get; set; }
         public List<tbl_inventario_accesorio_complex>? Accesorios { get; set; }
+        public int? usuarioAppid { get; set; }
+
     }
 
     public class tbl_inventario_accesorio_complex
@@ -24,5 +29,6 @@ namespace Entidades_complejas
         public int TblInventarioId { get; set; }
         public string Nombre { get; set; } = null!;
         public string? Detalle { get; set; }
+        public int? usuarioAppid { get; set; }
     }
 }

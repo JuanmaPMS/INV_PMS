@@ -30,6 +30,7 @@ namespace Negocio.Mantenimiento
 
                     ctx.TblMantenimientoInventarios.Add(tblMantenimientoInv);
                     ctx.SaveChanges();
+                    Auditoria.Log(tblMantenimientoInv, input.usuarioAppid);
 
                     tran.Commit();
                     this.Respuesta = TipoAccion.Positiva("Alta Exitosa", tblMantenimientoInv.Id);
@@ -55,9 +56,9 @@ namespace Negocio.Mantenimiento
                     mantenimientoInventario.RelUsuarioInventarioId = (int)input.RelUsuarioInventarioId!;
                     mantenimientoInventario.Inclusion = input.Inclusion!;
 
-
                     ctx.TblMantenimientoInventarios.Update(mantenimientoInventario);
                     ctx.SaveChanges();
+                    Auditoria.Log(mantenimientoInventario, input.usuarioAppid);
                 }
 
                 this.Respuesta = TipoAccion.Positiva("Actualización Exitosa", mantenimientoInventario.Id);

@@ -26,4 +26,6 @@ public partial class RelUsuarioInventario
     public virtual TblInventario TblInventario { get; set; } = null!;
 
     public virtual ICollection<TblMantenimientoInventario> TblMantenimientoInventarios { get; } = new List<TblMantenimientoInventario>();
+
+    public virtual ICollection<TblUsuarioInventarioContenedor> TblUsuarioInventarioContenedors { get; } = new List<TblUsuarioInventarioContenedor>();
 }

@@ -61,6 +61,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<RelEmpleadoInventarioArrendamientoConfiguracion> RelEmpleadoInventarioArrendamientoConfiguracions { get; set; }
 
+    public virtual DbSet<RelInventarioUbicacion> RelInventarioUbicacions { get; set; }
+
     public virtual DbSet<RelProductoCatacteristica> RelProductoCatacteristicas { get; set; }
 
     public virtual DbSet<RelProveedorContactosoporte> RelProveedorContactosoportes { get; set; }
@@ -81,6 +83,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<TblInventarioArrendamiento> TblInventarioArrendamientos { get; set; }
 
+    public virtual DbSet<TblInventarioHistorico> TblInventarioHistoricos { get; set; }
+
     public virtual DbSet<TblInventarioUbicacion> TblInventarioUbicacions { get; set; }
 
     public virtual DbSet<TblMantenimientoInventario> TblMantenimientoInventarios { get; set; }
@@ -88,6 +92,10 @@ public partial class PmsInventarioContext : DbContext
     public virtual DbSet<TblMantenimientoNotificacion> TblMantenimientoNotificacions { get; set; }
 
     public virtual DbSet<TblNotasUsuarioInventario> TblNotasUsuarioInventarios { get; set; }
+
+    public virtual DbSet<TblUsuarioInventarioContenedor> TblUsuarioInventarioContenedors { get; set; }
+
+    public virtual DbSet<TblUsuarioInventarioContenedorImagene> TblUsuarioInventarioContenedorImagenes { get; set; }
 
     public virtual DbSet<UsuariosApp> UsuariosApps { get; set; }
 
@@ -114,6 +122,8 @@ public partial class PmsInventarioContext : DbContext
     public virtual DbSet<VwInventarioProductosDisponible> VwInventarioProductosDisponibles { get; set; }
 
     public virtual DbSet<VwInventarioProductosDisponiblesAgrupado> VwInventarioProductosDisponiblesAgrupados { get; set; }
+
+    public virtual DbSet<VwInventarioUbicacion> VwInventarioUbicacions { get; set; }
 
     public virtual DbSet<VwMantenimientoInventario> VwMantenimientoInventarios { get; set; }
 
@@ -741,6 +751,29 @@ public partial class PmsInventarioContext : DbContext
                 .HasConstraintName("FK_REL_EMPLEADO_INVENTARIO_ARRENDAMIENTO_CONFIGURACION_REL_EMPLEADO_INVENTARIO_ARRENDAMIENTO");
         });
 
+        modelBuilder.Entity<RelInventarioUbicacion>(entity =>
+        {
+            entity.ToTable("REL_INVENTARIO_UBICACION");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Estatus).HasColumnName("ESTATUS");
+            entity.Property(e => e.Inclusion)
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+            entity.Property(e => e.RelClienteUbicacionOficinaId).HasColumnName("REL_CLIENTE_UBICACION_OFICINA_ID");
+            entity.Property(e => e.TblInventarioId).HasColumnName("TBL_INVENTARIO_ID");
+
+            entity.HasOne(d => d.RelClienteUbicacionOficina).WithMany(p => p.RelInventarioUbicacions)
+                .HasForeignKey(d => d.RelClienteUbicacionOficinaId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_REL_INVENTARIO_UBICACION_REL_CLIENTE_UBICACION_OFICINA");
+
+            entity.HasOne(d => d.TblInventario).WithMany(p => p.RelInventarioUbicacions)
+                .HasForeignKey(d => d.TblInventarioId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_REL_INVENTARIO_UBICACION_TBL_INVENTARIO");
+        });
+
         modelBuilder.Entity<RelProductoCatacteristica>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__REL_PROD__3214EC277F3817F7");
@@ -1030,6 +1063,24 @@ public partial class PmsInventarioContext : DbContext
                 .HasConstraintName("FK__TBL_INVEN__TBL_I__15702A09");
         });
 
+        modelBuilder.Entity<TblInventarioHistorico>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__TBL_INVE__3214EC27D834BD7C");
+
+            entity.ToTable("TBL_INVENTARIO_HISTORICO");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.InclusionHistorico)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION_HISTORICO");
+            entity.Property(e => e.Objeto).HasColumnName("OBJETO");
+            entity.Property(e => e.TipoObjeto)
+                .HasMaxLength(500)
+                .HasColumnName("TIPO_OBJETO");
+            entity.Property(e => e.UsuariosAppId).HasColumnName("USUARIOS_APP_ID");
+        });
+
         modelBuilder.Entity<TblInventarioUbicacion>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__TBL_INVE__3214EC27C90CEDE9");
@@ -1141,6 +1192,53 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.Nota)
                 .HasMaxLength(500)
                 .HasColumnName("NOTA");
+        });
+
+        modelBuilder.Entity<TblUsuarioInventarioContenedor>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__TBL_USUA__3214EC2723F76F46");
+
+            entity.ToTable("TBL_USUARIO_INVENTARIO_CONTENEDOR");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Contenedor)
+                .HasMaxLength(500)
+                .HasColumnName("CONTENEDOR");
+            entity.Property(e => e.Inclusion)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+            entity.Property(e => e.RelUsuarioInventarioId).HasColumnName("REL_USUARIO_INVENTARIO_ID");
+
+            entity.HasOne(d => d.RelUsuarioInventario).WithMany(p => p.TblUsuarioInventarioContenedors)
+                .HasForeignKey(d => d.RelUsuarioInventarioId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__TBL_USUAR__REL_U__22951AFD");
+        });
+
+        modelBuilder.Entity<TblUsuarioInventarioContenedorImagene>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__TBL_USUA__3214EC2799F0F030");
+
+            entity.ToTable("TBL_USUARIO_INVENTARIO_CONTENEDOR_IMAGENES");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(1000)
+                .HasColumnName("DESCRIPCION");
+            entity.Property(e => e.Imagen)
+                .HasMaxLength(500)
+                .HasColumnName("IMAGEN");
+            entity.Property(e => e.Inclusion)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+            entity.Property(e => e.TblUsuarioInventarioContenedorId).HasColumnName("TBL_USUARIO_INVENTARIO_CONTENEDOR_ID");
+
+            entity.HasOne(d => d.TblUsuarioInventarioContenedor).WithMany(p => p.TblUsuarioInventarioContenedorImagenes)
+                .HasForeignKey(d => d.TblUsuarioInventarioContenedorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__TBL_USUAR__TBL_U__2C1E8537");
         });
 
         modelBuilder.Entity<UsuariosApp>(entity =>
@@ -1674,6 +1772,69 @@ public partial class PmsInventarioContext : DbContext
                 .HasMaxLength(100)
                 .HasColumnName("MODELO");
             entity.Property(e => e.Nuevo).HasColumnName("NUEVO");
+            entity.Property(e => e.Vidautil).HasColumnName("VIDAUTIL");
+        });
+
+        modelBuilder.Entity<VwInventarioUbicacion>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_INVENTARIO_UBICACION");
+
+            entity.Property(e => e.Anio).HasColumnName("ANIO");
+            entity.Property(e => e.CatCategoriaProductoId).HasColumnName("CAT_CATEGORIA_PRODUCTO_ID");
+            entity.Property(e => e.CatEstatusinventarioId).HasColumnName("CAT_ESTATUSINVENTARIO_ID");
+            entity.Property(e => e.CatFabricanteId).HasColumnName("CAT_FABRICANTE_ID");
+            entity.Property(e => e.CatProductoId).HasColumnName("CAT_PRODUCTO_ID");
+            entity.Property(e => e.CatUsuarioId).HasColumnName("CAT_USUARIO_ID");
+            entity.Property(e => e.Categoria)
+                .HasMaxLength(500)
+                .HasColumnName("CATEGORIA");
+            entity.Property(e => e.Cliente)
+                .HasMaxLength(500)
+                .HasColumnName("CLIENTE");
+            entity.Property(e => e.Direccion)
+                .HasMaxLength(800)
+                .HasColumnName("DIRECCION");
+            entity.Property(e => e.Edificio)
+                .HasMaxLength(200)
+                .HasColumnName("EDIFICIO");
+            entity.Property(e => e.Estatico).HasColumnName("ESTATICO");
+            entity.Property(e => e.Estatus)
+                .HasMaxLength(500)
+                .HasColumnName("ESTATUS");
+            entity.Property(e => e.Fabricante)
+                .HasMaxLength(500)
+                .HasColumnName("FABRICANTE");
+            entity.Property(e => e.Filtro)
+                .HasMaxLength(2630)
+                .HasColumnName("FILTRO");
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Inventarioclv)
+                .HasMaxLength(500)
+                .HasColumnName("INVENTARIOCLV");
+            entity.Property(e => e.Modelo)
+                .HasMaxLength(100)
+                .HasColumnName("MODELO");
+            entity.Property(e => e.Nuevo).HasColumnName("NUEVO");
+            entity.Property(e => e.Numerodeserie)
+                .HasMaxLength(500)
+                .HasColumnName("NUMERODESERIE");
+            entity.Property(e => e.Oficina)
+                .HasMaxLength(500)
+                .HasColumnName("OFICINA");
+            entity.Property(e => e.Piso)
+                .HasMaxLength(200)
+                .HasColumnName("PISO");
+            entity.Property(e => e.UsuarioCorreo)
+                .HasMaxLength(500)
+                .HasColumnName("USUARIO_CORREO");
+            entity.Property(e => e.UsuarioCuenta)
+                .HasMaxLength(500)
+                .HasColumnName("USUARIO_CUENTA");
+            entity.Property(e => e.UsuarioNombre)
+                .HasMaxLength(500)
+                .HasColumnName("USUARIO_NOMBRE");
             entity.Property(e => e.Vidautil).HasColumnName("VIDAUTIL");
         });
 
