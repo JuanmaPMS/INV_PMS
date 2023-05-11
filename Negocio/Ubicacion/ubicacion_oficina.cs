@@ -112,7 +112,7 @@ namespace Negocio
         {
             bool asignados = false;
 
-            List<RelInventarioUbicacion> relInventarioUbicacion = ctx.RelInventarioUbicacions.Where(x => x.RelClienteUbicacionOficinaId == id).ToList();
+            List<RelInventarioUbicacion> relInventarioUbicacion = ctx.RelInventarioUbicacions.Where(x => x.RelClienteUbicacionOficinaId == id && x.Estatus == true).ToList();
 
             if (relInventarioUbicacion.Count > 0)
             { asignados = true; }

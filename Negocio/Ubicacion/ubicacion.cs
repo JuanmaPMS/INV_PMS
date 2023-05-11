@@ -125,11 +125,11 @@ namespace Negocio
 
             TblClienteUbicacion tblUbicacion = ctx.TblClienteUbicacions.Where(x => x.Id == id).FirstOrDefault();
 
-            List<RelClienteUbicacionOficina> relUbicacionOficina = ctx.RelClienteUbicacionOficinas.Where(x => x.TblClienteUbicacionId == id).ToList();
+            List<RelClienteUbicacionOficina> relUbicacionOficina = ctx.RelClienteUbicacionOficinas.Where(x => x.TblClienteUbicacionId == id && x.Estatus == true).ToList();
 
             foreach(RelClienteUbicacionOficina Oficina in relUbicacionOficina)
             {
-                List<RelInventarioUbicacion> relInventarioUbicacion = ctx.RelInventarioUbicacions.Where(x => x.RelClienteUbicacionOficinaId == Oficina.Id).ToList();
+                List<RelInventarioUbicacion> relInventarioUbicacion = ctx.RelInventarioUbicacions.Where(x => x.RelClienteUbicacionOficinaId == Oficina.Id && x.Estatus == true).ToList();
 
                 if (relInventarioUbicacion.Count > 0)
                 { asignados = true; }
