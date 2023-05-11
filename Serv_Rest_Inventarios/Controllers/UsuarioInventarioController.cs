@@ -131,5 +131,53 @@ namespace Serv_Rest_Inventarios.Controllers
             usuario_inventario_configuracion_negocio neg = new usuario_inventario_configuracion_negocio();
             return neg.seleccionarAsignacion(idrelusuarioinventario);
         }
+
+
+
+
+        [HttpGet]
+        [Route("seleccionarContenedores")]
+        public TipoAccion seleccionarContenedores(int idrelusuarioinventario)
+        {
+            usuario_inventario_contenedor_negocio neg = new usuario_inventario_contenedor_negocio();
+            return neg.Get(idrelusuarioinventario);
+        }
+
+        [HttpGet]
+        [Route("seleccionarContenedor")]
+        public TipoAccion seleccionarContenedor(int id)
+        {
+            usuario_inventario_contenedor_negocio neg = new usuario_inventario_contenedor_negocio();
+            return neg.GetById(id);
+        }
+
+
+        [HttpPost]
+        [Route("agregarContenedor")]
+        public TipoAccion agregarContenedores(tbl_usuario_inventario_contenedor_complex input)
+        {
+            usuario_inventario_contenedor_negocio neg = new usuario_inventario_contenedor_negocio(input, new ActionAdd());
+            return neg.Respuesta;
+        }
+
+        [HttpPut]
+        [Route("editarContenedor")]
+        public TipoAccion editarContenedores(tbl_usuario_inventario_contenedor_complex input)
+        {
+            usuario_inventario_contenedor_negocio neg = new usuario_inventario_contenedor_negocio(input, new ActionUpdate());
+            return neg.Respuesta;
+        }
+
+
+
+        [HttpDelete]
+        [Route("eliminarContenedor")]
+        public TipoAccion eliminarContenedores(int id)
+        {
+            usuario_inventario_contenedor_negocio neg = new usuario_inventario_contenedor_negocio(id, new ActionDisable());
+            return neg.Respuesta;
+        }
+
+
     }
 }

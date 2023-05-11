@@ -376,10 +376,10 @@ public partial class PmsInventarioContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("INCLUSION");
 
-            entity.HasOne(d => d.CatFamiliaArticulo).WithMany(p => p.CatFamiliaArticuloFallas)
-                .HasForeignKey(d => d.CatFamiliaArticuloId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_CAT_FAMILIA_ARTICULO_FALLA_CAT_FAMILIA_ARTICULO");
+            //entity.HasOne(d => d.CatFamiliaArticulo).WithMany(p => p.CatFamiliaArticuloFallas)
+            //    .HasForeignKey(d => d.CatFamiliaArticuloId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_CAT_FAMILIA_ARTICULO_FALLA_CAT_FAMILIA_ARTICULO");
         });
 
         modelBuilder.Entity<CatProducto>(entity =>
@@ -763,15 +763,15 @@ public partial class PmsInventarioContext : DbContext
             entity.Property(e => e.RelClienteUbicacionOficinaId).HasColumnName("REL_CLIENTE_UBICACION_OFICINA_ID");
             entity.Property(e => e.TblInventarioId).HasColumnName("TBL_INVENTARIO_ID");
 
-            entity.HasOne(d => d.RelClienteUbicacionOficina).WithMany(p => p.RelInventarioUbicacions)
-                .HasForeignKey(d => d.RelClienteUbicacionOficinaId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_REL_INVENTARIO_UBICACION_REL_CLIENTE_UBICACION_OFICINA");
+            //entity.HasOne(d => d.RelClienteUbicacionOficina).WithMany(p => p.RelInventarioUbicacions)
+            //    .HasForeignKey(d => d.RelClienteUbicacionOficinaId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_REL_INVENTARIO_UBICACION_REL_CLIENTE_UBICACION_OFICINA");
 
-            entity.HasOne(d => d.TblInventario).WithMany(p => p.RelInventarioUbicacions)
-                .HasForeignKey(d => d.TblInventarioId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_REL_INVENTARIO_UBICACION_TBL_INVENTARIO");
+            //entity.HasOne(d => d.TblInventario).WithMany(p => p.RelInventarioUbicacions)
+            //    .HasForeignKey(d => d.TblInventarioId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK_REL_INVENTARIO_UBICACION_TBL_INVENTARIO");
         });
 
         modelBuilder.Entity<RelProductoCatacteristica>(entity =>
@@ -1070,14 +1070,27 @@ public partial class PmsInventarioContext : DbContext
             entity.ToTable("TBL_INVENTARIO_HISTORICO");
 
             entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.CatEstatusinventarioId).HasColumnName("CAT_ESTATUSINVENTARIO_ID");
+            entity.Property(e => e.CatProductoId).HasColumnName("CAT_PRODUCTO_ID");
+            entity.Property(e => e.Estatus)
+                .HasDefaultValueSql("((1))")
+                .HasColumnName("ESTATUS");
+            entity.Property(e => e.Inclusion)
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
             entity.Property(e => e.InclusionHistorico)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("INCLUSION_HISTORICO");
-            entity.Property(e => e.Objeto).HasColumnName("OBJETO");
-            entity.Property(e => e.TipoObjeto)
+            entity.Property(e => e.Inventarioclv)
                 .HasMaxLength(500)
-                .HasColumnName("TIPO_OBJETO");
+                .HasColumnName("INVENTARIOCLV");
+            entity.Property(e => e.Notas).HasColumnName("NOTAS");
+            entity.Property(e => e.Numerodeserie)
+                .HasMaxLength(500)
+                .HasColumnName("NUMERODESERIE");
+            entity.Property(e => e.TblAdquisicionId).HasColumnName("TBL_ADQUISICION_ID");
+            entity.Property(e => e.TblInventarioId).HasColumnName("TBL_INVENTARIO_ID");
             entity.Property(e => e.UsuariosAppId).HasColumnName("USUARIOS_APP_ID");
         });
 
@@ -1210,10 +1223,10 @@ public partial class PmsInventarioContext : DbContext
                 .HasColumnName("INCLUSION");
             entity.Property(e => e.RelUsuarioInventarioId).HasColumnName("REL_USUARIO_INVENTARIO_ID");
 
-            entity.HasOne(d => d.RelUsuarioInventario).WithMany(p => p.TblUsuarioInventarioContenedors)
-                .HasForeignKey(d => d.RelUsuarioInventarioId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__TBL_USUAR__REL_U__22951AFD");
+            //entity.HasOne(d => d.RelUsuarioInventario).WithMany(p => p.TblUsuarioInventarioContenedors)
+            //    .HasForeignKey(d => d.RelUsuarioInventarioId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK__TBL_USUAR__REL_U__22951AFD");
         });
 
         modelBuilder.Entity<TblUsuarioInventarioContenedorImagene>(entity =>

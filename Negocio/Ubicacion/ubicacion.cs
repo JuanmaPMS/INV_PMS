@@ -82,6 +82,25 @@ namespace Negocio
                 { throw new Exception("No existe el registro en TblClienteUbicacions, favor de validar."); }
                 else
                 {
+                    //Actualiza registros relacionados
+                    List<RelClienteUbicacionOficina> relUbicacionOficina = ctx.RelClienteUbicacionOficinas.Where(x => x.TblClienteUbicacionId == id).ToList();
+
+                    relUbicacionOficina.ForEach(x => x.Estatus = false);
+                    ctx.SaveChanges();
+
+                    foreach (RelClienteUbicacionOficina Oficina in relUbicacionOficina)
+                    {
+                        List<RelInventarioUbicacion> relInventarioUbicacion = ctx.RelInventarioUbicacions.Where(x => x.RelClienteUbicacionOficinaId == Oficina.Id).ToList();
+
+                        if (relInventarioUbicacion.Count > 0)
+                        {
+                            relInventarioUbicacion.ForEach(x => x.Estatus = false);
+                            ctx.SaveChanges();
+
+                        }
+                    }
+
+
                     //Actualiza registro
                     tblUbicacion.Estatus = false;
 
@@ -100,6 +119,25 @@ namespace Negocio
         public ubicacion_negocio()
         { }
 
+        public bool ValidaAsignados(int id)
+        {
+            bool asignados = false;
+
+            TblClienteUbicacion tblUbicacion = ctx.TblClienteUbicacions.Where(x => x.Id == id).FirstOrDefault();
+
+            List<RelClienteUbicacionOficina> relUbicacionOficina = ctx.RelClienteUbicacionOficinas.Where(x => x.TblClienteUbicacionId == id && x.Estatus == true).ToList();
+
+            foreach(RelClienteUbicacionOficina Oficina in relUbicacionOficina)
+            {
+                List<RelInventarioUbicacion> relInventarioUbicacion = ctx.RelInventarioUbicacions.Where(x => x.RelClienteUbicacionOficinaId == Oficina.Id && x.Estatus == true).ToList();
+
+                if (relInventarioUbicacion.Count > 0)
+                { asignados = true; }
+            }
+
+            return asignados;
+        }
+
         public TipoAccion Get(int? id)
         {
             try
@@ -108,7 +146,7 @@ namespace Negocio
                                                 : ctx.TblClienteUbicacions
                                                 .Include(o => o.RelClienteUbicacionOficinas.Where(x => x.Estatus == true)).Where(x => x.Id == id).ToList();
                 if (ubicaciones.Count == 0)
-                { throw new Exception("No existen registros en Cat_Propietario"); }
+                { throw new Exception("No existen registros en TblClienteUbicacions"); }
                 else
                 {
                     List<tbl_ubicacion_complex> full = JsonConvert.DeserializeObject<List<tbl_ubicacion_complex>>(JsonConvert.SerializeObject(ubicaciones, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }))!;
