@@ -146,7 +146,7 @@ namespace Negocio
                                                 : ctx.TblClienteUbicacions
                                                 .Include(o => o.RelClienteUbicacionOficinas.Where(x => x.Estatus == true)).Where(x => x.Id == id).ToList();
                 if (ubicaciones.Count == 0)
-                { throw new Exception("No existen registros en Cat_Propietario"); }
+                { throw new Exception("No existen registros en TblClienteUbicacions"); }
                 else
                 {
                     List<tbl_ubicacion_complex> full = JsonConvert.DeserializeObject<List<tbl_ubicacion_complex>>(JsonConvert.SerializeObject(ubicaciones, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }))!;

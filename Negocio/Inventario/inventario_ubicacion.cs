@@ -39,14 +39,18 @@ namespace Negocio.Inventario
             foreach (RelInventarioUbicacion rel in relInventarios)
             {
                 VwInventarioUbicacion data = ctx.VwInventarioUbicacions.Where(x => x.Id == rel.TblInventarioId).FirstOrDefault();
-                inventario_ubicacion_complex inventario = new inventario_ubicacion_complex();
-                inventario.Id = rel.Id;
-                inventario.Usuario = data.UsuarioNombre;
-                inventario.Equipo = data.Categoria + "/" + data.Fabricante + "/" + data.Modelo;
-                inventario.Serie = data.Numerodeserie;
-                inventario.Clave = data.Inventarioclv;
+                
+                if(data != null)
+                {
+                    inventario_ubicacion_complex inventario = new inventario_ubicacion_complex();
+                    inventario.Id = rel.Id;
+                    inventario.Usuario = data.UsuarioNombre;
+                    inventario.Equipo = data.Categoria + "/" + data.Fabricante + "/" + data.Modelo;
+                    inventario.Serie = data.Numerodeserie;
+                    inventario.Clave = data.Inventarioclv;
 
-                result.Add(inventario); 
+                    result.Add(inventario);
+                }
             }    
 
             return result;
