@@ -30,6 +30,7 @@ namespace Negocio.Inventario
 
                         ctx.TblInventarioAccesoriosincluidos.Add(tblAccesorio);
                         ctx.SaveChanges();
+                        Auditoria.Log(tblAccesorio, inventario_complex.usuarioAppid);
                     }
 
                     tran.Commit();
@@ -62,6 +63,7 @@ namespace Negocio.Inventario
 
                             ctx.TblInventarioAccesoriosincluidos.Update(tblAccesorio);
                             ctx.SaveChanges();
+                            Auditoria.Log(tblAccesorio, inventario_complex.usuarioAppid);
                         }                 
                     }
 
@@ -76,7 +78,7 @@ namespace Negocio.Inventario
             }
         }
 
-        public inventario_accesorio_negocio(int id, ActionDisable disable)
+        public inventario_accesorio_negocio(int id, int idUsuario, ActionDisable disable)
         {
             try
             {
@@ -88,7 +90,7 @@ namespace Negocio.Inventario
                 {
                     ctx.TblInventarioAccesoriosincluidos.Remove(tblAccesorio);
                     ctx.SaveChanges();
-
+                    Auditoria.Log(tblAccesorio, idUsuario);
                     this.Respuesta = TipoAccion.Positiva("Eliminación Exitosa", tblAccesorio.Id);
                 }
             }

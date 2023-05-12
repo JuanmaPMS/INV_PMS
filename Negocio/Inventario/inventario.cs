@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Negocio.Inventario
@@ -35,6 +36,7 @@ namespace Negocio.Inventario
 
                     ctx.TblInventarios.Add(tblInventario);
                     ctx.SaveChanges();
+                    Auditoria.Log(tblInventario, (int)inventario_complex.usuarioAppid);
                 }
 
                 estatus = true;
@@ -64,7 +66,8 @@ namespace Negocio.Inventario
 
                 ctx.TblInventarios.Add(tblInventario);
                 ctx.SaveChanges();
-
+                Auditoria.Log(tblInventario, this.inventario.usuarioAppid);
+                
                 this.Respuesta = TipoAccion.Positiva("Alta Exitosa", tblInventario.Id);
             }
             catch (Exception ex)
@@ -95,8 +98,9 @@ namespace Negocio.Inventario
 
                             ctx.TblInventarios.Update(tblInventario);
                             ctx.SaveChanges();
+                            Auditoria.Log(tblInventario, (int)inventario_complex.usuarioAppid);
 
-                            if(inventario_complex.Accesorios != null && inventario_complex.Accesorios.Count > 0)
+                            if (inventario_complex.Accesorios != null && inventario_complex.Accesorios.Count > 0)
                             {
                                 foreach(tbl_inventario_accesorio_complex accesorio_Complex in inventario_complex.Accesorios)
                                 {
@@ -112,6 +116,7 @@ namespace Negocio.Inventario
 
                                         ctx.TblInventarioAccesoriosincluidos.Add(accesorio);
                                         ctx.SaveChanges();
+                                        Auditoria.Log(accesorio, (int)inventario_complex.usuarioAppid);
                                     }
                                     else
                                     {
@@ -121,6 +126,7 @@ namespace Negocio.Inventario
 
                                         ctx.TblInventarioAccesoriosincluidos.Update(tblAccesorio);
                                         ctx.SaveChanges();
+                                        Auditoria.Log(tblAccesorio, (int)inventario_complex.usuarioAppid);
                                     }
                                 }
                             }
@@ -138,7 +144,7 @@ namespace Negocio.Inventario
             }
         }
 
-        public inventario_negocio(int id, ActionDisable disable)
+        public inventario_negocio(int id, int idUsuario, ActionDisable disable)
         {
             try
             {
@@ -152,6 +158,7 @@ namespace Negocio.Inventario
 
                     ctx.TblInventarios.Update(tblInventario);
                     ctx.SaveChanges();
+                    Auditoria.Log(tblInventario, idUsuario);
                 }
 
                 this.Respuesta = TipoAccion.Positiva("Baja Exitosa", tblInventario.Id);
@@ -207,6 +214,8 @@ namespace Negocio.Inventario
         {
             return ctx.TblInventarioAccesoriosincluidos.Where(X => X.TblInventarioId == id).ToList();
         }
+
+
 
     }
 }
