@@ -27,14 +27,12 @@ namespace Entidades_complejas
             ctx.SaveChanges();
         }
 
-        public static object  Get(string tipoObject, string id)
+        public static object  Get(string tipoObject, string NumSerie)
         {
             try
             {
-                List<TblInventarioHistorico> logs =  ctx.TblInventarioHistoricos.Where(x => x.TipoObjeto == tipoObject && x.Objeto.Contains("{\"Id\":"+ id)).ToList();
-                if (logs.Count == 0)
-                { throw new Exception("No existen registros en Cat_Usuario"); }
-                else
+                List<TblInventarioHistorico> logs =  ctx.TblInventarioHistoricos.Where(x => x.TipoObjeto == tipoObject && x.Objeto.Contains("\"Numerodeserie\":\"" + NumSerie + "\"")).ToList();
+                if (logs.Count > 0)
                 {
                     Type type = Type.GetType("Data.Models." + tipoObject);
                     object objType = new object();
@@ -59,7 +57,42 @@ namespace Entidades_complejas
             {
                 return null;
             }
+
+            return null;
         }
+
+
+
+        public static object GetInventario(string NumSerie)
+        {
+            try
+            {
+                List<TblInventario> logs = ctx.TblInventarios.Where(x => x.Numerodeserie == NumSerie ).ToList();
+
+                if (logs.Count > 0)
+                {
+                    var lst = ctx.TblInventarioHistoricos.Where(x => x.Objeto.Contains("\"TblInventarioId\":" + logs.First().Id ))
+                        .OrderByDescending(x => x.InclusionHistorico).ToList();
+
+                    var lst1 = ctx.TblInventarioHistoricos.Where(x => x.TipoObjeto == "TblInventario" && x.Objeto.Contains("\"Id\":" + logs.First().Id))
+                        .OrderByDescending(x => x.InclusionHistorico).ToList();
+
+                    List <object> list= new List<object>();
+                    list.Add(lst);
+                    list.Add(lst1);
+
+                    return TipoAccion.Positiva(list);
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+            return null;
+        }
+
+
 
     }
 }

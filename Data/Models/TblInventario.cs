@@ -27,6 +27,8 @@ public partial class TblInventario
 
     public virtual CatProducto CatProducto { get; set; } = null!;
 
+    public virtual ICollection<RelInventarioUbicacionArrendamiento> RelInventarioUbicacionArrendamientos { get; } = new List<RelInventarioUbicacionArrendamiento>();
+
     public virtual ICollection<RelInventarioUbicacion> RelInventarioUbicacions { get; } = new List<RelInventarioUbicacion>();
 
     public virtual ICollection<RelUsuarioInventario> RelUsuarioInventarios { get; } = new List<RelUsuarioInventario>();
@@ -36,6 +38,8 @@ public partial class TblInventario
     public virtual ICollection<TblInventarioAccesoriosincluido> TblInventarioAccesoriosincluidos { get; } = new List<TblInventarioAccesoriosincluido>();
 
     public virtual ICollection<TblInventarioArrendamiento> TblInventarioArrendamientos { get; } = new List<TblInventarioArrendamiento>();
+
+    public virtual ICollection<TblInventarioUbicacionArrendamiento> TblInventarioUbicacionArrendamientos { get; } = new List<TblInventarioUbicacionArrendamiento>();
 
     public virtual ICollection<TblInventarioUbicacion> TblInventarioUbicacions { get; } = new List<TblInventarioUbicacion>();
 }

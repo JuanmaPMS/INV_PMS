@@ -11,11 +11,11 @@ namespace Serv_Rest_Inventarios.Controllers
     public class AuditoriaController : ControllerBase
     {
         [HttpGet]
-        [Route("obtener")]
-        //public List<TblInventarioHistorico> Get(string objeto, string id)
-        public object Get(string objeto, string id)
+        [Route("inventario")]
+        public object Get(string NumSerie)
         {
-            return  Auditoria.Get(objeto, id);
+            //return  Auditoria.Get(objeto, NumSerie);
+            return  Auditoria.GetInventario(NumSerie);
         }
 
     }
