@@ -77,17 +77,17 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpDelete]
         [Route("eliminar")]
-        public TipoAccion eliminar(int id)
+        public TipoAccion eliminar(int id, int idUsuario)
         {
-            inventario_negocio neg = new inventario_negocio(id, new ActionDisable());
+            inventario_negocio neg = new inventario_negocio(id, idUsuario, new ActionDisable());
             return neg.Respuesta;
         }
 
         [HttpDelete]
         [Route("eliminar/accesorio")]
-        public TipoAccion eliminaraccesorio(int id)
+        public TipoAccion eliminaraccesorio(int id, int idUsuario)
         {
-            inventario_accesorio_negocio neg = new inventario_accesorio_negocio(id, new ActionDisable());
+            inventario_accesorio_negocio neg = new inventario_accesorio_negocio(id, idUsuario, new ActionDisable());
             return neg.Respuesta;
         }
 

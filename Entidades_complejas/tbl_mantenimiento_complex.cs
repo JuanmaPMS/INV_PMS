@@ -13,6 +13,7 @@ namespace Entidades_complejas
         public int RelUsuarioInventarioId { get; set; }
 
         public DateTime Inclusion { get; set; }
+        public int? usuarioAppid { get; set; }
 
     }
 }
