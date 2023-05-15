@@ -24,4 +24,11 @@ namespace Entidades_complejas
         public string? Numerodeserie { get; set; }
         public string? Inventarioclv { get; set; }
     }
+
+    public class adquisicion_masiva_doc_complex
+    {
+        public int IdAdquision { get; set; }
+        public string? Pdf { get; set; }
+        public string? Xml { get; set; }
+    }
 }

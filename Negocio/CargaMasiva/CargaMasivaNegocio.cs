@@ -242,6 +242,34 @@ namespace Negocio.CargaMasiva
             return result;
         }
 
+        public TipoAccion carga_masiva_adjuntos(adquisicion_masiva_doc_complex input)
+        {
+            TipoAccion result = new TipoAccion();
+            try
+            {
+                TblAdquisicion tblAdquisicion = ctx.TblAdquisicions.Where(x => x.Id == input.IdAdquision).FirstOrDefault();
+
+                if(tblAdquisicion == null) 
+                {
+                    throw new Exception("No existe el registro en Tbl_Adquisiciones, favor de validar.");
+                }
+ 
+                tblAdquisicion.FacXml = input.Xml;
+                tblAdquisicion.FacPdf = input.Pdf;
+
+                ctx.TblAdquisicions.Update(tblAdquisicion);
+                ctx.SaveChanges();
+
+                result = TipoAccion.Positiva("Actualización Exitosa", tblAdquisicion.Id);
+            }
+            catch (Exception ex)
+            {
+                result = TipoAccion.Negativa(ex.Message);
+            }
+
+            return result;
+        }
+
 
 
 

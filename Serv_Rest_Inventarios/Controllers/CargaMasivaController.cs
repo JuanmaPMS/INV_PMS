@@ -81,5 +81,14 @@ namespace Serv_Rest_Inventarios.Controllers
             }
             return result;
         }
+
+        [HttpPut]
+        [Route("[action]")]
+        public TipoAccion Adjuntos(adquisicion_masiva_doc_complex input)
+        {
+            return _negocio.carga_masiva_adjuntos(input);   
+        }
+
+        
     }
 }
