@@ -13,7 +13,7 @@ namespace Serv_Rest_Inventarios.Controllers
         private responsiva_usuario_negocio negocio_usuario = new();
         private responsiva_arrendamiento_negocio negocio_arrendamiento = new();
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]")]
         public FileStreamResult GenerarCartaUsuario(int id)
         {
@@ -28,7 +28,7 @@ namespace Serv_Rest_Inventarios.Controllers
             );
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("[action]")]
         public FileStreamResult GenerarCartaArrendamiento(int id)
         {
