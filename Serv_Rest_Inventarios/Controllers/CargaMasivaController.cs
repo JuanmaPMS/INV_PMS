@@ -22,8 +22,9 @@ namespace Serv_Rest_Inventarios.Controllers
         public FileStreamResult ObtenerPlantilla(int num)
         {
             byte[] bytes = _negocio.obtenerPlantilla(num);
-            return File(new MemoryStream(bytes), "application/vnd.ms-excel");
-            
+            string fileName = "PlantillaAdquisicion.xlsx";
+            return File(new MemoryStream(bytes), "application/vnd.ms-excel", fileName);
+
         }
 
         [HttpPost]

@@ -101,7 +101,7 @@ namespace Negocio.CargaMasiva
                 productos.Range["A1"].Style.VerticalAlignment = VerticalAlignType.Center;
                 productos.Range["A1"].Style.Font.Size = 12;
                 productos.Range["A1"].Style.Font.IsBold = true;
-                productos.Range["A2:A"+ num.ToString()].DataValidation.Values = listProductos.ToArray();
+                productos.Range["A2:A" + (num + 1).ToString()].DataValidation.Values = listProductos.ToArray();
                 productos.Range["B1"].Value = "Costo Unitario";
                 productos.Range["B1"].ColumnWidth = 20;
                 productos.Range["B1"].Style.Color = Color.DimGray;
@@ -125,8 +125,7 @@ namespace Negocio.CargaMasiva
                 productos.Range["D1"].Style.Font.IsBold = true;
                 productosNuevos.Visibility = WorksheetVisibility.Hidden;
                 MemoryStream stream = new MemoryStream();
-                workbook.SaveToStream(stream);
-                //workbook.SaveToFile("Pantilla.xlsx", ExcelVersion.Version2010);
+                workbook.SaveToStream(stream, FileFormat.Version2016);
                 byte[] data = stream.ToArray();
                 stream.Flush();
                 stream.Close();
