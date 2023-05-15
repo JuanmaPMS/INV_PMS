@@ -15,13 +15,10 @@ namespace Serv_Rest_Inventarios.Controllers
         }
         [HttpGet]
         [Route("[action]")]
-        public IActionResult ObtenerPlantilla(int num)
+        public FileStreamResult ObtenerPlantilla(int num)
         {
             byte[] bytes = _negocio.obtenerPlantilla(num);
-            return new FileStreamResult(new MemoryStream(bytes), "application/vnd.ms-excel") 
-            {
-                FileDownloadName = "PlantillaCargaMasiva"
-            };
+            return File(new MemoryStream(bytes), "application/vnd.ms-excel");
             
         }
     }
