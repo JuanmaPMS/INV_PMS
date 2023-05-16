@@ -31,7 +31,9 @@ namespace Negocio
                 { throw new Exception("No se encontraron los acccesos, favor de validar."); }
                 else
                 { 
+
                     usuario_app_complex usuario_ = new usuario_app_complex();
+                    usuario_.Id = usuario.Id;
                     usuario_.Nombres = usuario.Nombres;
                     usuario_.Apellidos = usuario.Apellidos;
                     usuario_.Usuario = usuario.Usuario;
