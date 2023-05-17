@@ -83,6 +83,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<TblClienteUbicacionArrendamiento> TblClienteUbicacionArrendamientos { get; set; }
 
+    public virtual DbSet<TblHistoricoInventario> TblHistoricoInventarios { get; set; }
+
     public virtual DbSet<TblInventario> TblInventarios { get; set; }
 
     public virtual DbSet<TblInventarioAccesoriosincluido> TblInventarioAccesoriosincluidos { get; set; }
@@ -90,6 +92,8 @@ public partial class PmsInventarioContext : DbContext
     public virtual DbSet<TblInventarioArrendamiento> TblInventarioArrendamientos { get; set; }
 
     public virtual DbSet<TblInventarioHistorico> TblInventarioHistoricos { get; set; }
+
+    public virtual DbSet<TblInventarioImagene> TblInventarioImagenes { get; set; }
 
     public virtual DbSet<TblInventarioUbicacion> TblInventarioUbicacions { get; set; }
 
@@ -119,6 +123,8 @@ public partial class PmsInventarioContext : DbContext
 
     public virtual DbSet<VwFamiliaArticuloCategorium> VwFamiliaArticuloCategoria { get; set; }
 
+    public virtual DbSet<VwHistoricoInventario> VwHistoricoInventarios { get; set; }
+
     public virtual DbSet<VwInventario> VwInventarios { get; set; }
 
     public virtual DbSet<VwInventarioArrendamiento> VwInventarioArrendamientos { get; set; }
@@ -145,7 +151,7 @@ public partial class PmsInventarioContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario;Encrypt=false");
+        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario; TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -1063,6 +1069,33 @@ public partial class PmsInventarioContext : DbContext
                 .HasConstraintName("FK_TBL_CLIENTE_UBICACION_ARREN_CAT_CLIENTE");
         });
 
+        modelBuilder.Entity<TblHistoricoInventario>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__TBL_HIST__3214EC27C6C38976");
+
+            entity.ToTable("TBL_HISTORICO_INVENTARIO");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(1000)
+                .HasColumnName("DESCRIPCION");
+            entity.Property(e => e.Inclusion)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+            entity.Property(e => e.TblInventarioId).HasColumnName("TBL_INVENTARIO_ID");
+            entity.Property(e => e.UsuariosAppId).HasColumnName("USUARIOS_APP_ID");
+
+            entity.HasOne(d => d.TblInventario).WithMany(p => p.TblHistoricoInventarios)
+                .HasForeignKey(d => d.TblInventarioId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__TBL_HISTO__INCLU__01F34141");
+
+            entity.HasOne(d => d.UsuariosApp).WithMany(p => p.TblHistoricoInventarios)
+                .HasForeignKey(d => d.UsuariosAppId)
+                .HasConstraintName("FK__TBL_HISTO__USUAR__02E7657A");
+        });
+
         modelBuilder.Entity<TblInventario>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__TBL_INVE__3214EC27EFBD6443");
@@ -1171,6 +1204,26 @@ public partial class PmsInventarioContext : DbContext
                 .HasMaxLength(500)
                 .HasColumnName("TIPO_OBJETO");
             entity.Property(e => e.UsuariosAppId).HasColumnName("USUARIOS_APP_ID");
+        });
+
+        modelBuilder.Entity<TblInventarioImagene>(entity =>
+        {
+            entity.ToTable("TBL_INVENTARIO_IMAGENES");
+
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Estatus).HasColumnName("ESTATUS");
+            entity.Property(e => e.Imagen)
+                .HasMaxLength(800)
+                .HasColumnName("IMAGEN");
+            entity.Property(e => e.Inclusion)
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+            entity.Property(e => e.TblInventarioId).HasColumnName("TBL_INVENTARIO_ID");
+
+            entity.HasOne(d => d.TblInventario).WithMany(p => p.TblInventarioImagenes)
+                .HasForeignKey(d => d.TblInventarioId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_TBL_INVENTARIO_IMAGENES_TBL_INVENTARIO");
         });
 
         modelBuilder.Entity<TblInventarioUbicacion>(entity =>
@@ -1606,6 +1659,38 @@ public partial class PmsInventarioContext : DbContext
                 .HasColumnName("FAMILIAARTICULO");
             entity.Property(e => e.Idcategoria).HasColumnName("IDCATEGORIA");
             entity.Property(e => e.Idfamiliaarticulo).HasColumnName("IDFAMILIAARTICULO");
+        });
+
+        modelBuilder.Entity<VwHistoricoInventario>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("VW_HISTORICO_INVENTARIO");
+
+            entity.Property(e => e.Descripcion)
+                .HasMaxLength(1000)
+                .HasColumnName("DESCRIPCION");
+            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.Property(e => e.Inclusion)
+                .HasColumnType("datetime")
+                .HasColumnName("INCLUSION");
+            entity.Property(e => e.Inventarioclv)
+                .HasMaxLength(500)
+                .HasColumnName("INVENTARIOCLV");
+            entity.Property(e => e.Modelo)
+                .HasMaxLength(100)
+                .HasColumnName("MODELO");
+            entity.Property(e => e.Nombreusuario)
+                .HasMaxLength(1001)
+                .HasColumnName("NOMBREUSUARIO");
+            entity.Property(e => e.Numerodeserie)
+                .HasMaxLength(500)
+                .HasColumnName("NUMERODESERIE");
+            entity.Property(e => e.TblInventarioId).HasColumnName("TBL_INVENTARIO_ID");
+            entity.Property(e => e.Usuario)
+                .HasMaxLength(500)
+                .HasColumnName("USUARIO");
+            entity.Property(e => e.UsuariosAppId).HasColumnName("USUARIOS_APP_ID");
         });
 
         modelBuilder.Entity<VwInventario>(entity =>
