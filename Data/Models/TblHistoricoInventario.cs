@@ -16,8 +16,4 @@ public partial class TblHistoricoInventario
     public int? UsuariosAppId { get; set; }
 
     public DateTime Inclusion { get; set; }
-
-    public virtual TblInventario TblInventario { get; set; } = null!;
-
-    public virtual UsuariosApp? UsuariosApp { get; set; }
 }

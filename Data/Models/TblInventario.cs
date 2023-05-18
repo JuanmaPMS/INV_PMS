@@ -35,8 +35,6 @@ public partial class TblInventario
 
     public virtual TblAdquisicion TblAdquisicion { get; set; } = null!;
 
-    public virtual ICollection<TblHistoricoInventario> TblHistoricoInventarios { get; } = new List<TblHistoricoInventario>();
-
     public virtual ICollection<TblInventarioAccesoriosincluido> TblInventarioAccesoriosincluidos { get; } = new List<TblInventarioAccesoriosincluido>();
 
     public virtual ICollection<TblInventarioArrendamiento> TblInventarioArrendamientos { get; } = new List<TblInventarioArrendamiento>();

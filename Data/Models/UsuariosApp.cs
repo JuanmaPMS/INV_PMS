@@ -18,6 +18,4 @@ public partial class UsuariosApp
     public bool? Activo { get; set; }
 
     public DateTime? Inclusion { get; set; }
-
-    public virtual ICollection<TblHistoricoInventario> TblHistoricoInventarios { get; } = new List<TblHistoricoInventario>();
 }

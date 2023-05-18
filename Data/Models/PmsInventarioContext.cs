@@ -151,7 +151,7 @@ public partial class PmsInventarioContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario; TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("server=198.251.71.105;user=juanma;password=T3st_sqlI55;database=pms_inventario;Encrypt=false");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -1071,7 +1071,7 @@ public partial class PmsInventarioContext : DbContext
 
         modelBuilder.Entity<TblHistoricoInventario>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__TBL_HIST__3214EC275BE9059E");
+            entity.HasKey(e => e.Id).HasName("PK__TBL_HIST__3214EC27B5CF7848");
 
             entity.ToTable("TBL_HISTORICO_INVENTARIO");
 
@@ -1088,15 +1088,6 @@ public partial class PmsInventarioContext : DbContext
                 .HasMaxLength(500)
                 .HasColumnName("TIPO");
             entity.Property(e => e.UsuariosAppId).HasColumnName("USUARIOS_APP_ID");
-
-            entity.HasOne(d => d.TblInventario).WithMany(p => p.TblHistoricoInventarios)
-                .HasForeignKey(d => d.TblInventarioId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__TBL_HISTO__INCLU__0F4D3C5F");
-
-            entity.HasOne(d => d.UsuariosApp).WithMany(p => p.TblHistoricoInventarios)
-                .HasForeignKey(d => d.UsuariosAppId)
-                .HasConstraintName("FK__TBL_HISTO__USUAR__10416098");
         });
 
         modelBuilder.Entity<TblInventario>(entity =>
