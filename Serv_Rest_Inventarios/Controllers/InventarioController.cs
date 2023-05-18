@@ -41,7 +41,13 @@ namespace Serv_Rest_Inventarios.Controllers
             return neg.accesorios(id);
         }
 
-
+        [HttpGet]
+        [Route("seleccionarImagenes/{id}")]
+        public List<tbl_inventario_imagen_complex> seleccionarImagenes(int id)
+        {
+            inventario_imagenes_negocio neg = new inventario_imagenes_negocio();
+            return neg.Get(id);
+        }
 
         [HttpPost]
         [Route("agregar")]
@@ -56,6 +62,14 @@ namespace Serv_Rest_Inventarios.Controllers
         public TipoAccion agregaraccesorio(List<tbl_inventario_accesorio_complex> input)
         {
             inventario_accesorio_negocio neg = new inventario_accesorio_negocio(input, new ActionAdd());
+            return neg.Respuesta;
+        }
+
+        [HttpPost]
+        [Route("agregar/imagen")]
+        public TipoAccion agregarimagen(List<tbl_inventario_imagen_complex> input)
+        {
+            inventario_imagenes_negocio neg = new inventario_imagenes_negocio(input, new ActionAdd());
             return neg.Respuesta;
         }
 
@@ -75,6 +89,14 @@ namespace Serv_Rest_Inventarios.Controllers
             return neg.Respuesta;
         }
 
+        [HttpPut]
+        [Route("editar/imagen")]
+        public TipoAccion editaraimagen(List<tbl_inventario_imagen_complex> input)
+        {
+            inventario_imagenes_negocio neg = new inventario_imagenes_negocio(input, new ActionUpdate());
+            return neg.Respuesta;
+        }
+
         [HttpDelete]
         [Route("eliminar")]
         public TipoAccion eliminar(int id, int idUsuario)
@@ -88,6 +110,14 @@ namespace Serv_Rest_Inventarios.Controllers
         public TipoAccion eliminaraccesorio(int id, int idUsuario)
         {
             inventario_accesorio_negocio neg = new inventario_accesorio_negocio(id, idUsuario, new ActionDisable());
+            return neg.Respuesta;
+        }
+
+        [HttpDelete]
+        [Route("eliminar/imagen")]
+        public TipoAccion eliminarimagen(int id, int idUsuario)
+        {
+            inventario_imagenes_negocio neg = new inventario_imagenes_negocio(id, idUsuario, new ActionDisable());
             return neg.Respuesta;
         }
 
