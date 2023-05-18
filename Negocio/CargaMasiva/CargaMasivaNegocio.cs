@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Entidades_complejas;
+using Negocio.HistoricoInventario;
 using Spire.Xls;
 using System;
 using System.Collections.Generic;
@@ -199,6 +200,21 @@ namespace Negocio.CargaMasiva
                             ctx.TblInventarios.Add(tblInventario);
                             ctx.SaveChanges();
 
+
+
+                            ///INICIO - SE REGISTRA HISTORICO
+                            var inventario = ctx.VwInventarios.Where(x => x.Idinventario == tblInventario.Id).FirstOrDefault();
+
+                            if (tblInventario.Numerodeserie != null)
+                            {
+                                historico_inventario_negocio.CapturaNumeroDeSerie(1, inventario, tblInventario.Numerodeserie);
+                            }
+
+                            if (tblInventario.Inventarioclv != null)
+                            {
+                                historico_inventario_negocio.CapturaClaveInventario(1, inventario, tblInventario.Inventarioclv);
+                            }
+                            ///FIN - SE REGISTRA HISTORICO
 
                             RelAdquisicionDetalle relDetalle = ctx.RelAdquisicionDetalles.Where(x => x.TblAdquisicionId == ad.Id && x.CatProductoId == ProductoId).FirstOrDefault();
                             if (relDetalle == null)
