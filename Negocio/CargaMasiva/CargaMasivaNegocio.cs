@@ -87,8 +87,9 @@ namespace Negocio.CargaMasiva
                 adquision.Range["E1"].Style.VerticalAlignment = VerticalAlignType.Center;
                 adquision.Range["E1"].Style.Font.Size = 12;
                 adquision.Range["E1"].Style.Font.IsBold = true;
-                adquision.Range["F1"].Value = "Fecha de compra";
-                adquision.Range["F1"].ColumnWidth = 30;
+                //adquision.Range["F1"].Value = "Fecha de compra";
+                adquision.Range["F1"].Value = "Fecha de compra (DD/MM/YYYY)";
+                adquision.Range["F1"].ColumnWidth = 35;
                 adquision.Range["F1"].Style.Color = Color.DimGray;
                 adquision.Range["F1"].Style.Font.Color = Color.White;
                 adquision.Range["F1"].Style.VerticalAlignment = VerticalAlignType.Center;
@@ -139,7 +140,7 @@ namespace Negocio.CargaMasiva
         }
 
         //Carga masiva
-        public TipoAccion carga_masiva(adquisicion_masiva_complex input)
+        public TipoAccion carga_masiva(adquisicion_masiva_complex input, int idUsuario)
         {
             TipoAccion result = new TipoAccion();
             try
@@ -207,12 +208,12 @@ namespace Negocio.CargaMasiva
 
                             if (tblInventario.Numerodeserie != null)
                             {
-                                historico_inventario_negocio.CapturaNumeroDeSerie(1, inventario, tblInventario.Numerodeserie);
+                                historico_inventario_negocio.CapturaNumeroDeSerie(idUsuario, inventario, tblInventario.Numerodeserie);
                             }
 
                             if (tblInventario.Inventarioclv != null)
                             {
-                                historico_inventario_negocio.CapturaClaveInventario(1, inventario, tblInventario.Inventarioclv);
+                                historico_inventario_negocio.CapturaClaveInventario(idUsuario, inventario, tblInventario.Inventarioclv);
                             }
                             ///FIN - SE REGISTRA HISTORICO
 

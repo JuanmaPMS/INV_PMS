@@ -29,7 +29,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public TipoAccion CargarPlantilla(IFormFile file)
+        public TipoAccion CargarPlantilla(IFormFile file, [FromForm]int idUsuario)
         {
             TipoAccion result = new TipoAccion();
             try
@@ -72,7 +72,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
                 //result.Exito = true;
                 //result.Mensaje = "Carga correcta";
-                result = _negocio.carga_masiva(adquisicion);
+                result = _negocio.carga_masiva(adquisicion, idUsuario);
             }
             catch(Exception ex)
             {
