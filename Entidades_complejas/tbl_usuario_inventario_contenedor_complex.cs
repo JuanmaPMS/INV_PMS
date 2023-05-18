@@ -14,6 +14,7 @@ namespace Entidades_complejas
         public string Contenedor { get; set; } = null!;
 
         public int RelUsuarioInventarioId { get; set; }
+        public int UsuarioAppid { get; set; }
 
 
         public  List<tbl_usuario_inventario_contenedor_imagenes_complex> TblUsuarioInventarioContenedorImagenes { get; set; } = null!;

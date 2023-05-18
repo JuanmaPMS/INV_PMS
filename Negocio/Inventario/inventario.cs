@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Entidades_complejas;
+using Negocio.HistoricoInventario;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,7 @@ namespace Negocio.Inventario
 
                     ctx.TblInventarios.Add(tblInventario);
                     ctx.SaveChanges();
-                    Auditoria.Log(tblInventario, (int)inventario_complex.usuarioAppid);
+                   // Auditoria.Log(tblInventario, (int)inventario_complex.usuarioAppid);
                 }
 
                 estatus = true;
@@ -66,7 +67,7 @@ namespace Negocio.Inventario
 
                 ctx.TblInventarios.Add(tblInventario);
                 ctx.SaveChanges();
-                Auditoria.Log(tblInventario, this.inventario.usuarioAppid);
+               // Auditoria.Log(tblInventario, this.inventario.usuarioAppid);
                 
                 this.Respuesta = TipoAccion.Positiva("Alta Exitosa", tblInventario.Id);
             }
@@ -90,15 +91,34 @@ namespace Negocio.Inventario
                         { throw new Exception("No existe el registro en Tbl_Inventario, favor de validar."); }
                         else
                         {
+                            string numeroSerieViejo = tblInventario.Numerodeserie;
+                            string claveInventarioViejo = tblInventario.Inventarioclv;
+
                             if (inventario_complex.CatEstatusinventarioId != null)
-                            { tblInventario.CatEstatusinventarioId = (int)inventario_complex.CatEstatusinventarioId; }
+                            { 
+                                
+                            
+                            tblInventario.CatEstatusinventarioId = (int)inventario_complex.CatEstatusinventarioId; 
+                            }
                             tblInventario.Numerodeserie = inventario_complex.Numerodeserie;
                             tblInventario.Inventarioclv = inventario_complex.Inventarioclv;
                             tblInventario.Notas = inventario_complex.Notas;
 
                             ctx.TblInventarios.Update(tblInventario);
                             ctx.SaveChanges();
-                            Auditoria.Log(tblInventario, (int)inventario_complex.usuarioAppid);
+                            //Auditoria.Log(tblInventario, (int)inventario_complex.usuarioAppid);
+
+                            var inventario = ctx.VwInventarios.Where(x => x.Idinventario == tblInventario.Id).FirstOrDefault();
+
+                            if (numeroSerieViejo != inventario_complex.Numerodeserie){
+                                historico_inventario_negocio.CapturaNumeroDeSerie((int)inventario_complex.usuarioAppid, inventario, inventario_complex.Numerodeserie);
+                            }
+
+                            if (claveInventarioViejo != inventario_complex.Inventarioclv)
+                            {
+                                historico_inventario_negocio.CapturaClaveInventario((int)inventario_complex.usuarioAppid, inventario, inventario_complex.Inventarioclv);
+                            }
+
 
                             if (inventario_complex.Accesorios != null && inventario_complex.Accesorios.Count > 0)
                             {
@@ -116,17 +136,22 @@ namespace Negocio.Inventario
 
                                         ctx.TblInventarioAccesoriosincluidos.Add(accesorio);
                                         ctx.SaveChanges();
-                                        Auditoria.Log(accesorio, (int)inventario_complex.usuarioAppid);
+                                        // Auditoria.Log(accesorio, (int)inventario_complex.usuarioAppid);
+
+                                        historico_inventario_negocio.CapturaAccesorioInventario((int)inventario_complex.usuarioAppid, inventario, accesorio_Complex.Nombre);
+
                                     }
                                     else
                                     {
                                         //Actualiza el accesorio
+                                        string accesorioViejo = tblAccesorio.Nombre;
                                         tblAccesorio.Nombre = accesorio_Complex.Nombre;
                                         tblAccesorio.Detalle = accesorio_Complex.Detalle;
 
                                         ctx.TblInventarioAccesoriosincluidos.Update(tblAccesorio);
                                         ctx.SaveChanges();
-                                        Auditoria.Log(tblAccesorio, (int)inventario_complex.usuarioAppid);
+                                        // Auditoria.Log(tblAccesorio, (int)inventario_complex.usuarioAppid);
+                                        historico_inventario_negocio.ModificaAccesorioInventario((int)inventario_complex.usuarioAppid, inventario, accesorioViejo, accesorio_Complex.Nombre);
                                     }
                                 }
                             }
@@ -158,7 +183,9 @@ namespace Negocio.Inventario
 
                     ctx.TblInventarios.Update(tblInventario);
                     ctx.SaveChanges();
-                    Auditoria.Log(tblInventario, idUsuario);
+                    // Auditoria.Log(tblInventario, idUsuario);
+                    var inventario = ctx.VwInventarios.Where(x => x.Idinventario == tblInventario.Id).FirstOrDefault();
+                    historico_inventario_negocio.EliminaInventario(idUsuario, inventario);
                 }
 
                 this.Respuesta = TipoAccion.Positiva("Baja Exitosa", tblInventario.Id);

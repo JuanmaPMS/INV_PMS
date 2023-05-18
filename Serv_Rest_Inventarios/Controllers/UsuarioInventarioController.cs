@@ -83,9 +83,9 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpDelete]
         [Route("eliminar")]
-        public TipoAccion eliminar(int id)
+        public TipoAccion eliminar(int id, int idUsuario)
         {
-            usuario_inventario_negocio neg = new usuario_inventario_negocio(id, new ActionDisable());
+            usuario_inventario_negocio neg = new usuario_inventario_negocio(id, idUsuario, new ActionDisable());
             return neg.Respuesta;
         }
 
@@ -172,9 +172,9 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpDelete]
         [Route("eliminarContenedor")]
-        public TipoAccion eliminarContenedores(int id)
+        public TipoAccion eliminarContenedores(int id, int idUsuario)
         {
-            usuario_inventario_contenedor_negocio neg = new usuario_inventario_contenedor_negocio(id, new ActionDisable());
+            usuario_inventario_contenedor_negocio neg = new usuario_inventario_contenedor_negocio(id, idUsuario, new ActionDisable());
             return neg.Respuesta;
         }
 

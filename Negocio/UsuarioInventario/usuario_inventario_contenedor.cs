@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Negocio.HistoricoInventario;
 
 namespace Negocio
 {
@@ -32,7 +33,13 @@ namespace Negocio
                     ctx.TblUsuarioInventarioContenedors.Add(contenedor);
                     ctx.SaveChanges();
 
-                    foreach(tbl_usuario_inventario_contenedor_imagenes_complex imagen in input.TblUsuarioInventarioContenedorImagenes)
+
+                    var usuarioInventario = ctx.RelUsuarioInventarios.Where(x => x.Id == input.RelUsuarioInventarioId).FirstOrDefault();
+                    var inventario = ctx.VwInventarios.Where(x => x.Idinventario == usuarioInventario.TblInventarioId).FirstOrDefault();
+                    historico_inventario_negocio.AgregarContenedorImagenInventario(input.UsuarioAppid, inventario, input.Contenedor);
+                    
+
+                    foreach (tbl_usuario_inventario_contenedor_imagenes_complex imagen in input.TblUsuarioInventarioContenedorImagenes)
                     {
                         TblUsuarioInventarioContenedorImagene imag = new TblUsuarioInventarioContenedorImagene();
                         imag.Id = 0;
@@ -42,6 +49,9 @@ namespace Negocio
                         imag.Inclusion = DateTime.Now;
                         ctx.TblUsuarioInventarioContenedorImagenes.Add(imag);
                         ctx.SaveChanges();
+
+
+                        historico_inventario_negocio.AgregarImagenContenedorInventario(input.UsuarioAppid, inventario, input.Contenedor);
                     }
 
 
@@ -72,10 +82,21 @@ namespace Negocio
                          throw new Exception("No existe el contenedor."); 
                     }
 
+                    string contenedorViejo = contenedor.Contenedor;
                     contenedor.Contenedor = input.Contenedor;
 
                     ctx.TblUsuarioInventarioContenedors.Update(contenedor);
                     ctx.SaveChanges();
+
+                    var usuarioInventario = ctx.RelUsuarioInventarios.Where(x => x.Id == contenedor.RelUsuarioInventarioId).FirstOrDefault();
+                    var inventario = ctx.VwInventarios.Where(x => x.Idinventario == usuarioInventario.TblInventarioId).FirstOrDefault();
+
+                    if (contenedorViejo != input.Contenedor)
+                    {
+                        historico_inventario_negocio.EditarContenedorImagenInventario(input.UsuarioAppid, inventario, contenedorViejo, input.Contenedor);
+                    }
+
+                    
 
                     foreach (tbl_usuario_inventario_contenedor_imagenes_complex imagen in input.TblUsuarioInventarioContenedorImagenes)
                     {
@@ -95,11 +116,15 @@ namespace Negocio
                             imag.TblUsuarioInventarioContenedorId = contenedor.Id;
                             imag.Inclusion = DateTime.Now;
                             ctx.TblUsuarioInventarioContenedorImagenes.Add(imag);
+
+                            historico_inventario_negocio.AgregarImagenContenedorInventario(input.UsuarioAppid, inventario, input.Contenedor);
                         }
                         ctx.SaveChanges();
 
                         
                     }
+
+
 
                     tran.Commit();
                     this.Respuesta = TipoAccion.Positiva("Actualización Exitosa", contenedor.Id);
@@ -112,7 +137,7 @@ namespace Negocio
             }
         }
        
-        public usuario_inventario_contenedor_negocio(int idImagenContenedor, ActionDisable disable)
+        public usuario_inventario_contenedor_negocio(int idImagenContenedor, int idUsuario, ActionDisable disable)
         {
             try
             {
@@ -125,6 +150,14 @@ namespace Negocio
                 {
                     ctx.TblUsuarioInventarioContenedorImagenes.Remove(imagenContenedor);
                     ctx.SaveChanges();
+
+                    var contenedor = ctx.TblUsuarioInventarioContenedors.Where(x=>x.Id == imagenContenedor.TblUsuarioInventarioContenedorId).FirstOrDefault();
+                    var usuarioInventario = ctx.RelUsuarioInventarios.Where(x => x.Id == contenedor.RelUsuarioInventarioId).FirstOrDefault();
+                    var inventario = ctx.VwInventarios.Where(x => x.Idinventario == usuarioInventario.TblInventarioId).FirstOrDefault();
+
+
+                    historico_inventario_negocio.EliminarImagenContenedorInventario(idUsuario, inventario, contenedor.Contenedor);
+                    
 
                     this.Respuesta = TipoAccion.Positiva("Se inhabilito registro exitosamente.", idImagenContenedor);
                 }

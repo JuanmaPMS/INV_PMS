@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Entidades_complejas;
+using Negocio.HistoricoInventario;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,9 @@ namespace Negocio.Inventario
 
                         ctx.TblInventarioAccesoriosincluidos.Add(tblAccesorio);
                         ctx.SaveChanges();
-                        Auditoria.Log(tblAccesorio, inventario_complex.usuarioAppid);
+                        //Auditoria.Log(tblAccesorio, inventario_complex.usuarioAppid);
+                        var inventario = ctx.VwInventarios.Where(x => x.Idinventario == inventario_complex.TblInventarioId).FirstOrDefault();
+                        historico_inventario_negocio.CapturaAccesorioInventario((int)inventario_complex.usuarioAppid, inventario, inventario_complex.Nombre.ToUpper().Trim());
                     }
 
                     tran.Commit();
@@ -58,12 +61,15 @@ namespace Negocio.Inventario
                         { throw new Exception("No existe el registro en Tbl_Inventario_Accesoriosincluido, favor de validar."); }
                         else
                         {
+                            string accesorioViejo = tblAccesorio.Nombre;
                             tblAccesorio.Nombre = inventario_complex.Nombre.ToUpper().Trim();
                             tblAccesorio.Detalle = inventario_complex.Detalle == null ? null : inventario_complex.Detalle.ToUpper().Trim();
 
                             ctx.TblInventarioAccesoriosincluidos.Update(tblAccesorio);
                             ctx.SaveChanges();
-                            Auditoria.Log(tblAccesorio, inventario_complex.usuarioAppid);
+                            //Auditoria.Log(tblAccesorio, inventario_complex.usuarioAppid);
+                            var inventario = ctx.VwInventarios.Where(x => x.Idinventario == inventario_complex.TblInventarioId).FirstOrDefault();
+                            historico_inventario_negocio.ModificaAccesorioInventario((int)inventario_complex.usuarioAppid, inventario, accesorioViejo, inventario_complex.Nombre.ToUpper().Trim());
                         }                 
                     }
 
@@ -90,7 +96,10 @@ namespace Negocio.Inventario
                 {
                     ctx.TblInventarioAccesoriosincluidos.Remove(tblAccesorio);
                     ctx.SaveChanges();
-                    Auditoria.Log(tblAccesorio, idUsuario);
+                    //Auditoria.Log(tblAccesorio, idUsuario);
+                    var inventario = ctx.VwInventarios.Where(x => x.Idinventario == tblAccesorio.TblInventarioId).FirstOrDefault();
+                    historico_inventario_negocio.eliminaAccesorioInventario(idUsuario, inventario, tblAccesorio.Nombre);
+
                     this.Respuesta = TipoAccion.Positiva("Eliminación Exitosa", tblAccesorio.Id);
                 }
             }

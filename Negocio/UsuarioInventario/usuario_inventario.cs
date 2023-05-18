@@ -1,5 +1,6 @@
 ﻿using Data.Models;
 using Entidades_complejas;
+using Negocio.HistoricoInventario;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,6 +68,12 @@ namespace Negocio
 
                     ctx.RelUsuarioInventarios.Add(addAsignacion);
                     ctx.SaveChanges();
+
+                    var inventario = ctx.VwInventarios.Where(x => x.Idinventario == tblInventario.Id).FirstOrDefault();
+                    CatUsuario catUsuario_ = ctx.CatUsuarios.Where(x => x.Id == this.asignacion.CatUsuarioId).FirstOrDefault();
+                    historico_inventario_negocio.AsignacionInventario(input.UsuarioAppid, inventario, catUsuario_);
+                    
+
 
                     if (this.asignacion.Configuracion != null && this.asignacion.Configuracion.Count > 0)
                     {
@@ -202,8 +209,11 @@ namespace Negocio
                         ctx.RelUsuarioInventarios.Update(relAsignacion);
                         ctx.SaveChanges();
 
+                    var inventario = ctx.VwInventarios.Where(x => x.Idinventario == relAsignacion.TblInventarioId).FirstOrDefault();
+                    historico_inventario_negocio.CartaResponsivaAsignacionInventario(input.UsuarioAppid, inventario);
 
-                        tran.Commit();
+
+                    tran.Commit();
                         this.Respuesta = TipoAccion.Positiva("Se actualizo registro exitosamente.", relAsignacion.Id);
                     
                 }
@@ -215,7 +225,7 @@ namespace Negocio
             }
         }
 
-        public usuario_inventario_negocio(int id, ActionDisable disable)
+        public usuario_inventario_negocio(int id, int idUsuario, ActionDisable disable)
         {
             try
             {
@@ -232,6 +242,9 @@ namespace Negocio
                     ctx.RelUsuarioInventarios.Update(relAsignacion);
                     ctx.SaveChanges();
 
+
+
+
                     //Actualiza el estatus del inventario
                     TblInventario tblInventario = ctx.TblInventarios.Where(x => x.Id == relAsignacion.TblInventarioId).FirstOrDefault()!;
                     if (tblInventario == null)
@@ -241,6 +254,9 @@ namespace Negocio
 
                     ctx.TblInventarios.Update(tblInventario);
                     ctx.SaveChanges();
+
+                    var inventario = ctx.VwInventarios.Where(x => x.Idinventario == tblInventario.Id).FirstOrDefault();
+                    historico_inventario_negocio.DesasignacionInventario(idUsuario, inventario);
 
                     this.Respuesta = TipoAccion.Positiva("Se inhabilito registro exitosamente.", relAsignacion.Id);
                 }
