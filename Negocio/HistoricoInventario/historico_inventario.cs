@@ -418,7 +418,7 @@ namespace Negocio.HistoricoInventario
 
 
 
-        public static void AgregarContenedorImagenInventario(int idUsuario, VwInventario inventario, string contenedorImagen)
+        public static void AgregarContenedorImagenInventario(int idUsuario, VwInventario inventario, string expedienteImagen)
         {
 
             try
@@ -436,12 +436,12 @@ namespace Negocio.HistoricoInventario
                 UsuariosApp usuario = ctx.UsuariosApps.Where(x => x.Id == idUsuario).FirstOrDefault();
                
 
-                string descripcion = "El usuario: " + usuario.Nombres + " " + usuario.Apellidos + " ha agregado el contenedor: " + contenedorImagen + " al producto: " + inventario.Modelo + " con número de serie: "
+                string descripcion = "El usuario: " + usuario.Nombres + " " + usuario.Apellidos + " ha agregado el expediente fotográfico: " + expedienteImagen + " al producto: " + inventario.Modelo + " con número de serie: "
                     + inventario.Numerodeserie + ".";
 
                 TblHistoricoInventario historico = new TblHistoricoInventario();
                 historico.Id = 0;
-                historico.Tipo = "Captura contenedor";
+                historico.Tipo = "Captura expediente";
                 historico.Descripcion = descripcion;
                 historico.UsuariosAppId = idUsuario;
                 historico.TblInventarioId = inventario.Idinventario;
@@ -459,7 +459,7 @@ namespace Negocio.HistoricoInventario
 
 
 
-        public static void EditarContenedorImagenInventario(int idUsuario, VwInventario inventario, string contenedorViejo, string contenedorNuevo)
+        public static void EditarContenedorImagenInventario(int idUsuario, VwInventario inventario, string expedienteViejo, string expedienteNuevo)
         {
 
             try
@@ -474,20 +474,20 @@ namespace Negocio.HistoricoInventario
                     throw new Exception("No se ha proporcionado el inventario");
                 }
 
-                if (contenedorViejo  == null )
+                if (expedienteViejo == null )
                 {
-                    throw new Exception("No se ha proporcionado el contenedor");
+                    throw new Exception("No se ha proporcionado el expediente");
                 }
 
                 UsuariosApp usuario = ctx.UsuariosApps.Where(x => x.Id == idUsuario).FirstOrDefault();
                
 
-                string descripcion = "El usuario: " + usuario.Nombres + " " + usuario.Apellidos + " ha actualizado el contenedor: " + contenedorViejo + " a: " + contenedorNuevo + "  del producto: " + inventario.Modelo + " con número de serie: "
+                string descripcion = "El usuario: " + usuario.Nombres + " " + usuario.Apellidos + " ha actualizado el expediente fotográfico: " + expedienteViejo + " a: " + expedienteNuevo + "  del producto: " + inventario.Modelo + " con número de serie: "
                     + inventario.Numerodeserie + ".";
 
                 TblHistoricoInventario historico = new TblHistoricoInventario();
                 historico.Id = 0;
-                historico.Tipo = "Modificación contenedor";
+                historico.Tipo = "Modificación expediente";
                 historico.Descripcion = descripcion;
                 historico.UsuariosAppId = idUsuario;
                 historico.TblInventarioId = inventario.Idinventario;
@@ -504,7 +504,7 @@ namespace Negocio.HistoricoInventario
         }
 
 
-        public static void AgregarImagenContenedorInventario(int idUsuario, VwInventario inventario, string contenedor)
+        public static void AgregarImagenContenedorInventario(int idUsuario, VwInventario inventario, string expediente)
         {
 
             try
@@ -519,20 +519,20 @@ namespace Negocio.HistoricoInventario
                     throw new Exception("No se ha proporcionado el inventario");
                 }
 
-                if (contenedor == null)
+                if (expediente == null)
                 {
-                    throw new Exception("No se ha proporcionado el contenedor");
+                    throw new Exception("No se ha proporcionado el expediente");
                 }
 
                 UsuariosApp usuario = ctx.UsuariosApps.Where(x => x.Id == idUsuario).FirstOrDefault();
                
 
-                string descripcion = "El usuario: " + usuario.Nombres + " " + usuario.Apellidos + " ha agregado imagene(s) al contenedor: " + contenedor + " del producto: " + inventario.Modelo + " con número de serie: "
+                string descripcion = "El usuario: " + usuario.Nombres + " " + usuario.Apellidos + " ha agregado imagene(s) al expediente fotográfico: " + expediente + " del producto: " + inventario.Modelo + " con número de serie: "
                     + inventario.Numerodeserie + ".";
 
                 TblHistoricoInventario historico = new TblHistoricoInventario();
                 historico.Id = 0;
-                historico.Tipo = "Carga imagen en contenedor";
+                historico.Tipo = "Carga imagen en expediente";
                 historico.Descripcion = descripcion;
                 historico.UsuariosAppId = idUsuario;
                 historico.TblInventarioId = inventario.Idinventario;
@@ -548,7 +548,7 @@ namespace Negocio.HistoricoInventario
             }
         }
 
-        public static void EliminarImagenContenedorInventario(int idUsuario, VwInventario inventario, string contenedor)
+        public static void EliminarImagenContenedorInventario(int idUsuario, VwInventario inventario, string expediente)
         {
 
             try
@@ -563,20 +563,20 @@ namespace Negocio.HistoricoInventario
                     throw new Exception("No se ha proporcionado el inventario");
                 }
 
-                if (contenedor == null)
+                if (expediente == null)
                 {
-                    throw new Exception("No se ha proporcionado el contenedor");
+                    throw new Exception("No se ha proporcionado el expediente");
                 }
 
                 UsuariosApp usuario = ctx.UsuariosApps.Where(x => x.Id == idUsuario).FirstOrDefault();
                
 
-                string descripcion = "El usuario: " + usuario.Nombres + " " + usuario.Apellidos + " ha eliminado imagene(s) del contenedor: " + contenedor + " del producto: " + inventario.Modelo + " con número de serie: "
+                string descripcion = "El usuario: " + usuario.Nombres + " " + usuario.Apellidos + " ha eliminado imagene(s) del expediente fotográfico: " + expediente + " del producto: " + inventario.Modelo + " con número de serie: "
                     + inventario.Numerodeserie + ".";
 
                 TblHistoricoInventario historico = new TblHistoricoInventario();
                 historico.Id = 0;
-                historico.Tipo = "Eliminación imagen en contenedor";
+                historico.Tipo = "Eliminación imagen en expediente";
                 historico.Descripcion = descripcion;
                 historico.UsuariosAppId = idUsuario;
                 historico.TblInventarioId = inventario.Idinventario;
