@@ -55,6 +55,29 @@ namespace Negocio.Inventario
             }
         }
 
+        public inventario_imagenes_negocio(tbl_inventario_imagen_complex input, ActionAdd add)
+        {
+            try
+            {
+                TblInventarioImagene tblImagen = new TblInventarioImagene();
+                tblImagen.TblInventarioId = input.TblInventarioId;
+                tblImagen.Imagen = input.Imagen;
+                tblImagen.Estatus = true;
+                tblImagen.Inclusion = DateTime.Now;
+
+                ctx.TblInventarioImagenes.Add(tblImagen);
+                ctx.SaveChanges();
+                Auditoria.Log(tblImagen, input.usuarioAppid);
+
+                this.Respuesta = TipoAccion.Positiva("Alta Exitosa", tblImagen.Id);
+            }
+            catch (Exception ex)
+            {
+                
+                this.Respuesta = TipoAccion.Negativa(ex.Message);
+            }
+        }
+
         public inventario_imagenes_negocio(List<tbl_inventario_imagen_complex> input, ActionUpdate update)
         {
             using (var tran = ctx.Database.BeginTransaction())
@@ -95,6 +118,29 @@ namespace Negocio.Inventario
                     tran.Rollback();
                     this.Respuesta = TipoAccion.Negativa(ex.Message);
                 }
+            }
+        }
+
+        public inventario_imagenes_negocio(tbl_inventario_imagen_complex input, ActionUpdate update)
+        {
+            try
+            {
+                TblInventarioImagene tblImagen = ctx.TblInventarioImagenes.Where(x => x.Id == input.Id && x.TblInventarioId == input.TblInventarioId).FirstOrDefault()!;
+
+                if (tblImagen == null)
+                { throw new Exception("No existe el registro en Tbl_Inventario_Imagenes, favor de validar."); }
+
+                tblImagen.Imagen = input.Imagen;
+
+                ctx.TblInventarioImagenes.Update(tblImagen);
+                ctx.SaveChanges();
+                Auditoria.Log(tblImagen, input.usuarioAppid);
+                this.Respuesta = TipoAccion.Positiva("Actualización Exitosa", tblImagen.Id);
+
+            }
+            catch (Exception ex)
+            {
+                this.Respuesta = TipoAccion.Negativa(ex.Message);
             }
         }
 

@@ -67,7 +67,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpPost]
         [Route("agregar/imagen")]
-        public TipoAccion agregarimagen(List<tbl_inventario_imagen_complex> input)
+        public TipoAccion agregarimagen(tbl_inventario_imagen_complex input)
         {
             inventario_imagenes_negocio neg = new inventario_imagenes_negocio(input, new ActionAdd());
             return neg.Respuesta;
@@ -91,7 +91,7 @@ namespace Serv_Rest_Inventarios.Controllers
 
         [HttpPut]
         [Route("editar/imagen")]
-        public TipoAccion editaraimagen(List<tbl_inventario_imagen_complex> input)
+        public TipoAccion editaraimagen(tbl_inventario_imagen_complex input)
         {
             inventario_imagenes_negocio neg = new inventario_imagenes_negocio(input, new ActionUpdate());
             return neg.Respuesta;
